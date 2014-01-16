@@ -1,0 +1,18 @@
+.tools .applink
+{
+	/*The bottom*/
+	background-image: url(chrome-extension://icfdcomeikabalapjbdgdkmnjghppbnh/img/icon_16.png);
+	/*background-image: url(chrome-extension://ijknidpjhcgbeliijjdmlonlcaobfldf/img/icon_16.png);*/
+	
+	display: inline-block;
+	padding: 5px 0 5px 35px;
+	background-repeat: no-repeat;
+	background-position-x: 3px, 200%;
+	background-position-y: 5px, 100%;
+	line-height: normal;
+	color: #514E45;
+	font-size: 14px;
+	max-height: 20px;
+	text-decoration: none;
+	
+}

@@ -1,0 +1,119 @@
+<HTML>
+<head>
+<title>XML 2 JSON Converter</title>
+<script type="text/javascript">
+function convert()
+{
+	var xmlPath = document.getElementById('input').value;
+	var xmlRequest = new XMLHttpRequest();
+	xmlRequest.open('GET', xmlPath, false);
+	xmlRequest.send();
+	var xml = xmlRequest.responseXML;
+
+	//TODO Store the XML Data in the Object
+	xmlVolume = xml.getElementsByTagName('volume')[0];
+	var volume = {
+		title: xmlVolume.getAttribute('title'),
+		titleLong: xmlVolume.getAttribute('title_long'),
+		subtitle: xmlVolume.getAttribute('subtitle'),
+		ldsorg: xmlVolume.getAttribute('lds_org'),
+		books: [ {
+			title: "Introduction",
+			titleLong: "Introductory Matieral",
+			titleShort: "Intro",
+			ldsorg: "intro",
+			chapters: []
+		} ]
+	};
+	var xmlBooks = xml.getElementsByTagName('book');
+	for (var bookIndex = 0; bookIndex < xmlBooks.length; bookIndex++)
+	{
+		var xmlBook = xmlBooks[bookIndex];
+		var book = {
+			title: xmlBook.getAttribute('title'),
+			titleLong: xmlBook.getAttribute('title_long'),
+			titleShort: xmlBook.getAttribute('title_short'),
+			titleJst: xmlBook.getAttribute('title_jst'),
+			subtitle: xmlBook.getAttribute('subtitle'),
+			ldsorg: xmlBook.getAttribute('lds_org'),
+			chapters: [ {
+				verses: []
+			} ]
+		};
+		if (book.titleJst == null)
+			book.titleJst = undefined;
+		var xmlChapters = xmlBook.getElementsByTagName('chapter');
+		for (var chapterIndex = 0; chapterIndex < xmlChapters.length; chapterIndex++)
+		{
+			var xmlChapter = xmlChapters[chapterIndex];
+			var chapter = {
+				verses: [ {
+					content: ''
+				} ]
+			};
+			var xmlVerses = xmlChapter.getElementsByTagName('verse');
+			for (var verseIndex = 0; verseIndex < xmlVerses.length; verseIndex++)
+			{
+				var xmlVerse = xmlVerses[verseIndex];
+				var verse = {
+					content: xmlVerse.getAttribute('scripture')
+				}
+				chapter.verses.push(verse);
+			}
+			book.chapters.push(chapter);
+		}
+		volume.books.push(book);
+	}
+
+	document.getElementById('output').value = JSON.stringify(volume);
+	console.debug(volume);
+
+	var searcher = [
+		{
+			file: xmlPath.split('.')[0] + '.json',
+			title: volume.title,
+			titleLong: volume.titleLong,
+			ldsorg: volume.ldsorg,
+			names: [
+			]
+		}
+	];
+
+	for (i = 1; i < volume.books.length; i++)
+	{
+		var book = volume.books[i];
+		var item = {
+			file: xmlPath.split('.')[0] + '.json',
+			bookindex: i,
+			title: book.title,
+			titleLong: book.titleLong,
+			ldsorg: book.ldsorg,
+			names: [
+			],
+			chapters: book.chapters.length
+		};
+		if (book.titleJst) item.names.push(book.titleJst);
+		searcher.push(item);
+	}
+
+	document.getElementById('searchhelp').value = JSON.stringify(searcher);
+	console.debug(searcher);
+}
+</script>
+</head>
+<body>
+	<h1>XML 2 JSON Converter 4 LDS Scriptures</h1>
+	<p>
+		XML File:
+		<input id="input" type="text" value="bm.xml">
+	</p>
+	<p>
+		<input type="button" value="Do It!" onclick="convert()">
+	</p>
+	<p>
+		JSON:
+		<textarea id="output"></textarea>
+		<textarea id="searchhelp"></textarea>
+	</p>
+</body>
+</HTML>

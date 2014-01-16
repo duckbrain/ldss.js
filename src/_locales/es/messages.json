@@ -1,0 +1,14 @@
+{
+    "locale": {
+      "message": "en",
+      "description": "Esto indica la propiedad de la copia del Inglés a los archivos porque no tenemos una copia en español."
+    },
+    "app_title": {
+      "message": "Escrituras",
+      "description": "El título oficial de la aplicación, que aparecen por todas partes."
+    },
+    "app_description": {
+      "message": "Un muy ligero, versión en línea de las escrituras de la Iglesia de Jesucristo de los Santos de los Últimos Días.",
+      "description": "La descripción en el manifiesto de aplicación que se muestra en la pestaña de extensiones y en la tienda web."
+    }
+}

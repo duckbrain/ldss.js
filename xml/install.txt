@@ -1,0 +1,213 @@
+General Notes
+-------------
+
+Each export will contain at least three files (or tables):
+lds_scriptures_books, lds_scriptures_verses and lds_scriptures_volumes.
+Some may have a fourth: lds_scriptures which is a non-relational
+combination of the other three, meaning all the data is crammed into
+one place, and lots of it is redundant.
+
+Details about each table and its field contents can be found in the
+documentation either included in this download package, or online at
+http://scriptures.nephi.org/docs/
+
+Access
+------
+
+The Access databases were imported from Excel and created using Access XP.
+
+There are three Access downloads available (for 97, 2000 and XP), and
+the data is exactly the same between all three.
+
+I've done my best to make sure the field types and indexes match properly
+on the databases, so I hope they work well for you.
+
+I know how slow it can sometimes be when using relational tables in
+Access, I would recommend using the "lds_scriptures" table, which is a
+non-relational version of the other three.
+
+CSV
+---
+
+The CSV files were created from Excel.
+
+On the .zip download, the newline character will be \r.  The tarballs
+will end in \n.  You should be able to view them in Notepad (on Windows).
+
+GNUmeric for Linux will not be able to read any of the exports with the
+verses in them, since it cannot read more than 65535 lines at a time.
+
+Exports before v2.5.0 may have been broken if you were using an
+external program to split the CSV on one row per newline, since
+lds_scriptures_books contained some newline characters in some its values.
+As of v2.5.0 one row of data is only on one line.
+
+If you're looking to import the scriptures into MS SQL Server 2000,
+I'd recommend using Excel instead.
+
+This export contains an "lds_scriptures.csv" file which is a
+non-relational table of ALL the data from the original three tables.
+
+DocBook
+-------
+
+Scripts are available on the website to create the DocBook exports.
+
+Excel
+-----
+
+The Excel files were created from the MySQL database using phpMyAdmin.
+
+This export contains an "lds_scriptures.xls" file which is a
+non-relational table of ALL the data from the original three tables.
+
+LaTeX
+-----
+
+TeX files were created from the MySQL database using phpMyAdmin.
+
+Disclaimer: I've never used TeX files (or even opened them up), so
+I can't account for the validity or the usefulness of the exports.
+If you notice any changes that might be necessary, please let me know.
+
+This export contains an "lds_scriptures.tex" file which is a
+non-relational table of ALL the data from the original three tables.
+
+MySQL
+-----
+
+Database dumps are created using mysqldump, and the latest stable version
+of the 4.0.x branch of MySQL.
+
+The import file "lds_scriptures.sql" will DROP your existing
+lds_scriptures tables and recreate them.  The script will not create a new
+database, so you will have to import them into an already existing one.
+
+The table types are MyISAM to allow for FULLTEXT searches on the verses.
+MyISAM is MySQL's default database type.
+
+There are no NULL values or fields in any of the database, so anytime
+you are searching against them, use WHERE field <> ''.  Also, the field
+types have been optimized, using smaller data types where possible.
+
+You will /not/ be able to import the SQL file using a default setup of
+PHP + phpMyAdmin, because the upload size setting is too small.
+
+On Linux, you can import the data by calling mysql on the command line:
+
+	mysql database_name < lds_scriptures.sql
+
+Be sure to pass any default options you need before "< lds_scriptures.sql"
+
+On Windows, I would recommend importing the file using MySQL's binary
+in a DOS shell.  The default installation of MySQL on Windows puts all
+its command-line binaries in C:\mysql\bin
+
+	1) Click Start, then Run
+
+	2) In the run window, type in "cmd" (for XP/2000) or "command.com"
+	(9x/ME) to open a DOS shell.
+
+	3) Type this in:
+
+		a) c:
+		b) cd \mysql\bin
+		c) mysql
+
+	Now you should have a mysql shell open.  If you do, you'll see
+	"mysql>" as your prompt.
+
+	Based on your local MySQL settings, you may need to provide a
+	username and password when connecting to the server.
+	See mysql --help for more information.
+
+	4) In the MySQL shell:
+
+	If you already have a database you want to import the data into,
+	switch to that database:
+
+	mysql> use <database>;
+
+	If you don't, or if you're totally lost, use the "test" database
+	instead:
+
+	mysql> use test;
+
+	Then, import the data:
+
+	mysql> \. c:\path\to\lds_scriptures.sql
+
+	The import *will take some time* so relax if it sits there for
+	a few minutes.
+
+If you still get stuck, just let me know and I'll try to help you out.
+
+OpenDocument Spreadsheet
+------------------------
+
+The exports were created from OpenOffice.org 2.0 Beta, from the Excel
+files.
+
+I have no idea what anyone could use this export for, but I figured in
+all fairness if I was going to have MS Excel exports, it would only be
+right to have one in an open document format as well.
+
+This export contains an "lds_scriptures.ods" file which is a
+non-relational table of ALL the data from the original three tables.
+
+PostgreSQL
+----------
+
+The export will create three tables for you: lds_scriptures_books,
+lds_scriptures_verses and lds_scriptures_volumes.  All three tables
+are exported as a COPY statement, so import should be fairly quick
+(less than 10 seconds on a Pentium 2).
+
+There are a few ways to import the data using psql.  If you want to run it
+command-line, just execute "psql < lds_scriptures.sql".  You will have to
+pass your normal arguments after 'psql' to actually access the database,
+and use your default databse name as well.  A sample command might be:
+
+	psql nephi_org < lds_scriptures.sql
+
+where 'nephi_org' is the name of my database.  If you haven't created
+a database yet, just execute this command in a psql shell:
+
+	CREATE DATABASE lds_scriptures WITH ENCODING 'LATIN1';
+
+If you are already in a psql shell, you can import the file with this
+command:
+
+	\i lds_scriptures.sql
+
+No semicolon is needed.  By default, the command will look for the
+SQL file in the same directory you are in when you started the shell,
+unless you prepend a file path.
+
+SQLite 2 and 3
+--------------
+
+The SQLite database dumps were created from a tweaked PostgreSQL dump.
+
+No need to "import" the file, the database is the lds_scriptures.db file.
+
+Run sqlite (or sqlite3) lds_scriptures.db to access the file.
+
+If you want to see the schema:
+
+	sqlite lds_scriptures.db .schema
+
+To export the data:
+
+	sqlite lds_scriptures.db .dump
+
+XML
+---
+
+The XML exports were created from a PHP script you can find on the
+website, pulling the data from one of the databases.  Until v2.5.0,
+all the exports were created using phpMyAdmin.
+
+v2.5.0 is the first custom created XML file.  I've tried to slim down
+the file as much as possible, and I hope it works well.  Any input is
+greatly appreciated, since I am no XML guru.

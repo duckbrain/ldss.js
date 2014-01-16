@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<HTML>
+	<head>
+		<title>LDS Scriptures - Options</title>
+		<link rel="stylesheet" type="text/css" href="../css/options.css">
+	</head>
+	<body>
+		<ul class="selector">
+			<li>
+				<a href="ref.html?s=library" title="Click here to go to the Library">
+					<img alt="Logo" src="../img/icon_32.png">
+					<span data-i18n="app_title">LDS Scriptures</span>
+				</a>
+			</li>
+			<li><a href="#main"><img src="../img/settings_32.png" alt="settings">Main</a></li>
+			<li><a href="#themes-premade"><img src="../img/props_32.png" alt="properties">Themes</a>
+				<ul>
+					<li><a href="#themes-premade">Full Themes</a></li>
+					<li><a href="#themes-editor">Theme Editor</a></li>
+					<li class="advanced"><a href="#themes-custom">Custom CSS</a></li>
+				</ul>
+			</li>
+			<li><a href="#help-intro"><img src="../img/help_32.png" alt="help">Help</a>
+				<ul>
+					<li><a href="#help-intro">Introduction</a></li>
+					<li><a href="#help-keyboard">Keyboard Shortcuts</a></li>
+					<li><a href="#help-bug">Bug Reports</a></li>
+				</ul>
+			</li>
+			<li><a href="#about"><img src="../img/info_32.png" alt="info">About</a></li>
+		</ul>
+		<div class="panels">
+			<div id="main">
+				<h2>Main Settings</h2>
+			</div>
+			<div id="themes-premade">
+				<h2>Themes</h2>
+				<!--This section should have a picker to choose different
+				 themes and a sample page to see what they look like.
+				 The sample page could be an iframe of your favorite 
+				 scripture and the updating code I wrote should take
+				 care of the rest as long as you send a message where 
+				 to request says "update style"-->
+			</div>
+			<div id="themes-editor">
+				<h2>Theme Editor</h2>
+				<!--This section should have more detailed controls
+				 to create different themes. This should include the
+				 page and the text as well as the colors of links and
+				 the toolbar. Other options may include shadows on text,
+				 Colors of the scrollbar or even the toolbar position or behavior.
+				 The user should be fully aware that they are overriding the
+				 options on the theme they have on. It should also have a span
+				 that when included, will let developers know that the custom CSS
+				 is overwritten by this too. That span should have an "advanced" 
+				 class on it, so it will only appear if the options are in developer mode. 
+				 It should also have a sample page to see what they look like.
+				 The sample page could be an iframe of your favorite 
+				 scripture and the updating code I wrote should take
+				 care of the rest as long as you send a message where 
+				 to request says "update style"-->
+			</div>
+			<div id="themes-custom">
+				<h2>Custom CSS</h2>
+			</div>x
+			<div id="help-intro">
+				<h2>Help</h2>
+				<p>Currently, this section is underconstruction. For help, please contact one of the developers below.</p>
+				<ul>
+					<li><a href="mailto:duckbrain30@gmail.com">Jonathan Duck</a></li>
+					<li><a>Joel Stoker</a></li>
+				</ul>
+				<p>Or visit <a href="https://chrome.google.com/webstore/detail/ijknidpjhcgbeliijjdmlonlcaobfldf?hl=en-US">the WebStore</a> to see if you can get help there.</p>
+				<!--We should have a good introduction to the app and how to use it here.-->
+			</div>
+			<div id="help-keyboard">
+				<h2>Help - Keyboard Shortcuts</h2>
+				<p>This is our full list of keyboard shortcuts to make using the app much quicker.</p>
+				<ul><!--Note to Joel: This is not how we want to do it.
+				<a> tags are for links and we have a hypen in it. we will 
+				probably want a span with a special made class for this, 
+				unless we are able to come up with a place for the link to go.
+				(or for something to pop up). We could also use this to format 
+				it like the about page.-->
+					<li><a>Q</a> - Go up one level.</li>
+				</ul>
+			</div>
+			<div id="help-bug">
+				<iframe src="https://spreadsheets.google.com/viewform?hl=en&formkey=dHMydjFYTkpvVGhKNk1jM1YxWGdRUmc6MQ#gid=0" frameborder="0"></iframe>
+			</div>
+			<div id="about" class="credits">
+				<!--This is where we will credit others for their help. It should include all open source projects
+				that we took from and any resources we are using.-->
+				<h2>About: Version - 3.0</h2>
+				<h3>This application is founded on these projects and people:</h3>
+				<p>
+					<a>Developers</a>
+					<span>
+						<ul>
+							<li>Jonathan Duck</li>
+							<li>Joel Stoker</li>
+						</ul>
+					</span>
+				</p>
+				<p>
+					<a href="http://scriptures.nephi.org/">Mormon Documentation: Project: The Scriptures</a>
+					<span>Provided XML copy of the Scriptures that are the foundation of the content.</span>
+				</p>
+				<p>
+					<a href="http://www.jscolor.com/">JS Color</a>
+					<span>Javascript Library used in the options for color pickers.</span>
+				</p>
+				<p>
+					<a href="http://www.visualpharm.com/">Visual Pharm</a>
+					<span>For the "Must Have" icons set used in the app.</span>
+				</p>
+				<p>
+					<a>And Last, but not least: Our Users</a>
+					<span>Thanks for sending in bug reports and making suggestions!</span>
+				</p>
+			</div>
+		</div>
+		<script type="text/javascript" src="../js/options.js"></script>
+	</body>
+	<script type="text/javascript" src="../js/i18n.js"></script>
+</HTML>

@@ -1,0 +1,94 @@
+/*
+ * This style is intended to show how a single CSS file can be a
+ * full-out theme that can style the whole page all together. While it
+ * is somewhat intended as an example, it should be well maintained and
+ * is a default theme available to users.
+ *
+ * Uses gold-texture.jpg as a dependancy
+ *
+ * Needs modification for new CSS structure.
+ */
+
+body {
+margin-top: 0px;
+color:#000000;
+font-size:12pt;
+font-size: 20pt;
+background-image:url('gold-texture.jpg');
+-webkit-text-shadow: rgba(255,255,255,.8) 0 10px 0;
+}
+
+#controlbar {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	background: gold;
+	border-bottom: 1.5px solid black;
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+}
+
+.highlight { color: darkgray; }
+
+.navlink:link {
+	color:blue;
+}
+.navlink:visited {
+	color:blue;
+}
+
+/* Turn on a 13x13 scrollbar */
+::-webkit-scrollbar {
+    width: 13px;
+    height: 13px;
+}
+ 
+/* Place The scroll down button at the bottom */
+::-webkit-scrollbar-button:vertical:increment {
+    background-image: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(0.5, #E39904),
+    color-stop(1, #A88D07),
+    color-stop(0, #A88D07));
+    border: 1.5px solid #606060;
+}
+ 
+/* Place The scroll up button at the top */
+::-webkit-scrollbar-button:vertical:decrement {
+    background-image: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(0.5, #E39904),
+    color-stop(1, #A88D07),
+    color-stop(0, #A88D07));
+    border: 1.5px solid #606060;
+}
+ 
+/* Track below and above */
+::-webkit-scrollbar-track-piece {
+    background-image: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(0.5, #FFD519),
+    color-stop(1, #FFC95C),
+    color-stop(0, #FFD240));
+    
+}
+ 
+/* The thumb itself */
+::-webkit-scrollbar-thumb:vertical {
+    height: 50px;
+    background-image: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(0.5, #E39904),
+    color-stop(1, #A88D07),
+    color-stop(0, #A88D07));
+    border: 1.5px solid #606060;
+}

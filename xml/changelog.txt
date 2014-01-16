@@ -1,0 +1,521 @@
+Mormon Documentation Project - LDS Scriptures
+---------------------------------------------
+
+2.5.0
+-----
+
+- First custom XML release.
+
+- Added Microsoft Excel 97/2000/XP (.xls) and OpenDocument Spreadsheet
+(.ods) formats to the export list
+
+- PostgreSQL:
+	* used smallint instead of int where possible
+	* encoding set to LATIN1
+	* cleaner database dump
+	* changed all fields to NOT NULL
+
+- MySQL:
+	* Removed all NULL values
+
+- SQLite:
+	* All NULL values changed to blank
+
+- CSV:
+	* Removed the newlines in the CSV files on lds_scriptures_books,
+	which may have caused some problems when someone is trying to
+	split up the rows based on \n or \r.
+
+- Added 'pilcrow' field to lds_scriptures_verses: Now instead of
+verse_scripture having &#142;, the exports have a boolean flag so whoever
+uses the data can decide if they want to display the pilcrow or not.
+Affected 2,964 verses (all in the Old and New Testaments).
+
+- Text exports (CSV, XML, TeX, ODS, XLS) now have files for both the
+relational tables AND a non-relational file (lds_scriptures).  Basically,
+it means that all the data from all the tables is in one file in addition
+to the regular export of each table individually.  The old releases
+would usually have one or the other.  If you're interested in creating
+a non-relational table for the databases, see the 'Notes' section on
+the website.  Exporting an additional table would increase the export
+size greatly, so they are not included in the database downloads.
+
+- Fixed verses where two spaces were between two unpunctuated words.
+See the section 'Errata' in the documentation for details about the
+punctuation and spacing in the scriptures.
+
+Affected 75 verses:
+
+Num. 6:20, Deut. 5:15, Deut. 31:17, Judg. 16:17, Isa. 37:21, Jer. 34:12,
+Ezek. 37:14, 1 Ne. 4:20, 1 Ne. 4:29, 1 Ne. 8:21, 1 Ne. 12:18, 1 Ne. 16:23,
+1 Ne. 17:52, 1 Ne. 21:12, 2 Ne. 10:19, 2 Ne. 20:29, 2 Ne. 28:12, Jacob
+4:9, Mosiah 2:15, Mosiah 2:32, Mosiah 2:37, Mosiah 4:9, Mosiah 4:14,
+Mosiah 7:21, Mosiah 20:13, Mosiah 21:26, Mosiah 25:13, Mosiah 26:12,
+Alma 2:12, Alma 2:24, Alma 5:9, Alma 5:57, Alma 15:18, Alma 16:9, Alma
+17:27, Alma 18:16, Alma 18:38, Alma 19:16, Alma 26:12, Alma 30:28, Alma
+30:33, Alma 34:27, Alma 34:33, Alma 39:11, Alma 47:10, Alma 47:34, Alma
+50:11, Alma 50:23, Alma 50:29, Alma 51:31, Alma 57:17, Alma 62:51, Alma
+63:12, Hel. 1:21, Hel. 1:32, Hel. 3:30, Hel. 3:36, Hel. 5:41, Hel. 8:11,
+Hel. 13:21, 3 Ne. 1:15, 3 Ne. 6:30, 3 Ne. 7:12, 3 Ne. 8:14, 3 Ne. 9:10,
+3 Ne. 11:38, 3 Ne. 13:16, 3 Ne. 17:18, 3 Ne. 19:20, 3 Ne. 23:13, 3
+Ne. 26:17, Morm. 9:36, Ether 3:16, Ether 8:11, Ether 9:31
+
+- Fixed verses that still had verse numbers in the beginning of the text.
+
+Affected 133 verses:
+
+Enos 1:14, D&C 76:100, D&C 76:101, D&C 76:102, D&C 76:103, D&C 76:104,
+D&C 76:105, D&C 76:106, D&C 76:107, D&C 76:108, D&C 76:109, D&C 76:110,
+D&C 76:111, D&C 76:112, D&C 76:113, D&C 76:114, D&C 76:115, D&C 76:116,
+D&C 76:117, D&C 76:118, D&C 76:119, D&C 84:100, D&C 84:101, D&C 84:102,
+D&C 84:103, D&C 84:104, D&C 84:105, D&C 84:106, D&C 84:107, D&C 84:108,
+D&C 84:109, D&C 84:110, D&C 84:111, D&C 84:112, D&C 84:113, D&C 84:114,
+D&C 84:115, D&C 84:116, D&C 84:117, D&C 84:118, D&C 84:119, D&C 84:120,
+D&C 88:100, D&C 88:101, D&C 88:102, D&C 88:103, D&C 88:104, D&C 88:105,
+D&C 88:106, D&C 88:107, D&C 88:108, D&C 88:109, D&C 88:110, D&C 88:111,
+D&C 88:112, D&C 88:113, D&C 88:114, D&C 88:115, D&C 88:116, D&C 88:117,
+D&C 88:118, D&C 88:119, D&C 88:120, D&C 88:121, D&C 88:122, D&C 88:123,
+D&C 88:124, D&C 88:125, D&C 88:126, D&C 88:127, D&C 88:128, D&C 88:129,
+D&C 88:130, D&C 88:131, D&C 88:132, D&C 88:133, D&C 88:134, D&C 88:135,
+D&C 88:136, D&C 88:137, D&C 88:138, D&C 88:139, D&C 88:140, D&C 88:141,
+D&C 101:100, D&C 101:101, D&C 107:100, D&C 124:100, D&C 124:101, D&C
+124:102, D&C 124:103, D&C 124:104, D&C 124:105, D&C 124:106, D&C 124:107,
+D&C 124:108, D&C 124:109, D&C 124:110, D&C 124:111, D&C 124:112, D&C
+124:113, D&C 124:114, D&C 124:115, D&C 124:116, D&C 124:117, D&C 124:118,
+D&C 124:119, D&C 124:120, D&C 124:121, D&C 124:122, D&C 124:123, D&C
+124:124, D&C 124:125, D&C 124:126, D&C 124:127, D&C 124:128, D&C 124:129,
+D&C 124:130, D&C 124:131, D&C 124:132, D&C 124:133, D&C 124:134, D&C
+124:135, D&C 124:136, D&C 124:137, D&C 124:138, D&C 124:139, D&C 124:140,
+D&C 124:141, D&C 124:142, D&C 124:143, D&C 124:144, D&C 124:145
+
+- Cleaned up the documentation.
+
+- Fixed the newlines on the documents in the .zip exports.
+
+2.4.0
+-----
+- Fixed the files in .zip packages so they use DOS file formats.
+The documents and exports should be viewable in Notepad now.
+
+- Fixed the broken XML .zip export (v2.3.0 wouldn't unzip)
+
+- Added lds_org to lds_scriptures_volumes and lds_scriptures_books,
+stores the naming scheme for the directories used on the Church's
+Scriptures website.  See http://scriptures.lds.org/
+
+- Added num_books, num_chapters, num_verses to lds_scriptures_volumes
+
+- Added num_chapters, num_verses to lds_scriptures_books
+
+- Cleaned up the installation documentation for MySQL + Windows
+
+2.3.0
+-----
+- New standardized book and verse titles, based on Church's "Abbreviations
+and Designations in Footnotes and Index".  The new standardization fixes
+a large number of questions as to how the books should be referenced in
+book_title and book_title_short, what the verse_title value for the Four
+Gospels would be (St John, St. John, Saint John, John), and fixes old
+values in lds_scriptures_books (ex: 1 Chronicles).  Thanks to everyone
+who made me aware of the issues. :)
+
+- MySQL: Added a FULLTEXT index on lds_scriptures_verses.verse_scripture.
+
+See the MySQL documentation on how this can really help when writing
+functions to search the database.
+http://dev.mysql.com/doc/mysql/en/Fulltext_Search.html
+
+- Fixed bug where 62 verses from New Testament were missing.
+
+- Fixed bug where verse_title and verse_title_long were incorrect in
+lds_scriptures_verses
+
+- Much needed documenation finally created in DocBook format.
+http://mdp.nephi.org/scriptures/docs/
+
+- lds_scriptures_books: book_title, book_title_long for Articles of
+Faith and Doctrine and Covenants fixed
+
+- lds_scriptures_books: dropped volume_order, book_chapters, book_verses
+
+- Simplified field names
+
+	lds_scriptures_volumes
+	----------------------
+	volume_name -> volume_title
+	volume_name_long -> volume_title_long
+
+	lds_scriptures_verses
+	---------------------
+	verse_chapter -> chapter
+	verse_number -> verse
+
+- Databases: Optimized varchar lengths and field types
+
+- Databases: Added a "unique" index on lds_scriptures_verses verse_title
+and verse_title_short.
+
+- Fixed a duplicate entry of chapter, verse, verse_title,
+verse_title_short for 3 John 1:1
+
+- Fixed over 300 instances of double spaces between words (not sentences)
+in verse_scripture.  I found a bug where there were two spaces between
+words in sentences and they didn't belong.
+
+For instance, "Abel was a keeper of sheep."
+
+Affected verses:
+
+Genesis 4:2, Exodus 10:13, Exodus 14:22, 1 Samuel 19:22, Ezekiel 42:14,
+Obadiah 1:20, Mark 5:35, Luke 3:24, Luke 3:33, John 8:25, John 12:16,
+The Acts 5:15, The Acts 28:23, 1 Nephi 1:7, 1 Nephi 1:14, 1 Nephi 1:19,
+1 Nephi 2:16, 1 Nephi 3:20, 1 Nephi 7:12, 1 Nephi 7:17, 1 Nephi 8:28,
+1 Nephi 8:36, 1 Nephi 10:11, 1 Nephi 11:28, 1 Nephi 11:34, 1 Nephi 12:11,
+1 Nephi 13:26, 1 Nephi 13:30, 1 Nephi 13:35, 1 Nephi 13:40, 1 Nephi 15:17,
+1 Nephi 15:30, 1 Nephi 16:11, 1 Nephi 17:17, 1 Nephi 17:22, 1 Nephi 17:35,
+1 Nephi 17:41, 1 Nephi 17:46, 1 Nephi 18:10, 1 Nephi 18:15, 1 Nephi 18:21,
+1 Nephi 20:14, 1 Nephi 20:21, 1 Nephi 21:19, 1 Nephi 22:14, 2 Nephi 1:9,
+2 Nephi 1:13, 2 Nephi 1:25, 2 Nephi 2:10, 2 Nephi 2:14, 2 Nephi 2:20,
+2 Nephi 2:26, 2 Nephi 3:11, 2 Nephi 3:16, 2 Nephi 4:11, 2 Nephi 4:17,
+2 Nephi 4:26, 2 Nephi 5:33, 2 Nephi 6:14, 2 Nephi 8:20, 2 Nephi 9:9,
+2 Nephi 9:14, 2 Nephi 9:25, 2 Nephi 9:40, 2 Nephi 13:24, 2 Nephi 17:23,
+2 Nephi 18:15, 2 Nephi 20:14, 2 Nephi 23:15, 2 Nephi 24:31, 2 Nephi 25:8,
+2 Nephi 25:13, 2 Nephi 26:10, 2 Nephi 26:21, 2 Nephi 26:33, 2 Nephi
+27:23, 2 Nephi 31:17, 2 Nephi 33:11, Jacob 1:9, Jacob 2:11, Jacob 3:10,
+Jacob 4:14, Jacob 5:11, Jacob 5:17, Jacob 5:27, Jacob 5:33, Jacob 5:39,
+Jacob 5:56, Jacob 5:73, Jacob 5:77, Jacob 7:11, Jacob 7:17, Mosiah 1:13,
+Mosiah 2:21, Mosiah 2:27, Mosiah 3:22, Mosiah 4:30, Mosiah 7:16, Mosiah
+7:33, Mosiah 8:11, Mosiah 8:17, Mosiah 10:11, Mosiah 10:17, Mosiah 11:17,
+Mosiah 11:23, Mosiah 11:29, Mosiah 12:11, Mosiah 12:25, Mosiah 13:13,
+Mosiah 15:11, Mosiah 17:13, Mosiah 19:28, Mosiah 20:19, Mosiah 21:14,
+Mosiah 21:20, Mosiah 23:13, Mosiah 23:28, Mosiah 23:36, Mosiah 26:20,
+Mosiah 26:28, Mosiah 27:16, Mosiah 27:22, Mosiah 27:29, Mosiah 28:11,
+Mosiah 29:12, Mosiah 29:18, Mosiah 29:30, Mosiah 29:36, Alma 1:8, Alma
+1:20, Alma 1:26, Alma 2:37, Alma 3:11, Alma 3:18, Alma 3:25, Alma 4:9,
+Alma 4:20, Alma 5:22, Alma 5:28, Alma 5:47, Alma 5:52, Alma 7:9, Alma
+7:14, Alma 7:25, Alma 8:24, Alma 9:11, Alma 9:21, Alma 9:32, Alma 10:10,
+Alma 10:21, Alma 11:22, Alma 11:39, Alma 12:9, Alma 12:20, Alma 12:36,
+Alma 13:16, Alma 13:22, Alma 14:15, Alma 16:15, Alma 17:9, Alma 17:20,
+Alma 19:21, Alma 19:27, Alma 20:18, Alma 20:25, Alma 20:30, Alma 21:23,
+Alma 22:12, Alma 22:22, Alma 22:27, Alma 22:31, Alma 23:17, Alma 24:15,
+Alma 24:20, Alma 26:18, Alma 26:24, Alma 26:29, Alma 26:35, Alma 27:12,
+Alma 28:11, Alma 30:11, Alma 30:17, Alma 30:23, Alma 30:47, Alma 30:53,
+Alma 30:58, Alma 31:11, Alma 31:23, Alma 31:36, Alma 32:17, Alma 32:24,
+Alma 33:20, Alma 34:11, Alma 36:12, Alma 36:26, Alma 37:16, Alma 37:22,
+Alma 37:28, Alma 37:33, Alma 37:45, Alma 39:17, Alma 42:17, Alma 42:31,
+Alma 43:22, Alma 43:27, Alma 43:40, Alma 43:51, Alma 44:19, Alma 45:13,
+Alma 45:19, Alma 46:28, Alma 46:33, Alma 47:23, Alma 47:30, Alma 47:35,
+Alma 48:11, Alma 48:23, Alma 49:16, Alma 50:35, Alma 51:9, Alma 51:14,
+Alma 52:10, Alma 52:15, Alma 52:26, Alma 52:39, Alma 53:14, Alma 53:20,
+Alma 54:11, Alma 55:33, Alma 56:33, Alma 57:29, Alma 58:11, Alma 58:29,
+Alma 58:41, Alma 60:10, Alma 60:16, Alma 60:32, Alma 62:22, Alma 62:29,
+Alma 62:39, Helaman 1:10, Helaman 5:15, Helaman 5:21, Helaman 5:34,
+Helaman 5:48, Helaman 6:11, Helaman 6:17, Helaman 6:22, Helaman 6:39,
+Helaman 7:10, Helaman 7:29, Helaman 9:17, Helaman 9:23, Helaman 11:11,
+Helaman 11:23, Helaman 11:28, Helaman 13:26, Helaman 13:38, Helaman 14:12,
+Helaman 14:24, Helaman 15:15, 3 Nephi 2:11, 3 Nephi 2:17, 3 Nephi 3:10,
+3 Nephi 3:14, 3 Nephi 3:21, 3 Nephi 3:25, 3 Nephi 4:27, 3 Nephi 4:33,
+3 Nephi 9:22, 3 Nephi 10:12, 3 Nephi 12:13, 3 Nephi 12:28, 3 Nephi 12:37,
+3 Nephi 13:25, 3 Nephi 13:33, 3 Nephi 14:16, 3 Nephi 14:25, 3 Nephi 15:21,
+3 Nephi 16:15, 3 Nephi 18:34, 3 Nephi 19:12, 3 Nephi 19:26, 3 Nephi 20:20,
+3 Nephi 20:40, 3 Nephi 21:16, 3 Nephi 22:14, 3 Nephi 24:12, 3 Nephi 26:12,
+Mormon 1:18, Mormon 2:11, Mormon 3:11, Mormon 5:10, Mormon 5:15, Mormon
+8:24, Mormon 8:30, Mormon 8:36, Mormon 9:17, Mormon 9:24, Mormon 9:29,
+Ether 1:43, Ether 2:10, Ether 2:15, Ether 2:25, Ether 3:3, Ether 3:9,
+Ether 3:22, Ether 6:11, Ether 6:19, Ether 7:21, Ether 7:27, Ether 8:23,
+Ether 9:12, Ether 9:19, Ether 10:10, Ether 10:16, Ether 10:23, Ether
+10:30, Ether 11:12, Ether 12:12, Ether 12:20, Ether 12:25, Ether 12:31,
+Ether 12:37, Ether 13:11, Ether 13:31, Ether 14:5, Ether 14:13, Ether
+15:17, Ether 15:24, Moroni 7:12, Moroni 7:24, Moroni 7:36, Moroni 7:48,
+Moroni 9:10, Moroni 9:24, Moroni 10:28, Moroni 10:34
+
+2.2.0
+-----
+- Moved the Book of Mormon to volume_id 3 instead of volume_id 1, so
+that the order of the books is more like the actual printed versions.
+Also makes it simple if someone only wants the KJV Bible, they only need
+to delete the rows where volume_id > 2.
+	new id name
+
+	1 Old Testament
+	2 New Testament
+	3 Book of Mormon
+	4 Doctrine and Covenants
+	5 Pearl of Great Price
+
+  The change affected all three tables.
+
+- PostgreSQL, MySQL and SQLite:
+
+	Added new indexes on lds_scriptures_verses:
+	verse_id
+	volume_book_chapter_verse
+	book_chapter_verse
+	verse_title
+	verse_title_short
+
+- Dropped book_id 88 (History of the Church) from lds_scriptures_books
+
+- MySQL: "scriptures" table renamed to lds_scriptures, and recreated
+with less fields, and reindexed.
+
+2.1.0
+-----
+- MySQL: Generated a new non-relational table that contains
+all the data: "scriptures" for creating XML, TeX and CSV formats.
+
+	CREATE TABLE scriptures SELECT mdp_scriptures_verses.verse_id,
+	mdp_scriptures_verses.volume_id,
+	mdp_scriptures_volumes.volume_name,
+	mdp_scriptures_volumes.volume_name_long,
+	mdp_scriptures_volumes.volume_subtitle,
+	mdp_scriptures_verses.book_id, mdp_scriptures_books.book_title,
+	mdp_scriptures_books.book_title_long,
+	mdp_scriptures_books.book_title_short,
+	mdp_scriptures_books.book_title_jst,
+	mdp_scriptures_books.book_subtitle,
+	mdp_scriptures_books.book_chapters,
+	mdp_scriptures_books.book_verses,
+	mdp_scriptures_verses.verse_chapter,
+	mdp_scriptures_verses.verse_number,
+	mdp_scriptures_verses.verse_scripture,
+	mdp_scriptures_verses.verse_title,
+	mdp_scriptures_verses.verse_title_short FROM
+	mdp_scriptures_books, mdp_scriptures_verses,
+	mdp_scriptures_volumes WHERE mdp_scriptures_verses.book_id =
+	mdp_scriptures_books.book_id AND mdp_scriptures_verses.volume_id
+	= mdp_scriptures_volumes.volume_id;
+
+
+- XML, CSV and TeX: The exports use the non-relational table now, so
+all the data is in one file.
+
+- Converted HTML entries to plain text or removed them:
+
+	Old New Example
+	&#151; -- Doctrine and Covenants 1:9
+	&#8212; -- 1 Nephi 1:13
+	&#147; " Doctrine and Covenants 135:4
+	&#148; " Doctrine and Covenants 135:4
+
+
+  The Pilcrow (&#182; - see Genesis 1:6) was *not* removed from any of
+  the scriptures.  I can't seem to reach a decision whether to take
+  them out or leave them in myself (since the printed version of the
+  LDS Scriptures contains them, but some terminals may not render them
+  correctly), so I am leaving it up to the user.  If you want to remove
+  them that's up to you. :) I would recommend taking them out for the
+  XML or CSV formats of the Scriptures though.	If you are using them in
+  anything other than an HTML displayed page, you probably don't want to
+  see them.  Note that the KJV module for Sword does _not_ include them.
+
+- Dropped Bible Dictionary and History of the Church from volumes table
+since they are empty.
+
+- Renamed mdp_scriptures and tables to lds_scriptures
+
+- Fixed a bug in New Testament where any book that started with 2 or 3
+(2nd Thessalonians) the verse_number of the first verse was set to 0
+instead of 1.  (Thanks, Byron!)
+
+2.0.2
+-----
+- Fixed 3 scriptures where &#145 (a quote "'") wasn't replaced:
+	Exodus 9:29
+	Psalms 24:1
+	Isaiah 44:5
+
+	MySQL:
+
+	  UPDATE mdp_scriptures_verses SET verse_scripture =
+	  REPLACE(verse_scripture, "&#145;", "\'");
+
+	PostgreSQL:
+
+	  UPDATE mdp_scriptures_verses SET verse_scripture =
+	  REPLACE(verse_scripture, '&#145;', '\'');
+
+	SQLite:
+
+	  UPDATE mdp_scriptures_verses SET verse_scripture = "And Moses
+	  said unto him, As soon as I am gone out of the city, I will
+	  spread abroad my hands unto the LORD; and the thunder shall
+	  cease, neither shall there be any more hail; that thou mayest
+	  know how that the earth is the LORD's." WHERE verse_id = 8376;
+	  UPDATE mdp_scriptures_verses SET verse_scripture = "THE earth
+	  is the LORD's, and the fulness thereof; the world, and they
+	  that dwell therein." WHERE verse_id = 20847;
+	  UPDATE mdp_scriptures_verses SET verse_scripture = "One shall
+	  say, I am the LORD's; and another shall call himself by the
+	  name of Jacob; and another shall subscribe with his hand unto
+	  the LORD, and surname himself by the name of Israel." WHERE
+	  verse_id = 25143;
+
+2.0.1
+-----
+- Removed all instances of mdp_scriptures_chapters
+
+- Forgot to mention (in this ChangeLog) a difference from the original
+text in the Scriptures -- I omitted the * in Joseph Smith-History 1:71.
+Also,
+I should note that Oliver Cowdery's events are not included, since they
+don't really fall in "standard" scripture format.  Whether they should be
+included or not, I dunno.  Maybe in Revision 4.
+
+2.0.0
+-----
+- General reindexing, renaming, and cleaning of database tables
+
+- Added Doctrine & Covenants and Pearl of Great Price
+
+Revision 1.3
+------------
+
+2004-04-27
+
+* mdp_scriptures_books
+
+	Inserted the values for books_verses
+
+	Updated book_title, book_title_long, book_title_short and
+	book_subtitle
+	for all the books in the Pearl of Great Price to correspond to the
+	printed version of the LDS scriptures
+
+	Tweaked the database indexes
+
+	Updated book_title_long to = book_title if book_title_long
+	was NULL
+
+* mdp_scriptures_volumes
+
+	Added volume_name_long and volume_subtitle
+
+* mdp_scriptures_verses
+
+	Replaced instances of &amp;#182; with &#182;
+
+2004-04-19
+
+* mdp_scriptures_verses
+
+	Fixed the verse_title for the Four Gospels.  John => St John
+
+	Fixed the paragraphs (&#182;) not showing up in the Gospels and
+	The Acts
+
+2004-04-18
+
+* mdp_scriptures_verses
+
+	Because of a bug in my original importing script, any chapter
+	with over
+	one hundred verses was being ignored.  The 119th psalm was the
+	only one
+	affected, and has been added.
+
+	The Book of Amos was added, which was left out.
+
+	The Song of Solomon was added, which was left out.
+
+	Column 'book_id' was renamed to 'volume_book'
+
+Revision 1.2
+------------
+
+2004-03-31
+
+* mdp_scriptures_verses: Since revision 1.1 included going back to
+	a more original import to redo the export and clear out all the
+	listings, I forgot, again, to pull out the 'comprising' chapter
+	headers
+	which remained in these verses:
+
+	Mosiah 8:21
+	Mosiah 22:16
+	Alma 4:20
+	Alma 6:8
+	Alma 8:32
+	Alma 16:21
+	Alma 35:16
+	Alma 37:47 (not a 'comprising chapters' header)
+	Alma 38:15
+	Alma 44:24
+	Helaman 6:41
+	Helaman 12:26
+	3 Nephi 10:19
+
+	And even though revision 1.0 listed Alma 21 as containing a
+	header, I didn't
+	see it in this revision, so either I was wrong the first time,
+	or I got it
+	out this time and didn't document it.  Either way, Alma 21 *does*
+	have a
+	comprising chapter header, but it is not in the database in
+	Alma 20:30.
+
+	Also, removed "THE END" from Moroni 10:34
+
+Revision 1.1
+------------
+
+2004-03-27
+
+* mdp_books: renamed to mdp_scriptures_books
+
+* mdp_scriptures: renamed to mdp_scriptures_verses
+
+* mdp_volumes: renamed to mdp_scriptures_volumes
+
+* mdp_scriptures_verses:
+	- Deleted duplicate rows
+	- Reindexed the primary key
+	- Added indexes on volume, book, chapter and verse
+	- Fixed incorrect 'title' values
+	- Added title_short column (1 Ne. 1:1)
+	- Reorganized rows so they are all in the correct order
+	- Deleted <small> tag from 'scripture'
+
+* mdp_scriptures_books:
+	- Added 'book' column
+	- Deleted 'Testimony of the Prophet Joseph Smith', 'The Testimony
+	of the
+	Eight Witnesses', 'The Testimony of the Three Witnesses' and
+	'Title Page'
+	since they are not 'books' in the sense of having scriptures.
+	Will add
+	back in Revision 2 with mdp_scriptures_extras, including the
+	King James
+	Version Biblical dedication
+	- Added all the title_long values for the Bible
+	- Renamed the 'title' values to the book title seen on the pages
+	of the LDS
+	KJV Bible (originally was the values on the Table of Contents)
+	- Added 'title_jst' for the four Gospels
+	- Renamed 'title_index' column (the subdirectory used on
+	scriptures.lds.org)
+	- Added 'title_short' column
+	- Moved 'Articles of Faith' to volume 5, the Pearl of Great
+	Price, instead
+	of including it as a separate volume of work (may change in
+	the future)
+	- Reindexed the primary key
+
+Revision 1
+----------
+
+2004-03-10
+
+* database:
+	- Cleaned up the mysql structure a bit, and hopefully optimized
+	the indexes
+	- Cleaned up the mdp_scriptures table, and reindexed the id column
+	- Removed the following from the database since they are believed
+	or are
+	original and/or revised works of the Church:
+		'Book of Mormon: Introduction'
+		'Book of Mormon: Testimony of the Prophet Joseph Smith'
+		'A Brief Explanation about the Book of Mormon'
+		 "Comprising chapters" headers at Mosiah 9, 23, Alma 5,
+		 7, 9, 17, 21, 36,
+		 38, 39, 45, Helaman 7, 13 and 3 Nephi 11

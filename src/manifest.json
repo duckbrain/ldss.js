@@ -1,0 +1,40 @@
+{
+  "name": "LDS Scriptures DEV",
+  "description": "__MSG_app_description__",
+  "version": "2.5.0",
+  "app": 
+  {
+    "launch": 
+    {
+      "local_path": "html/ref.html?s=library"
+    }
+  },
+  "omnibox": { "keyword" : "lds" },
+  "icons":
+  {
+    "16": "img/icon_16.png",
+    "128": "img/icon_128.png"
+  },
+  "background": {
+    "scripts": ["js/omnibox.js",
+				"js/pagemaker.js",
+				"js/bookmarks.js",
+				"js/htmlbuilder.js",
+				"js/i18n.js",
+				"js/scriptureInfo.js"],
+    "persistent": true
+  },
+  "content_scripts":
+  [
+    {
+      "matches": ["http://*.lds.org/*"],
+      "css": ["css/ldsorg.css"],
+      "js": ["js/ldsorg.js"]
+    }
+  ],
+
+  "permissions": [ "chrome://favicon/", "tabs", "bookmarks" ],
+  "options_page": "html/options.html",
+  "default_locale": "en",
+  "manifest_version": 2
+}

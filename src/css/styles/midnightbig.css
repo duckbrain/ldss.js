@@ -1,0 +1,93 @@
+/*
+ * This theme is out-moded because the new settings page will allow
+ * adding simple modifications to the default theme.
+ */
+
+body {
+	margin-top: 0px;
+	color:#FFFFFF;
+	font-size:18pt;
+	background-color:#000000;
+}
+h1 {
+	font-size:30pt;
+}
+h2 {
+	font-size:40pt;
+}
+a:link { color:lightblue;}
+a:visited { color:lightblue; }
+#controlbar {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	background: rgba(53,53,53,127);
+	border-bottom: 1.5px solid black;
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+}
+
+.highlight { color: gold; }
+
+.navlink {color: lightblue;}
+.navlink:visited {color: lightblue;}
+
+/* Turn on a 13x13 scrollbar */
+::-webkit-scrollbar {
+    width: 13px;
+    height: 13px;
+}
+ 
+/* Place The scroll down button at the bottom */
+::-webkit-scrollbar-button:vertical:increment {
+    background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    right bottom,
+    color-stop(0.52, rgb(128,128,128)),
+    color-stop(1, rgb(59,59,59)),
+    color-stop(0, rgb(77,77,77))
+);
+    border: 1.5px solid #606060;
+}
+ 
+/* Place The scroll up button at the top */
+::-webkit-scrollbar-button:vertical:decrement {
+    background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    right bottom,
+    color-stop(0.52, rgb(128,128,128)),
+    color-stop(1, rgb(59,59,59)),
+    color-stop(0, rgb(77,77,77))
+);
+    border: 1.5px solid #606060;
+}
+ 
+/* Track below and above */
+::-webkit-scrollbar-track-piece {
+    background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    right bottom,
+    color-stop(0.52, rgb(26,26,26)),
+    color-stop(1, rgb(55,55,55)),
+    color-stop(0, rgb(55,55,55))
+);
+    
+}
+ 
+/* The thumb itself */
+::-webkit-scrollbar-thumb:vertical {
+    height: 50px;
+    background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    right bottom,
+    color-stop(0.52, rgb(128,128,128)),
+    color-stop(1, rgb(59,59,59)),
+    color-stop(0, rgb(77,77,77))
+);
+    border: 1.5px solid #606060;
+}

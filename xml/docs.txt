@@ -1,0 +1,359 @@
+Mormon Documentation Project
+
+LDS Scriptures
+
+Steve Dibb
+     _________________________________________________________
+
+   Table of Contents
+   1. Introduction
+
+        1.1. About
+
+   2. The Scriptures
+
+        2.1. The Printed Word and Imported Text
+        2.2. Omitted Texts
+        2.3. Formatting Styles
+        2.4. Naming Standards
+
+   3. The Database
+
+        3.1. lds_scriptures_volumes
+        3.2. lds_scriptures_books
+        3.3. lds_scriptures_verses
+     _________________________________________________________
+
+Chapter 1. Introduction
+
+1.1. About
+
+   The goal of the lds-scriptures project is to provide database
+   and text exports of the canon of scriptures as published by
+   The Church of Jesus Christ of Latter-day Saints.
+
+   The project is part of a larger one, called the Mormon
+   Documentation Project (or MDP for short) which is a group of
+   projects meant to gather, document, index, archive, and make
+   accessible works in the public domain that have been published
+   by The Church of Jesus Christ of Latter-day Saints, and
+   release those texts and tools back into public domain.
+
+   $Id: mdp.xml,v 1.9 2005/06/11 19:12:05 steve Exp steve $
+     _________________________________________________________
+
+Chapter 2. The Scriptures
+
+2.1. The Printed Word and Imported Text
+
+   In converting the Scriptures from one format to another, there
+   has been a few instances where I would have to decide how to
+   format or include certain parts of the printed text.
+
+   The differences between the printed word and the imported text
+   can be categorized in three areas: ommitted text, formatting
+   styles and naming standards.
+
+   While some changes are necessary, it's worth noting that the
+   actual text of the scriptures have themselves been unchanged,
+   and in fact, every effort has been made to standardize
+   everything based on the formatting and style of the printed
+   works.
+     _________________________________________________________
+
+2.2. Omitted Texts
+
+   The main reasons for excluding text from these packages are
+   generally either copyrights, or it isn't feasible or justified
+   to put them in database format. However, they may be included
+   in future versions.
+
+   Study Guides
+
+   In the LDS Scriptures, a lot of study guides have been added
+   to the text to help readers. Since they are copyrighted, they
+   are not included.
+
+   These are the study guides that were left out: book and
+   chapter headers, footnotes, Topical Guide, Bible Dictionary,
+   Joseph Smith Translation, Gazetteer, Maps, Pronunciation Guide
+   and Index (Book of Mormon).
+
+   Title Pages, Dedications and Explanations
+
+   Even though the Church's official scriptures website includes
+   them, these packages don't because they a scriptural numbering
+   sequence doesn't apply.
+
+   Excluded texts:
+
+   Book of Mormon: Title Page (written by Moroni), Introduction,
+   The Testimony of the Three Witnesses, The Testimony of Eight
+   Witnesses, Testimony of the Prophet Joseph Smith, and A Brief
+   Explanation About the Book of Mormon.
+
+   Doctrine and Covenants: Official Declaration 1 and 2.
+
+   Pearl of Great Price: Introductory Note, Oliver Cowdery's
+   account[1]
+
+   Bible: Epistle Dedicatory
+     _________________________________________________________
+
+2.3. Formatting Styles
+
+   The Changelog is the best place to see the details of the
+   changes.
+
+   The Pilcrow
+
+   The Pilcrow is seen throughout all the books of the Old
+   Testament, in the Four Gospels, and in The Acts. Before
+   v2.5.0, the pilcrow was stored as its HTML display value
+   (&#182;) in the verse_scripture field. As of v2.5.0, it has
+   been changed to a boolean field value.
+
+   Capitalization
+
+   In all the standard works, the first word in the first verse
+   in each chapter is capitalized. The imported text is no
+   different.
+
+   Regarding the capitilazation of "LORD" and "GOD" in the Bible,
+   the Bible Dictionary explains. "In the KJV, the Jewish custom
+   has been followed, and the name is generally denoted by Lord
+   or God, printed in small capitals."
+
+   One of the original exports actually had every instance
+   enclosed in <small> tags, but they were removed, since there
+   is no real universal way to tag them (XML aside).
+
+   Dashes
+
+   A lot of scriptures have double dashes in them, and though
+   there is an HTML character you can use to display them, they
+   were replaced with two dashes instead to keep the mix between
+   text and formatting minimal.
+
+   Volume Order
+
+   In previous releases, the Book of Mormon was the first volume
+   listed, and was also the first volume in the other tables as
+   well.
+
+   Since v2.2.0, the Old and New Testaments took the lead
+   instead, following the same order used in the printed works.
+     _________________________________________________________
+
+2.4. Naming Standards
+
+   When referencing the scriptures, one verse can have many
+   titles. Do you use John 3:16, St. John 3:16, Saint John 3:16
+   or St John 3:16?
+
+   While you may have your own preference, these packages
+   standardize on a format that the Church has provided in their
+   standard works. I call it the ADFI, and it's used in all their
+   footnotes and scripturual references.
+
+   Abbreviations and Designations in Footnotes and Index
+
+   If you look at the front of your Book of Mormon you'll see a
+   page with that title. Instead of trying to dream up a naming
+   scheme, the project uses the same as the standard works. So in
+   the case of our example, the verse would be referenced as
+   "John 3:16" in the indexes and footnotes.
+
+   In the rest of the documenation, I refer to this reference as
+   the ADFI.
+     _________________________________________________________
+
+Chapter 3. The Database
+
+   Volumes, Chapters, Books and Verses
+
+   This chapter outlines the table structure of the databases.
+     _________________________________________________________
+
+3.1. lds_scriptures_volumes
+
+   This table provides the text of the volumes.
+
+   Table Structure
+
+   volume_id
+          The primary key
+
+   volume_title
+          Volume titles from the ADFI.
+
+   volume_title_long
+          "The" prepended to volume_title
+
+   volume_subtitle
+          Appended to volume_title_long, could be used as a
+          formal title.
+
+   lds_org
+          The directory structure that the Church uses on their
+          Scriptures website.
+
+   num_books
+          Number of books in the volume.
+
+   num_chapters
+          Number of chapters in the volume.
+
+   num_verses
+          Number of verses in the volume.
+     _________________________________________________________
+
+3.2. lds_scriptures_books
+
+   When accessing this table, the fields you will probably be
+   most interested in using are: volume_id, book_title and
+   book_title_short. The other fields are included for
+   documentation and reference.
+
+   Except for one field in the table, volume_id, all the fields
+   are references which the table lds_scriptures_verses relates
+   to.
+
+   Table Structure
+
+   book_id
+          The primary key
+
+   volume_id
+          The relational field to
+          lds_scriptures_volumes.volume_id.
+
+          For example, the volume_id of Hebrews is 2. The
+          volume_title of volume_id 2 is New Testament.
+          Therefore, the book of Hebrews is in the New Testament.
+
+   book_title
+          The book titles from the ADFI.
+
+          In some previous releases, it used to be the book
+          titles that were used as the page headers for
+          references, but those are not always the same (ex:
+          "Articles of Faith" in ADFI, "The Articles of Faith" in
+          header. [2]).
+
+          Examples: Genesis, Exodus, Matthew, Mark, 1 Nephi, 2
+          Nephi, Doctrine and Covenants, Articles of Faith
+
+   book_title_long
+          The (sometimes) extended title printed at the beginning
+          of the book of scriptures.
+
+          Not every book has an extended title. For those that
+          don't, the field value is the same as book_title.
+
+          Examples: The First Book of Moses called Genesis, The
+          Second Book of Moses called Exodus, The Gospel
+          According to St Matthew, The Gospel According to St
+          Mark, The First Book of Nephi, The Second Book of
+          Nephi, The Doctrine and Covenants, The Articles of
+          Faith
+
+   book_title_short
+          The book abbreviations from the ADFI.
+
+          Examples: Gen., Ex., Matt., Mark, 1 Ne., 2 Ne., D&C, A
+          of F
+
+   book_title_jst
+          The Joseph Smith Translation [3] of book_title_long.
+
+          Every field is null except the entries for the Four
+          Gospels, where "The Gospel According to" is replaced
+          with "The Testimony of".
+
+          These are the only JST references included in the
+          database.
+
+   book_subtitle
+          Subtitles appended to book_title_long.
+
+   lds_org
+          The directory structure that the Church uses on their
+          Scriptures website.
+
+   num_chapters
+          Number of chapters in the book.
+
+   num_verses
+          Number of verses in the book.
+     _________________________________________________________
+
+3.3. lds_scriptures_verses
+
+   Table Structure
+
+   verse_id
+          The primary key
+
+   volume_id
+          The relational key to lds_scriptures_volumes.volume_id
+
+   book_id
+          The relational key to lds_scriptures_books.book_id
+
+   chapter
+          The chapter number in the book
+
+          Example: For Helaman 3:29, the field value is "3"
+
+   verse
+          The verse number in the chapter
+
+          Example: For Helaman 3:29, the field value is "29"
+
+   pilcrow
+          Boolean value of whether scripture text starts with a
+          pilcrow.
+
+          HTML equivalent of &#142;
+
+          Added in v2.5.0.
+
+   verse_scripture
+          The text of the scripture.
+
+          "Yea, we see that whosoever will may lay hold upon the
+          word of God, which is quick and powerful, which shall
+          divide asunder all the cunning and the snares and the
+          wiles of the devil, and lead the man of Christ in a
+          strait and narrow course across that everlasting gulf
+          of misery which is prepared to engulf the wicked--"
+
+   verse_title
+          The value for lds_scriptures_books.book_title, chapter
+          and verse.
+
+          Example: For Helaman 3:29, the field value is "Helaman
+          3:29"
+
+          Both this field and verse_title_short are redundant in
+          a relational database, but they do come in handy.
+
+   verse_title_short
+          The value for lds_scriptures_books.book_title_short,
+          chapter and verse.
+
+          Example: For Helaman 3:29, the field value is "Hel.
+          3:29"
+
+  Notes
+
+   [1]
+
+   pp. 58-59
+   [2]
+
+   The Pearl of Great Price, pp. 60-61
+   [3]
+
+   Bible Dictionary, "Joseph Smith Translation (JST)", p. 717

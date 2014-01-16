@@ -1,0 +1,12 @@
+TODO:
+
+Remove Background page entirely and replace it with AJAX page changing.
+Enable Animations for page changes.
+Simplify Display settings
+Add menu for PDF docs.
+Add languages of PDFs.
+Create New pictures for the updates to the chrome webstore.
+Add LDS.org helps injected in page. document.body.getElementsByClassName('search-tips')[0].getElementsByTagName('ul')[0].appendChild(mybutton);
+Listen to the scriptures mp3
+Searching a verse jumps you to it/highlights it, unless they are in different chapters.
+Remodel to work independent of chrome

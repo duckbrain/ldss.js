@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--This is the most imporant HTML file in the app. It is the single page that all the sciptures open in. If you want
+a different scripture you pass it to the s url parameter and it will use pagegetter.js to generate the content. All
+content, except for the toolbar, is added run time. All of it. It is loaded from the background page and put here.
+I would really like to see the toolbar turn into a panel with some really usefull features. I am not sure what they
+would be yet, but I have some ideas.-->
+<html>
+    <head>
+        <title>LDS Scriptures</title>
+        <script type="text/javascript" src="../js/settings.js"></script>
+        <script type="text/javascript" src="../js/bookmarks.js"></script>
+        <link type="style/css" rel="stylesheet" href="../css/default.css">
+    </head>
+    <body>
+        <div class="navbar">
+            <ul>
+                <li><a id="backlink">Previous</a></li>
+                <li><a id="uplink">Up</a></li>
+                <li id="breadcrumbs"></li>
+                <li><a id="ldsorglink" data-i18n="ref_ldsorg"><img src="chrome://favicon/http://lds.org"></a></li>
+                <li><input id="search" type="text"><input type="submit"></li>
+                <li><a href="options.html"><img alt="Options" src="../img/settings_16.png"></a></li>
+                <li class="bookmark noshow">
+                    <a id="bookmark"></a>
+                    <a id="bookmarkclear"><img alt="Bookmark Clear" src="../img/no.png"></a>
+                </li>
+                <li><input type="checkbox" id="autoscroll"></li>
+                <li><a id="nextlink">Next</a></li>
+            </ul>
+        </div>
+        <script type="text/javascript" src="../js/pagegetter.js"></script>
+        <script type="text/javascript" src="../js/ref.js"></script>
+		<script type="text/javascript" src="../js/i18n.js"></script>
+    </body>
+</html>

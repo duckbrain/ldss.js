@@ -1,0 +1,156 @@
+/*
+ * This file will define fonts that are embedded into the app using the
+ * CSS webfont API. This will let us have a difinative list of fonts
+ * that will undoutably be available to the app. The fonts in this file
+ * should all be options for fonts to display the scriptures as and
+ * should be the only fonts used in the app. (This will make sure that
+ * any fonts used in the app will work and not revert to a default.)
+ * This CSS file should be the first used on all pages that are styled
+ * with fonts.
+ *
+ * At this point, all fonts are from the Google Font Directory
+ * http://www.google.com/webfonts
+ *
+ * Fonts will be loaded from the user's system first. If the user does
+ * not have the requested font installed, it will load the one from the
+ * app instead. All fonts must be packaged in the app so that it will
+ * work on any computer, regardless of operating system and installed
+ * fonts. They must also be packaged so it will work flawlessly offline.
+ *
+ * If a font includes a licence, make sure to include that licence in
+ * the fonts folder. Attach the name of the font and an underscore to
+ * the front of the licence to let people know what font it is for.
+ *
+ *
+ * Font refrences have the following syntax:
+ * @font-face {
+ * 	 font-family: ''; <-- This is the name that we refrence in other places
+ *   font-style: normal; <-- The style is important if a font has explicit alternate
+ * 							 styles, so they are used instead of one the computer
+ * 							 generates mathematicly. Could be normal or italic
+ * 	 font-weight: normal; <-- The style is important if a font has explicit alternate
+ * 							  styles, so they are used instead of one the computer
+ * 							  generates mathematicly. Could be normal or bold
+ *   src: local(''), url('') format('truetype'); <-- The local is the name of the font
+	* 												 To look for on the user's system.
+	* 												 The url is the font file to load if
+	* 												 the user does not have that font.
+	* 												 The format should be truetype for
+	* 												 *.ttf files.
+ * }
+ * */
+
+@font-face {
+  font-family: 'Meddon';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Meddon'), url('Meddon.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Geo';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Geo'), url('Geo-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: italic;
+  font-weight: bold;
+  src: local('Ubuntu Bold Italic'), local('Ubuntu-BoldItalic'), url('Ubuntu-BoltItalic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: italic;
+  font-weight: normal;
+  src: local('Ubuntu Italic'), local('Ubuntu-Italic'), url('Ubuntu-Italic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: bold;
+  src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url('Ubuntu-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Ubuntu'), local('Ubuntu-Regular'), url('Ubuntu-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Homemade Apple';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Homemade Apple'), local('HomemadeApple'), url('HomemadeApple.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'VT323';
+  font-style: normal;
+  font-weight: normal;
+  src: local('VT323'), url('VT323.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 900;
+  src: local('Lato Black'), local('Lato-Black'), url('Lato-Black.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 900;
+  src: local('Lato Black Italic'), local('Lato-BlackItalic'), url('Lato-BlackItalic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 100;
+  src: local('Lato Hairline Italic'), local('Lato-HairlineItalic'), url('Lato-HairlineItalic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 100;
+  src: local('Lato Hairline'), local('Lato-Hairline'), url('Lato-Hairline.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Lato Light Italic'), local('Lato-LightItalic'), url('Lato-LightItalic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Lato Bold'), local('Lato-Bold'), url('Lato-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url('Lato-BoldItalic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Lato Italic'), local('Lato-Italic'), url('Lato-Italic.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lato Regular'), local('Lato-Regular'), url('Lato-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Lato Light'), local('Lato-Light'), url('Lato-Light.ttf') format('truetype');
+}
+}

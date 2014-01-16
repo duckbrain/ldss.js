@@ -1,0 +1,22 @@
+{
+    "locale": {
+      "message": "en",
+      "description": "This property is used to get paths relative to the current locale. It should be the name of the folder this messages.json is in."
+    },
+    "lang_code": {
+      "message": "eng",
+      "description": "This is the language code for the lang URL parameter on the new LDS.org scriptures. The classic scriptures should use locale correctly."
+    },
+    "app_title": {
+      "message": "LDS Scriptures",
+      "description": "The official title of the app, displayed all over."
+    },
+    "app_description": {
+      "message": "A very lightweight, offline version of the scriptures of the Church of Jesus Christ of Latter Day Saints.",
+      "description": "The description in the app manifest that is shown in the extensions tab and in the webstore."
+    },
+    "ref_ldsorg": {
+      "message": "Click here to go the this scripture on LDS.org",
+      "description": "This message is shown as a tooltip on the button that will allow the user to switch from the app to the church website."
+    }
+}

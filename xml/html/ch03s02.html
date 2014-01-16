@@ -1,0 +1,98 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>lds_scriptures_books</title>
+<link rel="stylesheet" href="default.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.66.1">
+<link rel="start" href="index.html" title="Mormon Documentation Project">
+<link rel="up" href="ch03.html" title="Chapter 3. The Database">
+<link rel="prev" href="ch03.html" title="Chapter 3. The Database">
+<link rel="next" href="ch03s03.html" title="lds_scriptures_verses">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">lds_scriptures_books</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch03.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 3. The Database</th>
+<td width="20%" align="right"> <a accesskey="n" href="ch03s03.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="id2491275"></a>lds_scriptures_books</h2></div></div></div>
+<p>When accessing this table, the fields you will probably be most interested in using are: <tt class="filename">volume_id</tt>, <tt class="filename">book_title</tt> and <tt class="filename">book_title_short</tt>.  The other fields are included for documentation and reference.</p>
+<p>Except for one field in the table, <tt class="filename">volume_id</tt>, all the fields are references which the table <tt class="filename">lds_scriptures_verses</tt> relates to.</p>
+<div class="variablelist">
+<p class="title"><b>Table Structure</b></p>
+<dl>
+<dt><span class="term"><span class="bold"><b>book_id</b></span></span></dt>
+<dd><p>The primary key</p></dd>
+<dt><span class="term"><span class="bold"><b>volume_id</b></span></span></dt>
+<dd>
+<p>The relational field to <tt class="filename">lds_scriptures_volumes.volume_id</tt>.</p>
+<p>For example, the volume_id of Hebrews is 2.  The volume_title of volume_id 2 is New Testament.  Therefore, the book of Hebrews is in the New Testament.</p>
+</dd>
+<dt><span class="term"><span class="bold"><b>book_title</b></span></span></dt>
+<dd>
+<p>The book titles from the ADFI.</p>
+<p>In some previous releases, it used to be the book titles that were used as the page headers for references, but those are not always the same (ex: "Articles of Faith" in ADFI, "The Articles of Faith" in header. <sup>[<a name="id2462993" href="#ftn.id2462993">2</a>]</sup>).</p>
+<p>Examples: Genesis, Exodus, Matthew, Mark, 1 Nephi, 2 Nephi, Doctrine and Covenants, Articles of Faith</p>
+</dd>
+<dt><span class="term"><span class="bold"><b>book_title_long</b></span></span></dt>
+<dd>
+<p>The (sometimes) extended title printed at the beginning of the book of scriptures.</p>
+<p>Not every book has an extended title.  For those that don't, the field value is the same as <tt class="filename">book_title</tt>.</p>
+<p>Examples: The First Book of Moses called Genesis, The Second Book of Moses called Exodus, The Gospel According to St Matthew, The Gospel According to St Mark, The First Book of Nephi, The Second Book of Nephi, The Doctrine and Covenants, The Articles of Faith</p>
+</dd>
+<dt><span class="term"><span class="bold"><b>book_title_short</b></span></span></dt>
+<dd>
+<p>The book abbreviations from the ADFI.</p>
+<p>Examples: Gen., Ex., Matt., Mark, 1 Ne., 2 Ne., D&amp;C, A of F</p>
+</dd>
+<dt><span class="term"><span class="bold"><b>book_title_jst</b></span></span></dt>
+<dd>
+<p>The Joseph Smith Translation <sup>[<a name="id2463078" href="#ftn.id2463078">3</a>]</sup> of <tt class="filename">book_title_long</tt>.</p>
+<p>Every field is null except the entries for the Four Gospels, where "The Gospel According to" is replaced with "The Testimony of".</p>
+<p>These are the only JST references included in the database.</p>
+</dd>
+<dt><span class="term"><span class="bold"><b>book_subtitle</b></span></span></dt>
+<dd><p>Subtitles appended to <tt class="filename">book_title_long</tt>.</p></dd>
+<dt><span class="term"><span class="bold"><b>lds_org</b></span></span></dt>
+<dd><p>The directory structure that the Church uses on their Scriptures website.</p></dd>
+<dt><span class="term"><span class="bold"><b>num_chapters</b></span></span></dt>
+<dd><p>Number of chapters in the book.</p></dd>
+<dt><span class="term"><span class="bold"><b>num_verses</b></span></span></dt>
+<dd><p>Number of verses in the book.</p></dd>
+</dl>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.id2462993" href="#id2462993">2</a>] </sup><i class="citetitle">The Pearl of Great Price</i>, pp. 60-61</p></div>
+<div class="footnote"><p><sup>[<a name="ftn.id2463078" href="#id2463078">3</a>] </sup><i class="citetitle">Bible Dictionary</i>, "<a href="http://scriptures.lds.org/bdj/jsphsmth" target="_top">Joseph Smith Translation (JST)</a>", p. 717</p></div>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch03.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ch03s03.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Chapter 3. The Database </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> lds_scriptures_verses</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

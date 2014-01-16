@@ -1,0 +1,42 @@
+/*
+ * This theme is out-moded because the new settings page will allow
+ * adding simple modifications to the default theme.
+ */
+
+body {
+margin-top: 0px;
+color:#000000;
+background-color:#FFFFFF;
+font-size: 30pt;
+}
+h1 {
+font-size: 50pt;
+}
+h2 {
+font-size: 40pt;
+}
+h3 {
+font-size: 45pt;
+}
+
+#controlbar {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	background: lightgray;
+	border-bottom: 1.5px solid black;
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+	font-size: 20pt;
+}
+
+.highlight { color: rgb(255,255,150); }
+
+.navlink {
+	font-size: 20pt;
+}
+.navlink:visited {
+	font-size: 20pt;
+	color:blue;
+}

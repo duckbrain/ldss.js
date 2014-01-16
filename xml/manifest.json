@@ -1,0 +1,10 @@
+{
+  "name": "XML 2 JSON Converter",
+  "version": "0.1",
+  "app": {
+    "launch": {
+      "local_path": "main.html"
+    }
+  },
+  "permissions": [ "*" ]
+}
