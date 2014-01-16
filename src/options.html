@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<HTML>
+	<head>
+		<title>LDS Scriptures - Options</title>
+		<link rel="stylesheet" type="text/css" href="css/options.css">
+		<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+	</head>
+	<body><div id="layout" class="pure-g-r">
+		<a href="#menu" id="menuLink" class="pure-menu-link"><span></span></a>
+		<div id="menu"><div class="pure-menu pure-menu-open">
+		<ul class="selector">
+			<li>
+				<a href="index.html" title="Click here to go to the Library">
+					<img alt="Logo" src="img/icon_32.png" style="width: 32px; height: 32px;">
+					<span data-i18n="app_title">LDS Scriptures</span>
+				</a>
+			</li>
+			<li><a href="#main-general"><i class="fa fa-cog fa-lg"></i>Main</a>
+				<ul>
+					<li><a href="#main-general"><i class="fa fa-wrench"></i>General Options</a></li>
+					<li><a href="#main-database"><i class="fa fa-book"></i>Catalog</a></li>
+				</ul>
+			</li>
+			<li><a href="#themes-premade"><i class="fa fa-font fa-lg"></i>Themes</a>
+				<ul>
+					<li><a href="#themes-premade"><i class="fa fa-tags"></i>Full Themes</a></li>
+					<li><a href="#themes-editor"><i class="fa fa-edit"></i>Theme Editor</a></li>
+					<li data-bind="visible: developer_mode">
+						<a href="#themes-custom"><i class="fa fa-code"></i>Custom CSS</a>
+					</li>
+				</ul>
+			</li>
+			<li><a href="#contribute-intro"><i class="fa fa-group fa-lg"></i>Contribute</a>
+				<ul>
+					<li><a href="#contribute-intro"><i class="fa fa-question-circle"></i>How can I help?</a></li>
+				</ul>
+			</li>
+			<li><a href="#help-intro"><i class="fa fa-question-circle fa-lg"></i>Help</a>
+				<ul>
+					<li><a href="#help-intro"><i class="fa fa-star"></i>Introduction</a></li>
+					<li><a href="#help-keyboard"><i class="fa fa-keyboard-o"></i>Keyboard Shortcuts</a></li>
+					<li><a href="#help-bug"><i class="fa fa-bug"></i>Bug Reports</a></li>
+					<li><a href="#about"><i class="fa fa-info-circle"></i>About</a></li>
+				</ul>
+			</li>
+		</ul>
+		</div></div>
+		<div class="panels pure-u-1">
+			
+			<div id="main-general">
+				<h2>Main Settings</h2>
+			</div>
+			
+			<div id="main-database">
+				<h2>Catalog</h2>
+				<select data-bind="options: languages, optionsText: function(l) {
+						return l.name + ((l.name != l.eng_name && l.eng_name != 'ASL') ? ' - ' + l.eng_name : '');
+					}, value: language_current, optionsValue: 'id'"></select>
+				<button data-bind="click: refreshCatalog"><i class="fa fa-refresh" style="color:green"></i> Refresh Catalog</button>
+				<div>
+					<button data-bind="click: downloadAll">Download All</button>
+				</div>
+				<div id=main-database-catalog>
+					<ul></ul>
+				</div>
+				<div id=main-database-loading>
+					Loading...
+				</div>
+			</div>
+			
+			<div id="themes-premade">
+				<h2>Themes</h2>
+				<h3>Here you can choose one of a few themes all set up and ready to go. You don't have to stop here; try the Theme Editor to override some of the settings from the theme that you choose.</h3>
+				<div>
+					<label for="theme-select">Theme:</label>
+					<select id="theme-select" data-bind="value: theme">
+						<option value="" data-bind="visible: developer_mode">None</option>
+						<option value="default">Default</option>
+						<option value="midnight">Midnight</option>
+						<option value="goldplates">Gold Plates</option>
+						<option value="source">Original Source</option>
+						<option value="green">Green Machine</option>
+					</select>
+				</div>
+				<div>
+					<iframe src="index.html" frameborder=0></iframe>
+				</div>
+			</div>
+			
+			<div id="themes-editor">
+				<h2>Theme: Editor</h2>
+				<h3>This is where you can fine tune the theme that you picked to be just what you want.</h3>
+				<div>
+					<input type=checkbox data-bind="checked: font_size_enable" />
+					<label>Font Size:</label>
+					<input type=range data-bind="value: font_size" min=-1 max=1 step=any />
+					<span data-bind="text: Math.round(120 * Math.pow(10, font_size())) / 10"></span>
+				</div>
+				<div>
+					<input type=checkbox data-bind="checked: font_color_enable" />
+					<label>Font Color:</label>
+					<input type=color data-bind="value: font_color"/>
+				</div>
+				<div>
+					<input type=checkbox data-bind="checked: background_color_enable" />
+					<label>Background Color:</label>
+					<input type=color data-bind="value: background_color"/>
+				</div>
+				<div>
+					<label>Font:</label>
+					<select id="font-select" data-bind="value: font_family">
+						<option value="Ubuntu-Regular.ttf">Ubuntu</option>
+						<option value="Lato-Regular.ttf">Lato</option>
+						<option value="Geo-Regular.ttf">Geo</option>
+					</select>
+				</div>
+			</div>
+			
+			<div id="themes-custom">
+				<h2>Theme: Custom CSS</h2>
+				<div>
+					<input type=checkbox data-bind="checked: custom_css_enable" />
+					<textarea data-bind="value: custom_css"></textarea>
+				</div>
+			</div>
+			
+			<div id="help-intro">
+				<h2>Help</h2>
+				<p>Currently, this section is underconstruction. For help, please contact one of the developers below.</p>
+				<ul>
+					<li><a href="mailto:duckbrain30@gmail.com">Jonathan Duck</a></li>
+					<li><a>Joel Stoker</a></li>
+				</ul>
+				<p>Or visit <a href="https://chrome.google.com/webstore/detail/ijknidpjhcgbeliijjdmlonlcaobfldf?hl=en-US">the WebStore</a> to see if you can get help there.</p>
+				<!--We should have a good introduction to the app and how to use it here.-->
+			</div>
+			<div id="help-keyboard">
+				<h2>Help - Keyboard Shortcuts</h2>
+				<p>This is our full list of keyboard shortcuts to make using the app much quicker.</p>
+				<ul>
+					<li><a>Q</a> - Go up one level.</li>
+				</ul>
+			</div>
+			<div id="help-bug">
+				<iframe src="https://spreadsheets.google.com/viewform?hl=en&formkey=dHMydjFYTkpvVGhKNk1jM1YxWGdRUmc6MQ#gid=0" frameborder="0"></iframe>
+			</div>
+			<div id="about" class="credits">
+				<!--This is where we will credit others for their help. It should include all open source projects
+				that we took from and any resources we are using.-->
+				<h2>About: Version - 3.0</h2>
+				<h3>This application is founded on these projects and people:</h3>
+				<p>
+					<a>Developer</a>
+					<span>
+						<ul>
+							<li>Jonathan Duck</li>
+						</ul>
+					</span>
+				</p>
+				<p>
+					<a href="http://www.visualpharm.com/">Visual Pharm</a>
+					<span>For the "Must Have" icons set used in the app.</span>
+				</p>
+				
+			</div>
+		</div>
+	</div></body>
+	<script type="text/javascript" src="js/knockout.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/datamodel.js"></script>
+	<script type="text/javascript" src="js/htmlbuilder.js"></script>
+	<script type="text/javascript" src="js/db.js"></script>
+	<script type="text/javascript" src="js/ldsdb.js"></script>
+	<script type="text/javascript" src="js/catalog.js"></script>
+	<script type="text/javascript" src="js/options_model.js"></script>
+	<script type="text/javascript" src="js/options.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+</HTML>

@@ -19,6 +19,20 @@ body
 	background-color:black;
 }
 
+body, div, iframe {
+	margin: 0;
+	padding: 0;
+}
+
+.fa {
+	margin-right: .4em;
+	color: white;
+}
+
+.selected>a>i.fa {
+	color: black;
+}
+
 .selector
 {
 	background-color: #222;
@@ -83,7 +97,7 @@ body
 }
 ul.selector li:not(.selected) ul
 {
-	height:0px;
+	/*height:0px;*/
 }
 
  div, body, ul.selector, li
@@ -94,7 +108,7 @@ ul.selector li:not(.selected) ul
  ul.selector li ul { margin-left:4px; }
 
 /*Very important - Selects the panels and makes them full screen. It also hides them.*/
-.panels div
+div.panels>div
 {
 	position: absolute;
 	top: 0;
@@ -103,13 +117,20 @@ ul.selector li:not(.selected) ul
 	left: 250px;
 	color: white;
 	background: black;
-	display: none;
+	padding-left: 1em;
+	
+	overflow: auto;
+	
+	
+	transition: margin-left .2s;
+	margin-left: 100%;
+	
 }
 
 /*Very important - Selects the panel that is selected in the hash of the url (target) and makes it visible only*/
 .panels div:target
 {
-	display: block;
+	margin-left: 0px;
 }
 
 .advanced { display: none; }
@@ -123,7 +144,6 @@ h2
 	color:white;
 	font-size: 24pt;
 	font-weight: bold;
-	margin-left: 20px;
 	text-shadow: -1px -1px 1px #999;
 }
 h3
@@ -131,16 +151,7 @@ h3
 	color:white;
 	font-size: 16pt;
 	font-weight: bold;
-	margin-left: 20px;
 	text-shadow: -1px -1px 1px #999;
-}
-p
-{
-	margin-left: 40px
-}
-ul
-{
-	margin-left: 40px;
 }
 a { color:lightblue; }
 a:hover[href] { color: yellow; }
@@ -162,5 +173,5 @@ a:hover[href] { color: yellow; }
 iframe
 {
 	width:100%;
-	height: 99.5%;
+	height: 450px;
 }

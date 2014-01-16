@@ -6,31 +6,23 @@
 // scripture in the app. A similar button will take you from the app's
 // hiding toolbar to the chruch web site. This will allow tight
 // integration with the Church website scriptures.
-if (location.href.indexOf('lds.org/scriptures') != -1 && location.href.indexOf('lds.org/scriptures/study-helps') == -1)
-{
-	function getAppLocation(search)
-	// Finds the appropriate link to take the user to the app.
-	{
-		return 'chrome-extension://' + chrome.i18n.getMessage('@@extension_id') + '/ref.html?s=' + search;
+(function() {
+	var href = chrome.extension.getURL("index.html") + "?" + location.pathname;
+	var image = chrome.extension.getURL("img/icon_16.png");
+	var tools = document.getElementById('secondary')
+	if (tools == null) return;
+	tools = tools.getElementsByClassName('tools')[0];
+	if (tools == null) return;
+	var newItem = document.createElement('li');
+	var newLink = document.createElement('a');
+	newLink.innerText = "LDS Scriptures";
+	newLink.classList.add('hide-footnotes');
+	newLink.classList.add('chrome-app-icon');
+	newLink.href = href;
+	newLink.onclick = function() {
+		alert("Due to Chrome's security features, you wil need to drag this link to the address bar to navigate to it. This will be fixed in a future update.")
+		return false;
 	}
-
-	//The unordered list that all the tools are in.
-	var tools, icon = false;
-	tools = document.getElementsByClassName('tools')[0];
-	if (tools == undefined)
-		tools = document.getElementById('feature1-1').getElementsByTagName('ul')[0];
-	else icon = true;
-	var listItem = document.createElement('li');
-	var anchor = document.createElement('a');
-	if (icon)
-	{
-		anchor.classList.add('applink');
-		anchor.href = getAppLocation(document.title);
-	}
-	else
-		anchor.href = getAppLocation('library');
-	anchor.innerText = 'LDS Scriptures App';
-
-	listItem.appendChild(anchor);
-	tools.appendChild(listItem);
-}
+	newItem.appendChild(newLink);
+	tools.appendChild(newItem);
+})();
