@@ -88,3 +88,9 @@ lds.Catalog = function() {
 
 lds.catalog = new lds.Catalog();
 lds.db = lds.catalog.db;
+
+window.onbeforeunload = function() {
+	if (lds.catalog.downloadQueue.length) {
+		return "There are still downloads going. You may run into issues if you do not allow these to finish.";
+	}
+}
