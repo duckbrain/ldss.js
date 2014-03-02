@@ -218,7 +218,7 @@ function presentFolder(data) {
 	$('#content :not(.not-downloaded) a[data-bookid]').off('click').click(onBookClick);
 	$('#content .not-downloaded a[data-bookid]').off('click').click(function(x) {
 		x.preventDefault();
-		if (confirm("Would you like to download this title?")) {
+		if (true) { //confirm("Would you like to download this title?")) {
 			var e = $(x.target);
 			e.disable();
 			lds.catalog.downloadQueue.push({ 
