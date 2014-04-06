@@ -12,6 +12,8 @@ function applyStyle() {
 		css += '  background-color: ' + m.background_color() + ';';
 	if (m.font_size_enable())
 		css += '  font-size: ' + Math.round(120 * Math.pow(10, m.font_size())) / 10 + 'pt;';
+	if (m.font_family_enable())
+		css += '  font-family: ' + m.font_family() + ';';
 	css += '}';
 	
 	$('#style-options').html(css);
@@ -39,12 +41,14 @@ lds.dm.load(undefined, function() {
 });
 lds.dm.startListening();
 
-lds.dm.koModel.background_color.subscribe(applyStyle);
-lds.dm.koModel.font_color.subscribe(applyStyle);
-lds.dm.koModel.font_size.subscribe(applyStyle);
 lds.dm.koModel.background_color_enable.subscribe(applyStyle);
+lds.dm.koModel.background_color.subscribe(applyStyle);
 lds.dm.koModel.font_color_enable.subscribe(applyStyle);
+lds.dm.koModel.font_color.subscribe(applyStyle);
 lds.dm.koModel.font_size_enable.subscribe(applyStyle);
+lds.dm.koModel.font_size.subscribe(applyStyle);
+lds.dm.koModel.font_family_enable.subscribe(applyStyle);
+lds.dm.koModel.font_family.subscribe(applyStyle);
 
 lds.dm.koModel.custom_css_enable.subscribe(applyCustomCSS);
 lds.dm.koModel.custom_css.subscribe(applyCustomCSS);

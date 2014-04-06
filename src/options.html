@@ -84,7 +84,7 @@
 					</select>
 				</div>
 				<div>
-					<iframe src="index.html" frameborder=0></iframe>
+					<iframe src="preview.html" frameborder=0></iframe>
 				</div>
 			</div>
 			
@@ -110,10 +110,35 @@
 				<div>
 					<label>Font:</label>
 					<select id="font-select" data-bind="value: font_family">
-						<option value="Ubuntu-Regular.ttf">Ubuntu</option>
-						<option value="Lato-Regular.ttf">Lato</option>
-						<option value="Geo-Regular.ttf">Geo</option>
+						<optgroup label="Built-in">
+							<option value="">Default</option>
+						</optgroup>
+						<optgroup label="Built-in">
+							<option>Geo</option>
+							<option>Homemade Apple</option>
+							<option>Lato</option>
+							<option>Meddon</option>
+							<option>Ubuntu</option>
+							<option>VT323</option>
+						</optgroup>
+						<optgroup label="External Fonts">
+							<option>Arial</option>
+							<option value="Comic Sans MS">Comic Sans</option>
+							<option>Courier New</option>
+							<option>Georgia</option>
+							<option>Impact</option>
+							<option>Lucida Console</option>
+							<option>Palatino Linotype</option>
+							<option>Tahoma</option>
+							<option>Times New Roman</option>
+							<option value="Trebuchet MS">Trebuchet</option>
+							<option>Verdana</option>
+							<option>MS Sans Serif</option>
+						</optgroup>
 					</select>
+				</div>
+				<div>
+					<iframe src="preview.html" frameborder=0></iframe>
 				</div>
 			</div>
 			
@@ -123,17 +148,19 @@
 					<input type=checkbox data-bind="checked: custom_css_enable" />
 					<textarea data-bind="value: custom_css"></textarea>
 				</div>
+				<div>
+					<iframe src="preview.html" frameborder=0></iframe>
+				</div>
 			</div>
 			
 			<div id="help-intro">
 				<h2>Help</h2>
-				<p>Currently, this section is underconstruction. For help, please contact one of the developers below.</p>
+				<p>Hey, everyone. I know it's been a while since an update, and this is a huge change. I completely rewrote the code because Chrome made changes so the old code would not work right away. You will now have access to a lot more content, but it will be a little harder to do.</p>
+				<p>If you are just looking to get back to using the scriptures, click Catalog and make sure it is on English, and Reload the Catalog. Click on folders to expand to the books. Check the ones you want and they will download. <span class="important">Do not close the tab while downloads are going. I do not have the system fully stable yet.</span><p>
+				<p>I realize that there wil probably be some issues with this release, so please email me with any problems you have.</p>
 				<ul>
 					<li><a href="mailto:duckbrain30@gmail.com">Jonathan Duck</a></li>
-					<li><a>Joel Stoker</a></li>
 				</ul>
-				<p>Or visit <a href="https://chrome.google.com/webstore/detail/ijknidpjhcgbeliijjdmlonlcaobfldf?hl=en-US">the WebStore</a> to see if you can get help there.</p>
-				<!--We should have a good introduction to the app and how to use it here.-->
 			</div>
 			<div id="help-keyboard">
 				<h2>Help - Keyboard Shortcuts</h2>
@@ -159,10 +186,21 @@
 					</span>
 				</p>
 				<p>
-					<a href="http://www.visualpharm.com/">Visual Pharm</a>
-					<span>For the "Must Have" icons set used in the app.</span>
+					<a href="https://jquery.org/">jQuery</a>
+					<span>jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers. With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.</span>
 				</p>
-				
+				<p>
+					<a href="http://knockoutjs.com/">Knockout JS</a>
+					<span>Simplify dynamic JavaScript UIs with the Model-View-View Model (MVVM)</span>
+				</p>
+				<p>
+					<a href="http://purecss.io/">Pure</a>
+					<span>A set of small, responsive CSS modules that you can use in every web project.</span>
+				</p>
+				<p>
+					<a href="http://fortawesome.github.io/Font-Awesome/license/">Font Awesome</a>
+					<span>Font Awesome gives you scalable vector icons that can instantly be customized — size, color, drop shadow, and anything that can be done with the power of CSS.</span>
+				</p>
 			</div>
 		</div>
 	</div></body>

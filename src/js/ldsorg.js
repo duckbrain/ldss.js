@@ -6,6 +6,9 @@
 // scripture in the app. A similar button will take you from the app's
 // hiding toolbar to the chruch web site. This will allow tight
 // integration with the Church website scriptures.
+
+alert("Test");
+
 (function() {
 	var href = chrome.extension.getURL("index.html") + "?" + location.pathname;
 	var image = chrome.extension.getURL("img/icon_16.png");

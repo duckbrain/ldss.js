@@ -31,7 +31,7 @@
  * 	 font-weight: normal; <-- The style is important if a font has explicit alternate
  * 							  styles, so they are used instead of one the computer
  * 							  generates mathematicly. Could be normal or bold
- *   src: local(''), url('') format('truetype'); <-- The local is the name of the font
+ *   src: local(''), url('../fonts/') format('truetype'); <-- The local is the name of the font
 	* 												 To look for on the user's system.
 	* 												 The url is the font file to load if
 	* 												 the user does not have that font.
@@ -44,113 +44,113 @@
   font-family: 'Meddon';
   font-style: normal;
   font-weight: normal;
-  src: local('Meddon'), url('Meddon.ttf') format('truetype');
+  src: local('Meddon'), url('../fonts/Meddon.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Geo';
   font-style: normal;
   font-weight: normal;
-  src: local('Geo'), url('Geo-Regular.ttf') format('truetype');
+  src: local('Geo'), url('../fonts/Geo-Regular.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Ubuntu';
   font-style: italic;
   font-weight: bold;
-  src: local('Ubuntu Bold Italic'), local('Ubuntu-BoldItalic'), url('Ubuntu-BoltItalic.ttf') format('truetype');
+  src: local('Ubuntu Bold Italic'), local('Ubuntu-BoldItalic'), url('../fonts/Ubuntu-BoltItalic.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Ubuntu';
   font-style: italic;
   font-weight: normal;
-  src: local('Ubuntu Italic'), local('Ubuntu-Italic'), url('Ubuntu-Italic.ttf') format('truetype');
+  src: local('Ubuntu Italic'), local('Ubuntu-Italic'), url('../fonts/Ubuntu-Italic.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Ubuntu';
   font-style: normal;
   font-weight: bold;
-  src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url('Ubuntu-Bold.ttf') format('truetype');
+  src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url('../fonts/Ubuntu-Bold.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Ubuntu';
   font-style: normal;
   font-weight: normal;
-  src: local('Ubuntu'), local('Ubuntu-Regular'), url('Ubuntu-Regular.ttf') format('truetype');
+  src: local('Ubuntu'), local('Ubuntu-Regular'), url('../fonts/Ubuntu-Regular.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Homemade Apple';
   font-style: normal;
   font-weight: normal;
-  src: local('Homemade Apple'), local('HomemadeApple'), url('HomemadeApple.ttf') format('truetype');
+  src: local('Homemade Apple'), local('HomemadeApple'), url('../fonts/HomemadeApple.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'VT323';
   font-style: normal;
   font-weight: normal;
-  src: local('VT323'), url('VT323.ttf') format('truetype');
+  src: local('VT323'), url('../fonts/VT323.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 900;
-  src: local('Lato Black'), local('Lato-Black'), url('Lato-Black.ttf') format('truetype');
+  src: local('Lato Black'), local('Lato-Black'), url('../fonts/Lato-Black.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Lato';
   font-style: italic;
   font-weight: 900;
-  src: local('Lato Black Italic'), local('Lato-BlackItalic'), url('Lato-BlackItalic.ttf') format('truetype');
+  src: local('Lato Black Italic'), local('Lato-BlackItalic'), url('../fonts/Lato-BlackItalic.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Lato';
   font-style: italic;
   font-weight: 100;
-  src: local('Lato Hairline Italic'), local('Lato-HairlineItalic'), url('Lato-HairlineItalic.ttf') format('truetype');
+  src: local('Lato Hairline Italic'), local('Lato-HairlineItalic'), url('../fonts/Lato-HairlineItalic.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 100;
-  src: local('Lato Hairline'), local('Lato-Hairline'), url('Lato-Hairline.ttf') format('truetype');
+  src: local('Lato Hairline'), local('Lato-Hairline'), url('../fonts/Lato-Hairline.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Lato';
   font-style: italic;
   font-weight: 300;
-  src: local('Lato Light Italic'), local('Lato-LightItalic'), url('Lato-LightItalic.ttf') format('truetype');
+  src: local('Lato Light Italic'), local('Lato-LightItalic'), url('../fonts/Lato-LightItalic.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
-  src: local('Lato Bold'), local('Lato-Bold'), url('Lato-Bold.ttf') format('truetype');
+  src: local('Lato Bold'), local('Lato-Bold'), url('../fonts/Lato-Bold.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Lato';
   font-style: italic;
   font-weight: 700;
-  src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url('Lato-BoldItalic.ttf') format('truetype');
+  src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url('../fonts/Lato-BoldItalic.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Lato';
   font-style: italic;
   font-weight: 400;
-  src: local('Lato Italic'), local('Lato-Italic'), url('Lato-Italic.ttf') format('truetype');
+  src: local('Lato Italic'), local('Lato-Italic'), url('../fonts/Lato-Italic.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 400;
-  src: local('Lato Regular'), local('Lato-Regular'), url('Lato-Regular.ttf') format('truetype');
+  src: local('Lato Regular'), local('Lato-Regular'), url('../fonts/Lato-Regular.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 300;
-  src: local('Lato Light'), local('Lato-Light'), url('Lato-Light.ttf') format('truetype');
+  src: local('Lato Light'), local('Lato-Light'), url('../fonts/Lato-Light.ttf') format('truetype');
 }
 }

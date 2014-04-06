@@ -32,6 +32,7 @@ lds.options_model = {
 	title_size: { default: 0, saveDelay: 1000 },
 	font_color_enable: { default: false },
 	font_color: { default: '#000000', saveDelay: 1000 },
+	font_family_enable: { default: false }, 
 	font_family: { default: "" }, 
 	background_color_enable: { default: false },
 	background_color: { default: '#ffffff', saveDelay: 1000 },
@@ -54,15 +55,15 @@ lds.options_model = {
 	// Keyboard Shortcuts
 	//
 	keyboard_shortcuts_enabled: { default: true },
-	keyboard_shortcut_up: { default: 'q' },
-	keyboard_shortcut_previous: { default: 'a' },
-	keyboard_shortcut_next: { default: 'z' },
-	keyboard_shortcut_verse_previous: { default: 'b' },
-	keyboard_shortcut_verse_next: { default: 'n' },
-	keyboard_shortcut_search: { default: 's' },
-	keyboard_shortcut_autoscoll: { default: 'x' },
-	keyboard_shortcut_bookmark: { default: 'u' },
-	keyboard_shortcut_lds_org: { default: 'l' },
+	keyboard_shortcut_up: { default: 81 },
+	keyboard_shortcut_previous: { default: 65 },
+	keyboard_shortcut_next: { default: 90 },
+	keyboard_shortcut_verse_previous: { default: 66 },
+	keyboard_shortcut_verse_next: { default: 78 },
+	keyboard_shortcut_search: { default: 83 },
+	keyboard_shortcut_autoscoll: { default: 88 },
+	keyboard_shortcut_bookmark: { default: 85 },
+	keyboard_shortcut_lds_org: { default: 76 },
 	keyboard_shortcut_: { default: 'a' },
 	
 	//
