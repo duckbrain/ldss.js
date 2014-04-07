@@ -4,7 +4,7 @@ lds.BookmarkManager = function() {
 };
 lds.BookmarkManager.prototype = {
     reloadBookmarks: function() {
-        if (!chrome || !('bookmarks' in chrome)) {
+        if ('chrome' in window || !('bookmarks' in chrome)) {
             // Use a local setting for bookmarks
         } else {
             chrome.bookmarks.search(location.href, function (results) {

@@ -131,3 +131,11 @@ function page_hashchange()
 			break;
 		}
 }
+
+function developerOn() {
+	lds.dm.koModel.developer_mode(true);
+}
+
+function developerOff() {
+	lds.dm.koModel.developer_mode(false);
+}

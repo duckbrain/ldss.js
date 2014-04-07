@@ -22,6 +22,22 @@ window.onpopstate = function() {
 				q = q.substring(0, q.length - 1);
 			popstate = {};
 			
+			if (q.indexOf('/search') === 0) {
+				if (q.indexOf('/search=') === 0) {
+					q = decodeURI(q.substring(8));
+					//TODO: Search and display results
+					$('#content').html("You searched \"" + q + "\"");
+					lds.db.query = q;
+					lds.db.onrequestcomplete = function(e) {
+						presentSearch(q, e);
+					};
+					lds.db.search();
+				} else {
+					//TODO: Display search box page
+					$('#content').html("You need a search");
+				}
+				return;
+			}
 			// Check for verse id
 			var hashIndex = q.indexOf('#');
 			if (hashIndex != -1) {
@@ -143,7 +159,7 @@ window.onpopstate = function() {
 		if (!('folder' in popstate))
 			popstate.folder = 0;
 		lds.db.onrequestcomplete = function(data) {
-			if (data == null && popstate.folder == 0 && window != window.top) {
+			if (!data && window == window.top) {
 				//alert("The index has not been downloaded. You will now be taken to the catalog page to download it.");
 				//location.href = "options.html#main-database";
 				window.onpopstate = null;
@@ -186,6 +202,7 @@ function openUri(gl_uri) {
 
 function presentFolder(data) {
 	console.log(data);
+	if (!data) return;
 	//TODO: Pull from internationalized string
 	var appName = 'LDS Scriptures';
 	if (data.id == 0)
@@ -347,6 +364,31 @@ function presentToolbar(info) {
 	setLink('#uplevel', info.up);
 	setLink('#previous', info.previous);
 	setLink("#next", info.next);
+}
+
+function presentSearch(query, results) {
+	console.log(results);
+	$('a').off("click");
+	var html = new lds.HTMLBuilder();
+	var title = 'Results for "' + query + '"';
+	html.append('h1').text(title).append('ul');
+	for (var i = 0; i < results.length; ++i) {
+		var node = results[i];
+		html.li().class('node')
+		html.a(lds.index.nodeFile + "?" + node.gl_uri).data({
+			nodeid: node.id,
+			bookid: node.bookid
+		});
+		html.text(node.title);
+	}
+	$('#content').html(html.getHTML());
+	$('#content a').unbind( "click" );
+	$('#content a').click(onNodeClick);
+	
+	var suffix = '';
+	var appName = 'LDS Scriptures';
+	$('#title').html(appName + ' - ' + title)
+	setRefrences(false);
 }
 
 function onBookDownloaded(e) {

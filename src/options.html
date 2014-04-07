@@ -19,6 +19,7 @@
 			<li><a href="#main-general"><i class="fa fa-cog fa-lg"></i>Main</a>
 				<ul>
 					<li><a href="#main-general"><i class="fa fa-wrench"></i>General Options</a></li>
+					<li><a href="#main-keyboard"><i class="fa fa-keyboard-o"></i>Keyboard Shortcuts</a></li>
 					<li><a href="#main-database"><i class="fa fa-book"></i>Catalog</a></li>
 				</ul>
 			</li>
@@ -39,7 +40,6 @@
 			<li><a href="#help-intro"><i class="fa fa-question-circle fa-lg"></i>Help</a>
 				<ul>
 					<li><a href="#help-intro"><i class="fa fa-star"></i>Introduction</a></li>
-					<li><a href="#help-keyboard"><i class="fa fa-keyboard-o"></i>Keyboard Shortcuts</a></li>
 					<li><a href="#help-bug"><i class="fa fa-bug"></i>Bug Reports</a></li>
 					<li><a href="#about"><i class="fa fa-info-circle"></i>About</a></li>
 				</ul>
@@ -50,6 +50,27 @@
 			
 			<div id="main-general">
 				<h2>Main Settings</h2>
+				<div data-bind="visible: developer_mode">
+					<input type=checkbox data-bind="checked: developer_mode" />
+					<label>Developer Mode</label>
+				</div>
+			</div>
+			
+			
+			<div id="main-keyboard">
+				<h2>Keyboard Shortcuts</h2>
+				<p>This is where you will be able to edit the keyboard shortcuts in the app. For now, this is only to show what they currently are.</p>
+				<ul>
+					<li><a data-bind="text: String.fromCharCode(lds.dm.koModel.keyboard_shortcut_up())"></a> - Go up one level.</li>
+					<li><a data-bind="text: String.fromCharCode(lds.dm.koModel.keyboard_shortcut_previous())"></a> - Go the the previous chapter/book.</li>
+					<li><a data-bind="text: String.fromCharCode(lds.dm.koModel.keyboard_shortcut_next())"></a> - Go the the next chapter/book.</li>
+					<li><a data-bind="text: String.fromCharCode(lds.dm.koModel.keyboard_shortcut_verse_previous())"></a> - Go the the previous verse.</li>
+					<li><a data-bind="text: String.fromCharCode(lds.dm.koModel.keyboard_shortcut_verse_next())"></a> - Go the the next verse.</li>
+					<li><a data-bind="text: String.fromCharCode(lds.dm.koModel.keyboard_shortcut_search())"></a> - Focus the search box.</li>
+					<li><a data-bind="text: String.fromCharCode(lds.dm.koModel.keyboard_shortcut_autoscroll())"></a> - Toggle autoscroll.</li>
+					<li><a data-bind="text: String.fromCharCode(lds.dm.koModel.keyboard_shortcut_bookmark())"></a> - Open the bookmark menu.</li>
+					<li><a data-bind="text: String.fromCharCode(lds.dm.koModel.keyboard_shortcut_lds_org())"></a> - Open current scripture in LDS.org.</li>
+				</ul>
 			</div>
 			
 			<div id="main-database">
@@ -110,7 +131,7 @@
 				<div>
 					<label>Font:</label>
 					<select id="font-select" data-bind="value: font_family">
-						<optgroup label="Built-in">
+						<optgroup label="Default">
 							<option value="">Default</option>
 						</optgroup>
 						<optgroup label="Built-in">
@@ -153,6 +174,21 @@
 				</div>
 			</div>
 			
+			<div id="contribute-intro">
+				<h2>Contribute</h2>
+				<p>My life has gotten rather busy and I have not been able to devote as much time to the app. If you would like to see development continue on the app, there are a few things you may be able to do to help.</p>
+				<ul>
+					<li>If you are a developer, I would be more than willing to let you join in on the development. I would help get you into the code. I may consider uploading the code to some open source hosting site, such as github. Shoot me an email and we can talk about it.</li>
+					<li>If you are not strong with JavaScript, but want to make CSS themes, I have not finalized the HTML layouts yet, but even if you don't get deep into the code, we can find something for you to do.</li>
+					<li>I do have some longer term goals that anyone can contribute to, but they are not quite ready yet. They may not come around ever.</li>
+					<li>When you find problems let me know. Use the bug report form in here.</li>
+				</ul>
+				<p>You may notice that this app is free, has no ads, and does not ask for donations. I make absolutely nothing off of the hours I have put into this app. It is a good learning experience and I enjoy it, but please understand that my time is very limited and that is not likely to change any time soon. I am no longer using a Chromebook either, so that further reduces my desire to work on the app, but please feel free to contact me about it. I may not be able to help, but just ask.</p>
+				<ul>
+					<li><a href="mailto:duckbrain30@gmail.com">Jonathan Duck</a></li>
+				</ul>
+			</div>
+			
 			<div id="help-intro">
 				<h2>Help</h2>
 				<p>Hey, everyone. I know it's been a while since an update, and this is a huge change. I completely rewrote the code because Chrome made changes so the old code would not work right away. You will now have access to a lot more content, but it will be a little harder to do.</p>
@@ -162,15 +198,8 @@
 					<li><a href="mailto:duckbrain30@gmail.com">Jonathan Duck</a></li>
 				</ul>
 			</div>
-			<div id="help-keyboard">
-				<h2>Help - Keyboard Shortcuts</h2>
-				<p>This is our full list of keyboard shortcuts to make using the app much quicker.</p>
-				<ul>
-					<li><a>Q</a> - Go up one level.</li>
-				</ul>
-			</div>
 			<div id="help-bug">
-				<iframe src="https://spreadsheets.google.com/viewform?hl=en&formkey=dHMydjFYTkpvVGhKNk1jM1YxWGdRUmc6MQ#gid=0" frameborder="0"></iframe>
+				<iframe src="https://docs.google.com/forms/d/1kxAoNFY5SboyLlHlJ_jLv0ty6D4-g0KJfZqEIeUnig0/viewform?fbzx=9107000017637513584" frameborder="0"></iframe>
 			</div>
 			<div id="about" class="credits">
 				<!--This is where we will credit others for their help. It should include all open source projects

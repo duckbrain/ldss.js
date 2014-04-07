@@ -61,10 +61,9 @@ lds.options_model = {
 	keyboard_shortcut_verse_previous: { default: 66 },
 	keyboard_shortcut_verse_next: { default: 78 },
 	keyboard_shortcut_search: { default: 83 },
-	keyboard_shortcut_autoscoll: { default: 88 },
+	keyboard_shortcut_autoscroll: { default: 88 },
 	keyboard_shortcut_bookmark: { default: 85 },
 	keyboard_shortcut_lds_org: { default: 76 },
-	keyboard_shortcut_: { default: 'a' },
 	
 	//
 	// Catalog Helpers

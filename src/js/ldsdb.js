@@ -685,6 +685,50 @@ lds.LDSDB = function() {
 		}
 		request.onerror = this.onerrorData({request: request, transaction: transaction});
 	};
+	
+	this.query = '';
+	
+	this.search = function() {
+		var query = this.query;
+		var terms = query.toUpperCase().split(' ');
+		var onrequestcomplete = this.onrequestcomplete;
+		if (this.db == null)
+		{
+			this.onopen = this.search;
+			this.open();
+			return;
+		}
+		
+		var self = this;
+		var results = [];
+		var transaction = this.db.transaction(["nodes"]);
+		var objectStore = transaction.objectStore('nodes');
+		objectStore.openCursor().onsuccess = function(event) {
+			var cursor = event.target.result;
+			if (cursor) {
+				var v = cursor.value;
+				var composite = v.gl_uri + v.short_title + v.title + v.subtitle + v.url + v.content;
+				var power = 0;
+				composite = composite.toUpperCase();
+				for (var i = 0; i < terms.length; ++i) {
+					if (composite.indexOf(terms[i]) != -1) {
+						//TODO: Determine a points system based on quality of results
+						power += 1 * composite.occurrences(terms[i]);
+						power += 5 * (v.title+v.subtitle+v.short_title).occurrences(terms[i]);					}
+				}
+				v.power = power;
+				if (power > 0)
+					results.push(v)
+				cursor.continue();	
+			} else {
+				results.sort(function(a, b) {
+					//Sort by power inverted, id, then bookid
+					return a.power == b.power ? (a.id == b.id ? a.bookid - b.bookid : a.id - b.id) : b.power - a.power;
+				});
+				onrequestcomplete(results);
+			}
+		}
+	}
 };
 
 lds.LDSDB.prototype = new lds.DB();

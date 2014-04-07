@@ -15,7 +15,7 @@ window.lds.DataModel = function(model) {
 		var kom = {};
 		for (var field in self.model) {
 			var item = self.model[field];
-			var value = item.value || item.default; // Get right value
+			var value = item.value || item['default']; // Get right value
 			
 			// TODO: Smart observable making based on type
 			kom[field] = ko.observable(value);
