@@ -37,7 +37,7 @@ parseInt = function(v) {
 		return _parseInt(v);
 }
 
-String.prototype.occurrences = function (subString, allowOverlapping){
+String.prototype.occurrences = function (subString, allowOverlapping) {
 
     var string = this; subString+="";
     if(subString.length<=0) return string.length+1;
@@ -50,4 +50,13 @@ String.prototype.occurrences = function (subString, allowOverlapping){
         if(pos>=0){ n++; pos+=step; } else break;
     }
     return(n);
+};
+
+var def = function(self, field, value) {
+	//Returns true or false for if the field is defined or not on the object,
+	//If value is passed, it will set that only if not defined.
+	var defined = field in self;
+	if (!defined && typeof(value) != 'undefined')
+		self[field] = value;
+	return defined;
 };

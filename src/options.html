@@ -60,6 +60,10 @@
 			<div id="main-keyboard">
 				<h2>Keyboard Shortcuts</h2>
 				<p>This is where you will be able to edit the keyboard shortcuts in the app. For now, this is only to show what they currently are.</p>
+				<p>
+					<input id="toggleKeyboardShortcuts" type=checkbox data-bind="checked: keyboard_shortcuts_enabled" />
+					<label for="toggleKeyboardShortcuts">Enable all keyboard shortcuts</label>
+				</p>
 				<ul>
 					<li><a data-bind="text: String.fromCharCode(lds.dm.koModel.keyboard_shortcut_up())"></a> - Go up one level.</li>
 					<li><a data-bind="text: String.fromCharCode(lds.dm.koModel.keyboard_shortcut_previous())"></a> - Go the the previous chapter/book.</li>
@@ -80,7 +84,8 @@
 					}, value: language_current, optionsValue: 'id'"></select>
 				<button data-bind="click: refreshCatalog"><i class="fa fa-refresh" style="color:green"></i> Refresh Catalog</button>
 				<div>
-					<button data-bind="click: downloadAll">Download All</button>
+					<button data-bind="visible: developer_mode, click: downloadAll">Download All</button>
+					<button data-bind="click: downloadVisible">Download Visible</button>
 				</div>
 				<div id=main-database-catalog>
 					<ul></ul>
@@ -99,9 +104,10 @@
 						<option value="" data-bind="visible: developer_mode">None</option>
 						<option value="default">Default</option>
 						<option value="midnight">Midnight</option>
-						<option value="goldplates">Gold Plates</option>
-						<option value="source">Original Source</option>
-						<option value="green">Green Machine</option>
+						<option value="sepia">Sepia</option>
+						<!--option value="goldplates">Gold Plates</option-->
+						<!--option value="source">Original Source</option-->
+						<!--option value="green">Green Machine</option-->
 					</select>
 				</div>
 				<div>
@@ -129,6 +135,7 @@
 					<input type=color data-bind="value: background_color"/>
 				</div>
 				<div>
+					<input type=checkbox data-bind="checked: font_family_enable" />
 					<label>Font:</label>
 					<select id="font-select" data-bind="value: font_family">
 						<optgroup label="Default">
@@ -192,7 +199,16 @@
 			<div id="help-intro">
 				<h2>Help</h2>
 				<p>Hey, everyone. I know it's been a while since an update, and this is a huge change. I completely rewrote the code because Chrome made changes so the old code would not work right away. You will now have access to a lot more content, but it will be a little harder to do.</p>
-				<p>If you are just looking to get back to using the scriptures, click Catalog and make sure it is on English, and Reload the Catalog. Click on folders to expand to the books. Check the ones you want and they will download. <span class="important">Do not close the tab while downloads are going. I do not have the system fully stable yet.</span><p>
+				<p>If you are just looking to get back to using the scriptures, click Catalog and make sure it is on the language you want, and Reload the Catalog. Click on folders to expand to the books. Check the ones you want and they will download. <span class="important">Do not close the tab while downloads are going. I do not have the system fully stable yet.</span><p>
+				<p>
+					I know of a few things that are likely to cause stability issues. So to avoid issues, please take note of the following.
+					<ul>
+						<li>Refreshing the catalog erases all content.</li>
+						<li>I added a Download Visible to help with downloading large volumes of books, but it is far from stable. Do not use for large numbers of books.</li>
+						<li>Do not open other tabs of the app, or click on anything in the settings while downloads are going on.</li>
+						<li>There are experimental features that are hidden. To enable them click or type <a href="#" data-bind="click: developerOn">developerOn()</a> in the console window Ctrl+Shift+J or Cmd+Shift+J.</li>
+					</ul>
+				</p>
 				<p>I realize that there wil probably be some issues with this release, so please email me with any problems you have.</p>
 				<ul>
 					<li><a href="mailto:duckbrain30@gmail.com">Jonathan Duck</a></li>
@@ -204,7 +220,7 @@
 			<div id="about" class="credits">
 				<!--This is where we will credit others for their help. It should include all open source projects
 				that we took from and any resources we are using.-->
-				<h2>About: Version - 3.0</h2>
+				<h2>About: Version - 3.0 dev</h2>
 				<h3>This application is founded on these projects and people:</h3>
 				<p>
 					<a>Developer</a>

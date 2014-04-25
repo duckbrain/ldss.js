@@ -82,8 +82,46 @@ lds.Catalog = function() {
 			
 			self.db.bookContent = data;
 			self.db.populateBook();
+		}).error(function(e) {
+			setTimeout(self.downloadBook, 100);
 		});
 	};
+	
+	self.downloadFolder = function(id, button, onBooksDownloaded) {
+		
+		var checkDone = function(e) {
+			if (!lds.catalog.downloadQueue.length) {
+				onBooksDownloaded(e);
+			} else {
+				self.downloadBook();
+			}
+		};
+		
+		var searchFolder = function(folder) {
+			for (var i = 0; i < folder.books.length; ++i) {
+				var book = folder.books[i];
+				if (book.downloaded)
+					continue;
+				lds.catalog.downloadQueue.push({ 
+					url: book.url, 
+					button: button,
+					callback: checkDone,
+					id: book.id
+				});
+			}
+			for (var i = 0; i < folder.folders.length; ++i) {
+				searchFolder(folder.folders[i]);
+			}
+		};
+		
+		lds.db.recursiveMode = true;
+		lds.db.getId = id;
+		lds.db.onrequestcomplete = function(root) {
+			searchFolder(root);
+			lds.catalog.downloadBook();
+		};
+		lds.db.getFolderBooks();
+	}
 };
 
 lds.catalog = new lds.Catalog();

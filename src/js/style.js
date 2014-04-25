@@ -26,7 +26,9 @@ function applyCustomCSS() {
 }
 
 function applyTheme() {
-	$('#theme').attr('href', 'css/' + lds.dm.koModel.theme() + '.css');
+	if (lds.dm.koModel.theme().length)
+		$('#theme').attr('href', 'css/' + lds.dm.koModel.theme() + '.css');
+	else $('#theme').removeAttr('href');
 }
 
 // This function is called by index.js

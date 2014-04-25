@@ -27,6 +27,7 @@ window.lds.DataModel = function(model) {
 				kom[field].sync = true;
 		}
 		self.koModel = kom;
+		lds.ko = kom;
 	};
 	
 	// Creates a knockoutjs compatible model with raw data. No observables
@@ -58,7 +59,7 @@ window.lds.DataModel = function(model) {
 	
 	// Sets a field value regardless of being an observable or not.
 	self.set = function(field, value) {
-		if (self.get(field) == value)
+		if (self.get(field) === value)
 			return;
 		if (ko.isObservable(self.koModel[field]))
 			self.koModel[field](value);
@@ -96,11 +97,12 @@ window.lds.DataModel = function(model) {
 		if (self.chromeStorage)
 			chrome.storage.sync.set(saveData, callback);
 		else {
-			for (var field in saveData)
+			for (var field in saveData) {
 				var v = saveData[field];
 				if (typeof(v) != 'string')
 					v = JSON.stringify(v);
-				localStorage.setItem(field, v);
+				localStorage.setItem(field, v);	
+			}
 			if (callback) callback();
 		}
 	};
@@ -124,11 +126,14 @@ window.lds.DataModel = function(model) {
 					if (callback) callback();
 			});
 		else {
-			for (var i in loadData) {
+			for (var i = 0; i < loadData.length; ++i) {
 				var field = loadData[i];
 				var v = localStorage.getItem(field);
 				var f = self.model[field];
-				if (typeof (f.default) != 'string')
+				var dateParse = Date.parse(v);
+				if (!isNaN(dateParse))
+					v = new Date(dateParse);
+				else if (typeof (f.default) != 'string')
 					v = JSON.parse(v);
 				if (v != null)
 					self.set(field, v);
@@ -164,8 +169,10 @@ window.lds.DataModel = function(model) {
 					self.koModel[field].subscribe(function() {
 						// If a message is the one setting it, don't send it again.
 						if (self.koModel[field].dontSendMessage)
-						{
 							return;
+							
+						if (self.koModel[field].enableTrigger) {
+							self.koModel[self.koModel[field].enableTrigger](true);
 						}
 						
 						var d = { option_update: {} };

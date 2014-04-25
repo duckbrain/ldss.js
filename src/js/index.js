@@ -25,7 +25,6 @@ window.onpopstate = function() {
 			if (q.indexOf('/search') === 0) {
 				if (q.indexOf('/search=') === 0) {
 					q = decodeURI(q.substring(8));
-					//TODO: Search and display results
 					$('#content').html("You searched \"" + q + "\"");
 					lds.db.query = q;
 					lds.db.onrequestcomplete = function(e) {
@@ -46,11 +45,13 @@ window.onpopstate = function() {
 				q = q.substring(0, hashIndex);
 				
 				if (hash.indexOf(',') == -1 && hash.indexOf('-') == -1) {
-					// Could be a footnote
+					// Could be a footnote or search term
 					var parsedHash = parseInt(hash);
 					if (!isNaN(parsedHash) && parsedHash.toString() != hash) {
 						verses = [ parsedHash ];
-						refrence = hash;
+						popstate.refrence = hash;
+					} else if (isNaN(parsedHash)) {
+						popstate.highlights = [hash];
 					}
 				}
 				else {
@@ -65,7 +66,8 @@ window.onpopstate = function() {
 								verses.push(j);
 						}
 					}
-					parseInt(verses);		
+					parseInt(verses);
+					//TODO find search terms to highlight
 				}
 				popstate.verses = verses;
 				popstate.hash = hash;
@@ -120,6 +122,8 @@ window.onpopstate = function() {
 			}
 			
 			presentNode(data);
+			if ('highlights' in popstate)
+				$('#content').highlight(popstate.highlights);
 			lds.db.onrequestcomplete = function(info) {
 				presentToolbar(info);
 			};
@@ -374,16 +378,17 @@ function presentSearch(query, results) {
 	html.append('h1').text(title).append('ul');
 	for (var i = 0; i < results.length; ++i) {
 		var node = results[i];
-		html.li().class('node')
+		html.li().class('result')
 		html.a(lds.index.nodeFile + "?" + node.gl_uri).data({
 			nodeid: node.id,
 			bookid: node.bookid
 		});
-		html.text(node.title);
+		html.text(node.short_title + " " + node.title);
 	}
 	$('#content').html(html.getHTML());
 	$('#content a').unbind( "click" );
 	$('#content a').click(onNodeClick);
+	$('#content').highlight(query);
 	
 	var suffix = '';
 	var appName = 'LDS Scriptures';
@@ -461,3 +466,4 @@ $('#ref-close').click(function() { setRefrences(false); });
 lds.bookmarks = new lds.BookmarkManager();
 lds.bookmarks.reloadBookmarks();
 $('#bookmark').click(function() { lds.bookmarks.save() })
+window.onpopstate();

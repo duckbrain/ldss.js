@@ -7,9 +7,9 @@
 // hiding toolbar to the chruch web site. This will allow tight
 // integration with the Church website scriptures.
 
-alert("Test");
-
 (function() {
+	console.log("LDS Scriptures Content Script Started");
+	
 	var href = chrome.extension.getURL("index.html") + "?" + location.pathname;
 	var image = chrome.extension.getURL("img/icon_16.png");
 	var tools = document.getElementById('secondary')

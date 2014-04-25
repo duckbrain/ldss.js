@@ -13,15 +13,16 @@
 }
 
 body {
-	background-color: white;
+	color: white;
+	background-color: black;
 }
 
 .highlight {
-	background-color: yellow;
+	background-color: #555500;
 }
 
 a, a:visited {
-	color: blue;
+	color: lightblue;
 }
 
 body {
@@ -238,7 +239,7 @@ body {
 	overflow: auto;
 	bottom: 0;
 	height: 0%;
-	background: lightgray;
+	background: #222;
 }
 
 .showrefs #ref-container {

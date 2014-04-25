@@ -20,8 +20,23 @@ lds.dm.load(null, function() {
 		lds.catalog.updateCatalog();
 	}
 	lds.dm.koModel.downloadAll = function() {
-		
+		//TODO Disable the gui
+		lds.catalog.downloadFolder(0, function() {
+			//TODO reenable the gui
+		});
 	};
+	lds.dm.koModel.downloadVisible = function() {
+		var visible = $('#main-database-catalog input[type=checkbox]').filter(function() {
+			return !this.disabled;
+		});;
+		for (var i = 0; i < visible.length; ++i) {
+			setTimeout((function(i) {
+				return function() {
+					$(visible[i]).trigger('click');
+				}
+			})(i), i * 100);
+		}
+	}
 	ko.applyBindings(lds.dm.koModel);
 	lds.dm.startListening();
 	loadCatalog();
@@ -53,7 +68,7 @@ function createCatalogNode(e) {
 	for (var i in e.books) {
 		var b = e.books[i];
 		html.append('li');
-		html.input('checkbox').data(b);
+		html.input('checkbox').data(b).data('type', 'book');
 		if (typeof(b.nodes) == 'object')
 			html.attr('disabled', true).attr('checked', true);
 		else for (var i in lds.catalog.downloadQueue)
@@ -65,6 +80,10 @@ function createCatalogNode(e) {
 		var f = e.folders[i];
 		
 		html.append('li').attr('id', 'catalog-' + f.id).data('open', false);
+		//if (lds.dm.koModel.developer_mode() && false) { //Disabled temporarily
+		//	html.input('checkbox').data(f).data('type', 'folder'); 
+		//	html.closeTag();
+		//}
 		html.child('a').data('id', f.id).text(f.name);
 		html.append('ul').closeTag();
 	}
@@ -83,6 +102,10 @@ function createCatalogNode(e) {
 	});
 	parentNode.find('input').click(function(x) {
 		$(x.target).disable().indeterminate();
+		
+		if ($(x.target).data('type') == 'folder') {
+			lds.catalog.downloadFolder($(x.target).data('id'), x.target, onBookDownloaded);
+		}
 		
 		lds.catalog.downloadQueue.push({ 
 			url: $(x.target).data('url'), 
