@@ -21,8 +21,7 @@ a, a:visited {
 }
 
 body {
-	/* padding: 0; */
-	overflow: none;
+	margin: 0;
 }
 
 #breadcrumbs a
@@ -82,7 +81,7 @@ body {
   margin: 0;
 }
 
-#content li {
+#content li .button {
 	float: left;
 	margin: .1em;
 }
