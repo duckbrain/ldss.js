@@ -220,7 +220,7 @@ function presentFolder(data) {
 		if (!book.downloaded)
 			classes.push('not-downloaded');
 		html.child('li').class(classes);
-		html.a(book.downloaded ? lds.index.bookFile + '?' + book.gl_uri : '').data({bookid: book.id, downloadurl: book.url});
+		html.a(book.downloaded ? lds.index.bookFile + '?' + book.gl_uri : '').data({bookid: book.id, downloadurl: book.url}).class('button');
 		html.text(book.name);
 		//html.a(lds.index.ldsorg_gl_uri + book.gl_uri, { target: '__blank' }).text('');
 		html.close();
@@ -228,7 +228,7 @@ function presentFolder(data) {
 	for (var i in data.folders) {
 		var folder = data.folders[i];
 		html.child('li').class('folder');
-		html.a(lds.index.folderFile + '?' + folder.id).data({folderid:folder.id});
+		html.a(lds.index.folderFile + '?' + folder.id).data({folderid:folder.id}).class('button');
 		//html.child('i').class(['fa', 'fa-folder']).close();
 		html.text(folder.name);
 		html.close();
@@ -271,7 +271,7 @@ function presentBook(data) {
 		html.a(lds.index.nodeFile + "?" + node.gl_uri).data({
 			nodeid: node.id,
 			bookid: node.bookid
-		});
+		}).class('button');
 		html.text(node.title);
 	}
 	$('#content').html(html.getHTML());
@@ -297,7 +297,7 @@ function presentNode(data) {
 			html.a(lds.index.nodeFile + "?" + node.gl_uri).data({
 				nodeid: node.id,
 				bookid: node.bookid
-			});
+			}).class('button');
 			html.text(node.title).close();
 		}
 		$('#content').html(html.getHTML());

@@ -148,9 +148,14 @@ lds.HTMLBuilder = function() {
 	
 	// Sets class of open head, if passed an array, will properly append them
 	this.class = function(classList) {
-		if (typeof(classList) == 'object' && 'join' in classList)
-			classList = classList.join(' ');
-		return this.attr('class', classList);
+		var lists = [];
+		for (var i = 0; i < arguments.length; ++i) {
+			var arg = arguments[i];
+			if (typeof(arg) == 'object' && 'join' in arg)
+				arg = arg.join(' ');
+			lists.push(arg);
+		}
+		return this.attr('class', lists.join(' '));
 	}
 	
 	// Sets one or more data- attributes of open head. Can be passed 

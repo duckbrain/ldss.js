@@ -25,6 +25,9 @@ lds.LDSDB = function() {
 				parent: { nodes: ["parent", "bookid"], books: "bookid" }
 			}
 		};
+	this.private = {
+		
+	};
 	
 	// Should be set to one of the request functions in the class when open called
 	this.onopen = function() {};
