@@ -1,8 +1,9 @@
 lds.dm.chromeStorage = false;
 lds.dm.load(null, function() {
-	console.log(lds.dm.koModel.language_current())
-	if (!lds.dm.koModel.languages())
+	if (!lds.dm.koModel.languages() || !lds.dm.koModel.languages().length) {
 		lds.catalog.updateLanguages();
+	}
+
 	
 	$('#main-database-loading').hide();
 	lds.dm.koModel.refreshCatalog = function() {

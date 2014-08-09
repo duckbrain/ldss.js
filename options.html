@@ -52,9 +52,17 @@
 			
 			<div id="main-general">
 				<h2>Main Settings</h2>
-				<div data-bind="visible: developer_mode">
-					<input type=checkbox data-bind="checked: developer_mode" />
-					<label>Developer Mode</label>
+				<p>
+					You can probably tell there is not a lot here. This is a release of some updates that I started before my mission, and have put many more hours into since then. I don't think I will be finishing it. Please check out the <a href="#contribute-intro">Contribute</a> section to learn more about what is going on with development.
+				</p>
+				<p>
+					To start using the app, you will need to <a href="#main-database">populate your database</a>. This does require an internet connection.
+				</p>
+				<div>
+					<label>
+						<input type=checkbox data-bind="checked: developer_mode" />
+						Developer/Advanced Mode
+					</label>
 				</div>
 			</div>
 			
@@ -62,6 +70,7 @@
 			<div id="main-keyboard">
 				<h2>Keyboard Shortcuts</h2>
 				<p>This is where you will be able to edit the keyboard shortcuts in the app. For now, this is only to show what they currently are.</p>
+				<p>These are not all implemnted yet.</p>
 				<p>
 					<input id="toggleKeyboardShortcuts" type=checkbox data-bind="checked: keyboard_shortcuts_enabled" />
 					<label for="toggleKeyboardShortcuts">Enable all keyboard shortcuts</label>
@@ -81,9 +90,12 @@
 			
 			<div id="main-database">
 				<h2>Catalog</h2>
+				<p>
+					Select a language from the dropdown and click "Refresh Catalog" to begin. Then expand folders and check the boxes to download books you will want access to. Sorry, I don't currently have a way to let you have several languages at once.
+				</p>
 				<select data-bind="options: languages, optionsText: function(l) {
 						return l.name + ((l.name != l.eng_name && l.eng_name != 'ASL') ? ' - ' + l.eng_name : '');
-					}, value: language_current, optionsValue: 'id'"></select>
+					}, selectedOptions: language_current, optionsValue: 'id'"></select>
 				<button data-bind="click: refreshCatalog"><i class="fa fa-refresh" style="color:green"></i> Refresh Catalog</button>
 				<div>
 					<button data-bind="visible: developer_mode, click: downloadAll">Download All</button>
@@ -186,15 +198,16 @@
 			<div id="contribute-intro">
 				<h2>Contribute</h2>
 				<p>My life has gotten rather busy and I have not been able to devote as much time to the app. If you would like to see development continue on the app, there are a few things you may be able to do to help.</p>
+				<p>When I started this project it was because I had a Cr-48, and found myself offline a lot. I wanted to be able to read my scriptures on it. Since then, I have left on and come back from a mission and I have a smart phone with the Church's scripture app. It has been some time, but I decided to continue work on it, but I have other priorities I need to devote my time to. Please don't expect further updates from me.</p>
 				<ul>
-					<li>If you are a developer, I would be more than willing to let you join in on the development. I would help get you into the code. I may consider uploading the code to some open source hosting site, such as github. Shoot me an email and we can talk about it.</li>
-					<li>If you are not strong with JavaScript, but want to make CSS themes, I have not finalized the HTML layouts yet, but even if you don't get deep into the code, we can find something for you to do.</li>
-					<li>I do have some longer term goals that anyone can contribute to, but they are not quite ready yet. They may not come around ever.</li>
-					<li>When you find problems let me know. Use the bug report form in here.</li>
+					<li><strong>If you are a developer who is comfortable with JavaScript, I am looking for someone to take over the project.</strong> PS: I did try cleaning up the database access code, but Promises don't play well with IndexedDB. I can give you the Git repository.</li>
+					<li><s>If you are not strong with JavaScript, but want to make CSS themes, I have not finalized the HTML layouts yet, but even if you don't get deep into the code, we can find something for you to do.</s></li>
+					<li><s>I do have some longer term goals that anyone can contribute to, but they are not quite ready yet.</s> They may not come around ever.</li>
+					<li><s>When you find problems let me know. Use the bug report form in here.</s></li>
 				</ul>
 				<p>You may notice that this app is free, has no ads, and does not ask for donations. I make absolutely nothing off of the hours I have put into this app. It is a good learning experience and I enjoy it, but please understand that my time is very limited and that is not likely to change any time soon. I am no longer using a Chromebook either, so that further reduces my desire to work on the app, but please feel free to contact me about it. I may not be able to help, but just ask.</p>
 				<ul>
-					<li><a href="mailto:duckbrain30@gmail.com">Jonathan Duck</a></li>
+					<li><a href="mailto:duckbrain30@gmail.com">Jonathan Duck</a> - Aug 2014</li>
 				</ul>
 			</div>
 			
