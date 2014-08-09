@@ -71,8 +71,4 @@ lds.DB.prototype = {
 }
 	
 // Some cross-browser checking for future ports
-window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB;
-if ('webkitIndexedDB' in window) {
-	window.IDBTransaction = window.webkitIDBTransaction;
-	window.IDBKeyRange = window.webkitIDBKeyRange;
-}
+window.indexedDB = window.indexedDB || window.mozIndexedDB;

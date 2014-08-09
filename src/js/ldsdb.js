@@ -2,7 +2,7 @@
 
 lds.LDSDB = function() {
 	this.dbName = 'lds_catalog';
-	this.dbVersion = 16;
+	this.dbVersion = 18;
 	this.objectStores = {
 			books: {
 				keyPath: 'id',
