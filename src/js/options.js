@@ -1,6 +1,8 @@
 lds.dm.chromeStorage = false;
 lds.dm.load(null, function() {
-	lds.catalog.updateLanguages();
+	console.log(lds.dm.koModel.language_current())
+	if (!lds.dm.koModel.languages())
+		lds.catalog.updateLanguages();
 	
 	$('#main-database-loading').hide();
 	lds.dm.koModel.refreshCatalog = function() {
@@ -59,6 +61,7 @@ function createCatalogNode(e) {
 	}
 	
 	var parentNode = $('#catalog-' + e.id + ' ul');
+	$('#catalog-' + e.id + ">i.fa").removeClass('fa-folder').addClass('fa-folder-open')
 	if (!parentNode.length) parentNode = $('#main-database-catalog ul');
 	
 	$('#catalog-' + e.id).data('open', "true");
@@ -68,7 +71,8 @@ function createCatalogNode(e) {
 	for (var i in e.books) {
 		var b = e.books[i];
 		html.append('li');
-		html.input('checkbox').data(b).data('type', 'book');
+		html.fa('book', 'li')
+		html.input('checkbox').data(b).data('type', 'book').attr('title', 'Download book');
 		if (typeof(b.nodes) == 'object')
 			html.attr('disabled', true).attr('checked', true);
 		else for (var i in lds.catalog.downloadQueue)
@@ -80,17 +84,19 @@ function createCatalogNode(e) {
 		var f = e.folders[i];
 		
 		html.append('li').attr('id', 'catalog-' + f.id).data('open', false);
+		html.fa('folder', 'li');
 		//if (lds.dm.koModel.developer_mode() && false) { //Disabled temporarily
 		//	html.input('checkbox').data(f).data('type', 'folder'); 
 		//	html.closeTag();
 		//}
 		html.child('a').data('id', f.id).text(f.name);
-		html.append('ul').closeTag();
+		html.append('ul').class('fa-ul').closeTag();
 	}
 	parentNode.html(html.getHTML()).find('a').click(function(x) {
 		var t = $(x.target);
 		if (t.parent().data('open') == 'true') {
-			t.parent().find('ul').html('');
+			t.parent().find('ul').html('')
+			t.parent().find('i.fa').removeClass('fa-folder-open').addClass('fa-folder');
 			t.parent().data('open', false);
 		} else {
 			lds.db.getID = parseInt(t.data('id'));

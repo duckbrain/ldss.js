@@ -147,7 +147,7 @@ lds.HTMLBuilder = function() {
 	}
 	
 	// Sets class of open head, if passed an array, will properly append them
-	this.class = function(classList) {
+	this.class = function() {
 		var lists = [];
 		for (var i = 0; i < arguments.length; ++i) {
 			var arg = arguments[i];
@@ -170,4 +170,18 @@ lds.HTMLBuilder = function() {
 		} else
 			return this.attr('data-' + name, data);
 	};
+
+	//
+	// Font Awesome
+	//
+	this.fa = function(icon) {
+		var lists = [];
+		for (var i = 0; i < arguments.length; ++i) {
+			var arg = arguments[i];
+			if (typeof(arg) == 'object' && 'join' in arg)
+				arg = arg.join(' ');
+			lists.push('fa-' + arg);
+		}
+		return this.child('i').class('fa ' + lists.join(' ')).close();
+	}
 }

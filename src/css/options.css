@@ -12,7 +12,7 @@
  * - panels - a div containing other divs that are the panels that are
  * 		selected by the li under the selector
  */
-* { -webkit-transition: all .2s linear; }
+* { /* -webkit-transition: all .2s linear; */ }
  
 body
 {
@@ -175,4 +175,9 @@ iframe
 	width:100%;
 	height: 450px;
 	background: white;
+}
+
+#main-database a {
+	/* color:blue; */
+	cursor: pointer;
 }

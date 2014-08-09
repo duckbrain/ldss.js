@@ -179,6 +179,10 @@ a.button-primary,a.button-selected,aa.button-primary,aa.button-selected{backgrou
 	color: gray;
 }
 
+#content {
+	margin: 1em 1em;
+}
+
 .showmenu #content {
 	/* margin-top: 30px; */
 	height: calc(100% - 30px);

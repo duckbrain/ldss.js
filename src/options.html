@@ -6,7 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="css/options.css">
 		<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
 		<meta name = "viewport" content = "user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
-+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
 	</head>
 	<body><div id="layout" class="pure-g-r">
 		<a href="#menu" id="menuLink" class="pure-menu-link"><span></span></a>
@@ -90,7 +90,7 @@
 					<button data-bind="click: downloadVisible">Download Visible</button>
 				</div>
 				<div id=main-database-catalog>
-					<ul></ul>
+					<ul class="fa-ul"></ul>
 				</div>
 				<div id=main-database-loading>
 					<i class="fa fa-spinner fa-spin"></i> Loading...
@@ -123,7 +123,7 @@
 				<div>
 					<input type=checkbox data-bind="checked: font_size_enable" />
 					<label>Font Size:</label>
-					<input type=range data-bind="value: font_size, double_click" min=-1 max=1 step=any />
+					<input type=range data-bind="value: font_size" min=-1 max=1 step=any />
 					<span data-bind="text: Math.round(120 * Math.pow(10, font_size())) / 10"></span>
 				</div>
 				<div>
@@ -203,12 +203,12 @@
 				<p>Hey everyone, I know it's been a while since an update, and this is a huge change. I completely rewrote the code because Chrome made changes so the old code would not work right away. You will now have access to a lot more content, but it will be a little harder to do.</p>
 				<p>If you are just looking to get back to using the scriptures, click Catalog and make sure it is on the language you want, and Reload the Catalog. Click on folders to expand to the books. Check the ones you want and they will download. <span class="important">Do not close the tab while downloads are going. I do not have the system fully stable yet.</span><p>
 				<p>I know of a few things that are likely to cause stability issues. So to avoid issues, please take note of the following.</p>
-+				<ul>
-+					<li>Refreshing the catalog erases all content.</li>
-+					<li>I added a Download Visible to help with downloading large volumes of books, but it is far from stable. Do not use for large numbers of books.</li>
-+					<li>Do not open other tabs of the app, or click on anything in the settings while downloads are going on.</li>
-+					<li>There are experimental features that are hidden. To enable them click or type <a href="#" data-bind="click: developerOn">developerOn()</a> in the console window Ctrl+Shift+J or Cmd+Shift+J.</li>
-+				</ul>
+				<ul>
+					<li>Refreshing the catalog erases all content.</li>
+					<li>I added a Download Visible to help with downloading large volumes of books, but it is far from stable. Do not use for large numbers of books.</li>
+					<li>Do not open other tabs of the app, or click on anything in the settings while downloads are going on.</li>
+					<li>There are experimental features that are hidden. To enable them click or type <a href="#" data-bind="click: developerOn">developerOn()</a> in the console window Ctrl+Shift+J or Cmd+Shift+J.</li>
+				</ul>
 				<p>I realize that there wil probably be some issues with this release, so please email me with any problems you have.</p>
 				<ul>
 					<li><a href="mailto:duckbrain30@gmail.com">Jonathan Duck</a></li>
@@ -222,10 +222,10 @@
 				that we took from and any resources we are using.-->
 				<h2>About: Version - 3.0 dev</h2>
 				<h3>Disclaimer</h3>
-+				<p>This Application was not developed by or in association with The Church of Jesus Christ of Latter-day Saints or any affiliate of the Church of Jesus Christ of Latter-day Saints. Accordingly, The Church of Jesus Christ of Latter-day Saints and its affiliates are not responsible for the content or the functioning of this Application. Rather, the developer of this Application is solely responsible for its content and functioning. Further, you should understand that this Application is neither owned by nor endorsed by The Church of Jesus Christ of Latter-day Saints. However, any trademarks or service marks associated with The Church of Jesus Christ of Latter-day Saints that may be displayed in this Application are owned by Intellectual Reserve, Inc. or other entity affiliated with The Church of Jesus Christ of Latter-day Saints.</p>
-+				<h3>Code Base</h3>
+				<p>This Application was not developed by or in association with The Church of Jesus Christ of Latter-day Saints or any affiliate of the Church of Jesus Christ of Latter-day Saints. Accordingly, The Church of Jesus Christ of Latter-day Saints and its affiliates are not responsible for the content or the functioning of this Application. Rather, the developer of this Application is solely responsible for its content and functioning. Further, you should understand that this Application is neither owned by nor endorsed by The Church of Jesus Christ of Latter-day Saints. However, any trademarks or service marks associated with The Church of Jesus Christ of Latter-day Saints that may be displayed in this Application are owned by Intellectual Reserve, Inc. or other entity affiliated with The Church of Jesus Christ of Latter-day Saints.</p>
+				<h3>Code Base</h3>
 				<p>
-					<a>Developer</a>
+					<a href="http://duck-producktions.blogspot.com/">Developer</a>
 					<span>Jonathan Duck</span>
 				</p>
 				<p>
