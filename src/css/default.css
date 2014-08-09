@@ -29,6 +29,17 @@ body {
     margin-right: 10px;
 }
 
+#menu {
+	position: fixed;
+	top:0;
+	left:0;
+	right:0;
+}
+
+#content {
+	margin: 3em 1em;
+}
+
 #menu ul
 {
 	margin: 0;
@@ -177,10 +188,6 @@ a.button-primary,a.button-selected,aa.button-primary,aa.button-selected{backgrou
 
 #content li.book.not-downloaded a {
 	color: gray;
-}
-
-#content {
-	margin: 1em 1em;
 }
 
 .showmenu #content {

@@ -42,7 +42,9 @@ body, div, iframe {
 	left: 0;
 	width: 250px;
 	overflow: auto;
- }
+ 
+	/* display: block; */
+}
 .selector ul
 {
 	list-style: none;/*url('../img/icon_16.png');*/

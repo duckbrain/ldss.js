@@ -21,22 +21,6 @@ window.onpopstate = function() {
 			if (q.lastIndexOf('/') === q.length - 1)
 				q = q.substring(0, q.length - 1);
 			popstate = {};
-			
-			if (q.indexOf('/search') === 0) {
-				if (q.indexOf('/search=') === 0) {
-					q = decodeURI(q.substring(8));
-					$('#content').html("You searched \"" + q + "\"");
-					lds.db.query = q;
-					lds.db.onrequestcomplete = function(e) {
-						presentSearch(q, e);
-					};
-					lds.db.search();
-				} else {
-					//TODO: Display search box page
-					$('#content').html("You need a search");
-				}
-				return;
-			}
 			// Check for verse id
 			var hashIndex = q.indexOf('#');
 			if (hashIndex != -1) {
@@ -107,7 +91,13 @@ window.onpopstate = function() {
 		} else {
 			// Search
 			// TODO: Implement Searching
-			$('#content').html('You searched for: ' + decodeURI(q));
+			q = decodeURI(q);
+			$('#content').html('You searched for: ' + q);
+			lds.db.query = q;
+			lds.db.onrequestcomplete = function(e) {
+				presentSearch(q, e);
+			};
+			lds.db.search();
 			return;
 		}
 	}
