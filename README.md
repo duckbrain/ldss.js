@@ -1,4 +1,4 @@
-lds-scriptures
+LDS Scriptures
 ==============
 
 A Chrome Extension that allows you to download and view scripture content from lds.org
