@@ -202,7 +202,7 @@ lds.LDSDB = function() {
 						parents[i].totalBooks++;
 						
 					}
-				}
+				};
 			}
 		}
 		
@@ -722,7 +722,7 @@ lds.LDSDB = function() {
 				v.power = power;
 				if (power > 0)
 					results.push(v)
-				cursor.continue();	
+				cursor['continue']();	
 			} else {
 				results.sort(function(a, b) {
 					//Sort by power inverted, id, then bookid
@@ -730,7 +730,7 @@ lds.LDSDB = function() {
 				});
 				onrequestcomplete(results);
 			}
-		}
+		};
 	}
 };
 

@@ -71,10 +71,10 @@ window.lds.DataModel = function(model) {
 	// data in the localStorage or chrome.storage
 	self.reset = function(field) {
 		if (field)
-			self.set(field, self.model[field].default);
+			self.set(field, self.model[field].defaultValue);
 		else {
 			for (var field in self.model)
-				self.set(field, self.model[field].default);
+				self.set(field, self.model[field].defaultValue);
 		}
 	};
 	
@@ -133,7 +133,7 @@ window.lds.DataModel = function(model) {
 				var dateParse = Date.parse(v);
 				if (!isNaN(dateParse))
 					v = new Date(dateParse);
-				else if (typeof (f.default) != 'string')
+				else if (typeof (f.defaultValue) != 'string')
 					v = JSON.parse(v);
 				if (v != null)
 					self.set(field, v);
