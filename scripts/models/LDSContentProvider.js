@@ -1,5 +1,10 @@
-function LDSContentProvider() {
+if (typeof require == 'function') {
+    require('./Downloader.js');
+}
 
+function LDSContentProvider() {
+    var downloader = new Downloader();
+    this.download = downloader.download;
 }
 
 LDSContentProvider.prototype = {
@@ -8,7 +13,7 @@ LDSContentProvider.prototype = {
         data.action = action;
         data.format = 'json';
 
-        return $.ajax({
+        return this.download({
             url: 'http://tech.lds.org/glweb',
             data: data
         });
@@ -23,4 +28,8 @@ LDSContentProvider.prototype = {
             platformid: 1
         });
     }
+}
+
+if (typeof module != 'undefined') {
+    module.exports = LDSContentProvider;
 }

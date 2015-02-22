@@ -36,3 +36,7 @@ BookModel.prototype = {
         return this.database.server.books.get([languageId, id]);
     }
 }
+
+if (typeof module != 'undefined') {
+    module.exports = BookModel;
+}

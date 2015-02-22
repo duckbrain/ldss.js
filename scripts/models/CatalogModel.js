@@ -1,3 +1,7 @@
+if (typeof require == 'function') {
+    var FolderModel = require('./FolderModel.js');
+}
+
 /**
  * Creates a instance of a catalog model that for a given language
  * 
@@ -54,8 +58,8 @@ CatalogModel.prototype = {
             name: c.name,
             changedDate: c.date_changed,
             displayOrder: c.display_order,
-            books: FolderModel.dataToIdArray(catalog.catalog.books),
-            folders: FolderModel.dataToIdArray(catalog.catalog.folders),
+            books: this.database.helpers.dataToIdArray(catalog.catalog.books),
+            folders: this.database.helpers.dataToIdArray(catalog.catalog.folders),
         }), that.database.folder.addChildren(catalog.catalog) ];
 
         return Promise.all(transactions).then(function() {
@@ -68,4 +72,7 @@ CatalogModel.prototype = {
     }
 };
 
-// module.exports = CatalogModel;
+
+if (typeof module != 'undefined') {
+    module.exports = BookModel;
+}

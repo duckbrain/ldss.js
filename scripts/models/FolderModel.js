@@ -2,14 +2,6 @@ function FolderModel(database) {
     this.database = database;
 }
 
-FolderModel.dataToIdArray = function dataToIdArray(array) {
-    var newArray = [ ];
-    for (var i = 0; i < array.length; i++) {
-        newArray.push(array[i].id);
-    }
-    return newArray;
-};
-
 FolderModel.prototype = {
     addChildren: function addChildren(ldsFolder) {
         var i, t = [ ];
@@ -37,9 +29,13 @@ FolderModel.prototype = {
             parentId: f.parentId, // undefined if catalog
             name: f.name,
             displayOrder: f.display_order,
-            books: FolderModel.dataToIdArray(f.books),
-            folders: FolderModel.dataToIdArray(f.folders),
+            books: this.database.helpers.dataToIdArray(f.books),
+            folders: this.database.helpers.dataToIdArray(f.folders),
         });
         return Promise.all([ transaction, this.addChildren(folder) ]);
     }
+}
+
+if (typeof module != 'undefined') {
+    module.exports = FolderModel;
 }

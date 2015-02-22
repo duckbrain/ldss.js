@@ -5,7 +5,8 @@
 
 window.require = function require(path) {
     for(var name in window) {
-        if (path.indexOf(name + '.js') == path.length - name.length - 3) {
+        var index = path.indexOf(name + '.js');
+        if (index > -1 && index == path.length - name.length - 3) {
             return window[name];
         }
     }

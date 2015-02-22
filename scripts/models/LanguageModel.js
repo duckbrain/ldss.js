@@ -53,8 +53,10 @@ LanguageModel.prototype = {
      */
     getByCode: function getByCode(code) {
         return this.database.server.languages.query('code').only(code)
-                .execute().then(DatabaseModel.databaseHelpers.listToSingle);
+                .execute().then(this.database.helpers.listToSingle);
     }
 };
 
-// module.exports = LanguageModel;
+if (typeof module != 'undefined') {
+    module.exports = LanguageModel;
+}

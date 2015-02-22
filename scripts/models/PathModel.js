@@ -15,3 +15,7 @@ PathModel.prototype = {
         return Promise.reject("Not implemented");
     }
 }
+
+if (typeof module != 'undefined') {
+    module.exports = PathModel;
+}
