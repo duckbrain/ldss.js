@@ -2,16 +2,18 @@ function Downloader() {
 
     // If Node.js, include jQuery with AJAX support
     if (typeof require == 'function') {
-        var $ = require('jquery');
+        var jQuery = require('jquery');
         var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
-        $.support.cors = true;
-        $.ajaxSettings.xhr = function() {
+        jQuery.support.cors = true;
+        jQuery.ajaxSettings.xhr = function() {
             return new XMLHttpRequest();
         };
     }
 
-    this.download = $.ajax;
+    this.download = function(params) {
+        return jQuery.ajax(params);
+    }
 }
 
 if (typeof module != 'undefined') {

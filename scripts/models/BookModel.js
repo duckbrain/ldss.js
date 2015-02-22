@@ -23,7 +23,7 @@ BookModel.prototype = {
             modifiedDate: b.datemodified,
             size: b.size,
             sizeIndex: b.size_index,
-            mediaAvailable: b.media_available && true
+            mediaAvailable: !!b.media_available
         // 0 or 1
         });
     },

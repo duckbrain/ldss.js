@@ -10,9 +10,10 @@ function ChromeMessageProvider() {
 		var handler = handlers[request.title];
 		if (handler) {
 			for (i = 0; i < handler.length; i++) {
-				handler[i](request.message, sendResponse);
+				handler[i](request.message, sender, sendResponse);
 			}
 		}
+		return true;
 	}
 
 	this.listen = function listen(callback) {

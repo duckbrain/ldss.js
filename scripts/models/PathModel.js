@@ -5,7 +5,7 @@ function PathModel(database) {
 PathModel.prototype = {
     exists: function exists(path) {
         return this.get(path).then(function onSuccess(pathObj) {
-            return pathObj && true;
+            return !!pathObj;
         }, function onError(){
             return false;
         })
@@ -13,6 +13,11 @@ PathModel.prototype = {
     
     get: function get(path) {
         return Promise.reject("Not implemented");
+        
+        var db = this.database;
+        return new Promise(function (fulfill, reject) {
+            //TODO Query each table and look for the path
+        })
     }
 }
 
