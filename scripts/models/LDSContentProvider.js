@@ -21,6 +21,6 @@ LDSContentProvider.prototype = {
         return this.getAction('catalog.query', {
             languageid: languageId,
             platformid: 1
-        })
+        });
     }
 }

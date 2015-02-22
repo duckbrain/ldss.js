@@ -2,7 +2,7 @@ function DatabaseModel() {
     this.server = null;
     this.connection = {
         server: 'duck.jonathan.lds-scriptures',
-        version: 4,
+        version: 5,
         schema: {
             languages: {
                 key: {
@@ -63,6 +63,13 @@ function DatabaseModel() {
             }
         }
     };
+
+    this.setting = new SettingsModel(this);
+    this.language = new LanguageModel(this);
+    this.catalog = new CatalogModel(this);
+    this.book = new BookModel(this);
+    this.folder = new FolderModel(this);
+    this.path = new PathModel(this);
     this.contentProvider = new LDSContentProvider();
 }
 
@@ -79,3 +86,12 @@ DatabaseModel.prototype = {
         this.server = null;
     }
 };
+
+DatabaseModel.databaseHelpers = {
+        existsSingle: function existsSingle(promiseAttempt) {
+            //TODO: Return a promise that returns true or false
+        },
+        listToSingle: function listToSingle(list) {
+            return list[0];
+        }
+}
