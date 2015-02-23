@@ -9,11 +9,11 @@ if (typeof require == 'function') {
     var db = require('../dependencies/db.js');
 }
 
-function DatabaseModel() {
+function DatabaseModel(contentProvider) {
     this.server = null;
     this.connection = {
         server: 'duck.jonathan.lds-scriptures',
-        version: 5,
+        version: 7,
         schema: {
             languages: {
                 key: {
@@ -42,6 +42,24 @@ function DatabaseModel() {
             catalogs: {
                 key: {
                     keyPath: 'languageId'
+                }
+            },
+            nodes: {
+                key: {
+                    keyPath: [ 'languageId', 'bookId', 'id' ]
+                },
+                indexes: {
+                    languageId: {},
+                    id: {},
+                    uniquePath: {
+                        key: [ 'languageId', 'path' ],
+                        unique: true
+                    },
+                    unique: {
+                        key: [ 'languageId', 'bookId', 'id' ],
+                        unique: true
+                    },
+                    path: {}
                 }
             },
             books: {
@@ -75,13 +93,7 @@ function DatabaseModel() {
         }
     };
 
-    this.setting = new SettingsModel(this);
-    this.language = new LanguageModel(this);
-    this.catalog = new CatalogModel(this);
-    this.book = new BookModel(this);
-    this.folder = new FolderModel(this);
-    this.path = new PathModel(this);
-    this.contentProvider = new LDSContentProvider();
+    this.contentProvider = contentProvider;
     this.helpers = DatabaseModel.helpers;
 }
 

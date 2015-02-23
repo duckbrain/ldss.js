@@ -5,7 +5,7 @@ function BookModel(database) {
 BookModel.prototype = {
     add: function add(ldsBook) {
         var b = ldsBook;
-        return that.database.server.books.update({
+        return this.database.server.books.update({
             id: b.id,
             languageId: b.languageId,
             cbId: b.cb_id,
@@ -29,7 +29,22 @@ BookModel.prototype = {
     },
     
     download: function download(languageId, id) {
-        
+        var database = this.database;
+        return this.get(languageId, id).then(function (book) {
+            if (!book) {
+                throw "Book does not exists";
+            }
+            return database.contentProvider.getBook(book.url);
+        }).then(function (db) {
+            var metadata = db.exec('SELECT version FROM bookmeta')[0];
+            //TODO: Update the book's version and other info if needed
+            var nodes = db.exec('SELECT * FROM nodes');
+            db.close();
+            delete db;
+            nodes.languageId = languageId;
+            nodes.bookId = id;
+            return database.node.addList(nodes);
+        });
     },
     
     get: function get(languageId, id) {

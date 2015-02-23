@@ -1,13 +1,18 @@
 if (typeof require == 'function') {
-    require('./Downloader.js');
+    var Downloader = require('./Downloader.js');
+    var pako = require('./../dependencies/pako.js');
+    var SQL = require('./../dependencies/sql.js');
 }
 
-function LDSContentProvider() {
-    var downloader = new Downloader();
-    this.download = downloader.download;
+function LDSContentProvider(downloader) {
+    this.downloader = downloader;
 }
 
 LDSContentProvider.prototype = {
+    download: function download(params) {
+        return this.downloader.download(params);
+    },
+    
     getAction: function(action, data) {
         data = data || {};
         data.action = action;
@@ -27,8 +32,14 @@ LDSContentProvider.prototype = {
             languageid: languageId,
             platformid: 1
         });
+    },
+    
+    getBook: function getBook(url) {
+        return this.downloader.downloadBinary(url).then(pako.inflate).then(function(sqlite3blob) {
+            return new SQL.Database(sqlite3blob);
+        });
     }
-}
+};
 
 if (typeof module != 'undefined') {
     module.exports = LDSContentProvider;

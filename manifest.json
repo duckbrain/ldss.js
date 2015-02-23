@@ -2,7 +2,7 @@
 	"name": "__MSG_app_title__ DEV",
 	"description": "__MSG_app_description__",
 	"options_ui": {
-		"page": "options.html",
+		"page": "scripts/google-chrome/options.html",
 		"chrome_style": true
 	},
 	"version": "3.0.0",
@@ -14,7 +14,10 @@
 	"background": {
 		"scripts": [
 			"scripts/dependencies/db.js",
+			"scripts/dependencies/pako.js",
+			"scripts/dependencies/sql.js",
 			"scripts/dependencies/jquery.js",
+			"scripts/models/BrowserDownloader.js",
 			"scripts/google-chrome/ChromeMessageProvider.js",
 			"scripts/models/LDSContentProvider.js",
 			"scripts/models/DatabaseModel.js",
@@ -23,7 +26,7 @@
 			"scripts/models/LanguageModel.js",
 			"scripts/models/FolderModel.js",
 			"scripts/models/BookModel.js",
-			"scripts/models/Downloader.js",
+			"scripts/models/NodeModel.js",
 			"scripts/models/PathModel.js",
 			"scripts/google-chrome/background.js"
 		]
@@ -38,7 +41,11 @@
 	"content_scripts": [{
 		"matches": ["http://*.lds.org/*", "https://*.lds.org/*"],
 		"css": ["css/ldsorg.css"],
-		"js": ["scripts/google-chrome/content-script.js"]
+		"js": [ 
+			"scripts/google-chrome/ChromeMessageProvider.js",
+			"scripts/google-chrome/DatabaseQuery.js",
+		 	"scripts/google-chrome/content-script.js"
+	 	]
 	}],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';",
 	"web_accessible_resources": ["img/icon_16.png"],

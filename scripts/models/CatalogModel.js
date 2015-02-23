@@ -46,21 +46,21 @@ CatalogModel.prototype = {
                 throw "Unknown error from LDS servers";
             }
 
-            response.catalog.languageId = languageId;
+            response.catalog.languageId = id;
             return that.add(response.catalog);
         });
     },
 
-    add: function add(ldsCatalog) {
-        var c = ldsCatalog;
+    add: function add(glCatalog) {
+        var c = glCatalog;
         var transactions = [ this.database.server.catalogs.update({
             languageId: c.languageId,
             name: c.name,
             changedDate: c.date_changed,
             displayOrder: c.display_order,
-            books: this.database.helpers.dataToIdArray(catalog.catalog.books),
-            folders: this.database.helpers.dataToIdArray(catalog.catalog.folders),
-        }), that.database.folder.addChildren(catalog.catalog) ];
+            books: this.database.helpers.dataToIdArray(c.books),
+            folders: this.database.helpers.dataToIdArray(c.folders),
+        }), this.database.folder.addChildren(c) ];
 
         return Promise.all(transactions).then(function() {
             return c;

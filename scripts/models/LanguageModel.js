@@ -12,9 +12,9 @@ LanguageModel.prototype = {
     download: function() {
         var that = this;
 
-        return this.database.contentProvider.getCatalog().then(
+        return this.database.contentProvider.getLanguages().then(
                 function(response) {
-                    return that.addAll(response.languages);
+                    return that.addAll(response.languages).then();
                 });
     },
 
@@ -22,7 +22,7 @@ LanguageModel.prototype = {
         var transactions = [ ];
 
         for (var i = 0; i < languages.length; i++) {
-            transactions.push(this.database.server.languages.put(languages[i]));
+            transactions.push(this.database.server.languages.update(languages[i]));
         }
 
         return Promise.all(transactions);

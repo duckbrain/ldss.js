@@ -3,9 +3,9 @@ function FolderModel(database) {
 }
 
 FolderModel.prototype = {
-    addChildren: function addChildren(ldsFolder) {
+    addChildren: function addChildren(glFolder) {
         var i, t = [ ];
-        var f = ldsFolder;
+        var f = glFolder;
 
         for (i = 0; i < f.books.length; i++) {
             f.books[i].parentId = f.id;
@@ -21,8 +21,8 @@ FolderModel.prototype = {
         return Promise.all(t);
     },
 
-    add: function add(languageId, ldsFolder) {
-        var f = ldsFolder;
+    add: function add(glFolder) {
+        var f = glFolder;
         var transaction = this.database.server.folders.update({
             id: f.id,
             languageId: f.languageId,
@@ -32,7 +32,7 @@ FolderModel.prototype = {
             books: this.database.helpers.dataToIdArray(f.books),
             folders: this.database.helpers.dataToIdArray(f.folders),
         });
-        return Promise.all([ transaction, this.addChildren(folder) ]);
+        return Promise.all([ transaction, this.addChildren(f) ]);
     }
 }
 

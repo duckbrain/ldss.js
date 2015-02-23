@@ -10,17 +10,15 @@
 (function() {
     console.log("Jonathan Duck's LDS Scriptures Content-Script started...");
 
-    // TODO: Have the script query if the page exists before showing the link.
-
-    var href = chrome.extension.getURL("index.html") + "?" + location.pathname;
-    var image = chrome.extension.getURL("img/icon_16.png");
+    var database = new DatabaseQuery();
     var message = {
-            href: href,
+            href: chrome.extension.getURL("index.html") + "?" + location.pathname,
             path: location.pathname
     }
 
     function insertLink() {
-        var tools = document.getElementById('secondary')
+        var image = chrome.extension.getURL("img/icon_16.png");
+        var tools = document.getElementById('secondary');
         if (tools == null)
             return;
         tools = tools.getElementsByClassName('tools')[0];
@@ -31,30 +29,15 @@
         newLink.innerText = "LDS Scriptures";
         newLink.classList.add('gallery');
         newLink.classList.add('chrome-app-icon');
-        newLink.href = href;
+        newLink.href = message.href;
         newLink.onclick = function() {
-
-            chrome.runtime.sendMessage({
-                title: 'open',
-                message: message
-            }, {}, function (e) {
-                console.log(e);
-            });
-
+            database.path.open(message).then();
             return false;
         }
         newItem.appendChild(newLink);
         tools.appendChild(newItem);
     }
 
-    chrome.runtime.sendMessage({
-        title: 'path-exists',
-        message: message
-    }, {}, function(e) {
-        console.log(e.response)
-        if (e.response) {
-            insertLink();
-        }
-    })
+    database.path.exists(message).then(insertLink);
 
 })();
