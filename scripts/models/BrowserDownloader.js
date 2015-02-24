@@ -3,6 +3,8 @@ function BrowserDownloader() {
 
 BrowserDownloader.prototype = {
     download: function download(params) {
+        // TODO: Replace with source on MDN and remove jQuery dependency 
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
         return $.ajax(params);
     },
 

@@ -8,7 +8,6 @@ database.book = new BookModel(database);
 database.folder = new FolderModel(database);
 database.path = new PathModel(database);
 
-var db;
 
 function log(e) {
     console.log(e);
@@ -18,8 +17,8 @@ function log(e) {
 database.open().then();
 
 messageProvider.on('path-exists', function(e, sender) {
-    //return database.path.exists(e.message.path);
-    return true;
+    //return true;
+    return database.path.exists(e.message.path);
 })
 
 messageProvider.on('open', function(e, sender) {

@@ -16,78 +16,41 @@ function DatabaseModel(contentProvider) {
         version: 7,
         schema: {
             languages: {
-                key: {
-                    keyPath: 'id'
-                },
+                key: { keyPath: 'id' },
                 indexes: {
-                    id: {
-                        unique: true
-                    },
-                    code: {
-                        unique: true
-                    }
+                    id: { unique: true },
+                    code: { unique: true }
                 }
             },
             settings: {
-                key: {
-                    keyPath: 'id'
-                },
-                indexes: {
-                    'id': {}
-                }
+                key: { keyPath: 'id' },
+                indexes: { 'id': {} }
             },
             /**
              * Represents the root catalog for any given language
              */
             catalogs: {
-                key: {
-                    keyPath: 'languageId'
-                }
+                key: { keyPath: 'languageId' }
             },
             nodes: {
-                key: {
-                    keyPath: [ 'languageId', 'bookId', 'id' ]
-                },
+                key: { keyPath: [ 'languageId', 'bookId', 'id' ] },
                 indexes: {
-                    languageId: {},
-                    id: {},
-                    uniquePath: {
-                        key: [ 'languageId', 'path' ],
-                        unique: true
-                    },
-                    unique: {
-                        key: [ 'languageId', 'bookId', 'id' ],
-                        unique: true
-                    },
-                    path: {}
+                    children: { key: [ 'languageId', 'bookId', 'parentId' ] },
+                    path: { key: [ 'languageId', 'path' ], unique: true }
                 }
             },
             books: {
-                key: {
-                    keyPath: [ 'languageId', 'id' ]
-                },
+                key: { keyPath: [ 'languageId', 'id' ] },
                 indexes: {
-                    languageId: {},
-                    id: {},
-                    unique: {
-                        key: [ 'languageId', 'id' ],
-                        unique: true
-                    },
-                    path: {}
+                    children: { key: [ 'languageId', 'parentFolderId' ] },
+                    path: { key: [ 'languageId', 'path' ], unique: true }
                 }
             },
             folders: {
-                key: {
-                    keyPath: [ 'languageId', 'id' ]
-                },
+                key: { keyPath: [ 'languageId', 'id' ] },
                 indexes: {
-                    languageId: {},
-                    id: {},
-                    unique: {
-                        key: [ 'languageId', 'id' ],
-                        unique: true
-                    },
-                    name: {}
+                    children: { key: [ 'languageId', 'parentId' ] },
+                    name: { key: [ 'languageId', 'name' ] }
                 }
             }
         }

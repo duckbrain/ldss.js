@@ -38,7 +38,7 @@ NodeModel.prototype = {
             parentId: n.parent_id,
             contentId: n.content_id,
             displayOrder: n.display_order,
-            title: n.title,
+            name: n.title,
             subtitle: n.subtitle,
             shortTitle: n.short_title,
             path: n.uri,
