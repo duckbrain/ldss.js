@@ -51,54 +51,173 @@ PathModel.prototype = {
                 .firstSuccess([ db.catalog.get(languageId).then(
                         this.getCatalogPathInfo),
                         db.folder.getByPath(languageId, path).then(
-                                this.getFolderPathInfo),
+                                this.getFolderDetails),
                         db.book.getByPath(languageId, path).then(
-                                this.getBookPathInfo),
+                                this.getBookDetails),
                         db.node.getByPath(languageId, path).then(
-                                this.getNodePathInfo) ]);
+                                this.getNodeDetails) ]);
     },
+    
+    getCatalogInfo: function (catalog) {
+		return {
+				item: catalog,
+                type: 'catalog',
+                id: catalog.id,
+                name: catalog.name
+		};
+	},
+	
+	getFolderInfo: function (folder) {
+		return {
+			item: folder,
+			type: 'folder',
+			id: folder.id,
+			languageId: folder.languageId,
+			parentId: folder.parentId,
+			name: folder.name
+		};
+	},
+	
+	getBookInfo: function (book) {
+		return {
+			item: book,
+			type: 'book',
+			id: book.id,
+			languageId: book.languageId,
+			parentId: book.parentFolderId,
+			name: book.name
+		}
+	},
+	
+	getNodeInfo: function (node) {
+		return {
+			item: node,
+			type: 'node',
+			id: node.id,
+			languageId: node.languageId,
+			bookId: node.bookId,
+			parentId: book.parentId,
+			name: book.name
+		}
+	},
+	
+	getDetails: function (info) {
+		var details = {
+			type: info.type,
+			id: info.type,
+			languageId: info.languageId,
+			bookId: info.bookId,
+			parentId: info.parentId,
+			name: info.name
+		};
+		return Promise.all([
+			this.getChildren(info),
+			this.fillHeiarchy([info])
+		]).then(function (data) {
+			details.children = data[0];
+			details.heiarchy = data[1];
+			details.parent = details.children[details.length - 2];
+			return Promise.all([ 
+				this.getPrevious(details.heiarchy, 1) 
+			]).then(function (data) {
+				details.previous = data[0];
+				//TODO: next
+				return details;
+			});
+		})
+	},
+	
+	getPrevious: function (heiarchy, level) {
+		if (heiarchy.length >= level) {
+			return null;
+		}
+		
+		return getChildren(heiarchy[heiarcy.length - level - 1]).then(function(siblings) {
+			var i;
+			for (i = 0; i < siblings; i++) {
+				if (siblings[i].id == heiarchy[level].id) {
+					break;
+				}
+			}
+			
+			if (i > 0) {
+				return siblings[i];
+			} else {
+				getPrevious(heiarchy, level + 1)
+			}
+		});
+	},
+    
+    fillHeiarchy: function (heiarchy) {
+		return this.getParentInfo(heiarchy[0]).then(function(parent) {
+			if (parent) {
+				heiarchy.insert(0, value);
+				return this.fillHeiarchy(heiarchy);
+			} else {
+				return heiarchy;
+			}
+		});
+	},
+	
+	getParentInfo: function(c) {
+		var db = this.database;
+		switch (c.type) {
+			case 'catalog':
+				return Promise.resolve(null);
+			case 'folder':
+			case 'book':
+				if (typeof c.parentId == "undefined") {
+					return db.catalog.get(c.languageId).then(this.getCatalogInfo);
+				} else {
+					return db.folder.get(c.languageId, c.id).then(this.getFolderInfo);
+				}
+			case 'node':
+				if (typeof c.parentId == "undefined") {
+					return db.book.get(c.languageId, c.bookId).then(this.getBookInfo);
+				} else {
+					return db.node.get(c.languageId, c.bookId, c.id).then(this.getNodeInfo);
+				}
+			default: throw "Unknown info type";
+		}
+	},
+	
+	getChildren: function (c) {
+		switch (c.type) {
+			case 'catalog':
+				return this.getFolderAndBookChildren(c.id, null);
+			case 'folder':
+				return this.getFolderAndBookChildren(c.languageId, c.id);
+			case 'book':
+				return this.getNodeChildren(c.languageId, c.id, null);
+			case 'node':
+				return this.getNodeChildren(c.languageId, c.bookId, c.id);
+			default: throw "Unknown info type";
+		}
+	},
 
-    getFolderAndBookChildren: function getFolderAndBookChildren(languageId,
-            parentId) {
+    getFolderAndBookChildren: function (languageId, parentId) {
         var db = this.database;
         return Promise.all(
                 [ db.folder.getChildren(languageId, parentId),
                         db.book.getChildren(languageId, parentId) ]).then(
                 function(children) {
-                    var folders = children[0];
-                    var books = children[1];
-
+					var folder, books, i;
+                    folders = children[0];
+                    books = children[1];
+					children = [];
+					for (i = 0; i < folders.length; i++) {
+						children.push(this.getFolderInfo(folders[i]));
+					}
+					for (i = 0; i < books.length; i++) {
+						children.push(this.getBookInfo(books[i]));
+					}
+					return children;
                 });
     },
-
-    getCatalogPathInfo: function getCatalogPathInfo(catalog) {
-        this.getFolderAndBookChildren(catalog.id, null).then(function (children) {
-            return {
-                item: catalog,
-                type: 'catalog',
-                children: children,
-                content: null,
-                refrences: null,
-                next: null,
-                previous: null,
-                parent: null,
-                heiarchy: []
-            }
-        })
-    },
-
-    getFolderPathInfo: function getFolderPathInfo(folder) {
-
-    },
-
-    getBookPathInfo: function getBookPathInfo(book) {
-
-    },
-
-    getNodePathInfo: function getNodePathInfo(node) {
-
-    }
-}
+    
+    getNodeChildren: function (languageId, bookId, parentId) {
+	}
+};
 
 if (typeof module != 'undefined') {
     module.exports = PathModel;

@@ -14,12 +14,16 @@ function log(e) {
     return e;
 }
 
-database.open().then();
+database.open().then(database.language.download);
 
 messageProvider.on('path-exists', function(e, sender) {
     //return true;
-    return database.path.exists(e.message.path);
-})
+    return database.path.exists(e.path);
+});
+
+messageProvider.on('path-get', function(e, sender) {
+	return database.path.get(e.languageId, e.path);
+});
 
 messageProvider.on('open', function(e, sender) {
     chrome.tabs.create({

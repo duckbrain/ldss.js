@@ -14,18 +14,15 @@ LanguageModel.prototype = {
 
         return this.database.contentProvider.getLanguages().then(
                 function(response) {
-                    return that.addAll(response.languages).then();
-                });
+					return response.languages;
+                }).then(this.addAll);
     },
 
     addAll: function addAll(languages) {
-        var transactions = [ ];
-
-        for (var i = 0; i < languages.length; i++) {
-            transactions.push(this.database.server.languages.update(languages[i]));
-        }
-
-        return Promise.all(transactions);
+        var server = this.database.server;
+        return Promise.all(languages.map(function(language) {
+			return server.languages.update(language);
+		}));
     },
 
     /**
