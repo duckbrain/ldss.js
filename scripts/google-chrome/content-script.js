@@ -11,12 +11,15 @@
     console.log("Jonathan Duck's LDS Scriptures Content-Script started...");
 
     var database = new DatabaseQuery();
-    var message = {
-            href: chrome.extension.getURL("index.html") + "?" + location.pathname,
-            path: location.pathname
-    }
-
-    function insertLink() {
+    var path = location.pathname;
+    var href = chrome.extension.getURL("index.html") + "?" + path;
+    var lang = null; //TODO: Get the lang from the get parameter
+    
+    function insertLink(allow) {
+        if (!allow) {
+            return;
+        }
+        
         var image = chrome.extension.getURL("img/icon_16.png");
         var tools = document.getElementById('secondary');
         if (tools == null)
@@ -29,15 +32,15 @@
         newLink.innerText = "LDS Scriptures";
         newLink.classList.add('gallery');
         newLink.classList.add('chrome-app-icon');
-        newLink.href = message.href;
+        newLink.href = href;
         newLink.onclick = function() {
-            database.path.open(message).then();
+            database.path.open(lang, href).then();
             return false;
         }
         newItem.appendChild(newLink);
         tools.appendChild(newItem);
     }
 
-    database.path.exists(message).then(insertLink);
+    database.path.exists(lang, path).then(insertLink);
 
 })();

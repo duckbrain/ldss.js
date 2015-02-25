@@ -55,13 +55,12 @@ function NodeModel(database) {
     }
 
     that.get = function get(languageId, bookId, id) {
-        return that.database.server.books.get([ languageId, bookId, id ]);
+        return that.database.server.nodes.get([ languageId, bookId, id ]);
     }
 
-    that.getByPath = function getByPath(languageId, bookId, path) {
-        return that.database.server.books.query('path')
+    that.getByPath = function getByPath(languageId, path) {
+        return that.database.server.nodes.query('path')
             .filter('languageId', languageId)
-            .filter('bookId', bookId)
             .filter('path', path).execute().then(that.database.helpers.single);
     }
 }

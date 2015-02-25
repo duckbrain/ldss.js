@@ -54,7 +54,7 @@ function SettingsModel(database, messageProvider) {
      */
     that.getDefaults = function getDefaults() {
         return Promise.resolve({
-            selectedLanguage: 1,
+            language: 1,
         });
     }
 

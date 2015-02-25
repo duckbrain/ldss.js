@@ -1,6 +1,7 @@
 var messageProvider = new ChromeMessageProvider();
 var database = new DatabaseModel(
         new LDSContentProvider(new BrowserDownloader()));
+var languageId;
 database.settings = new SettingsModel(database);
 database.language = new LanguageModel(database);
 database.catalog = new CatalogModel(database);
@@ -14,25 +15,23 @@ function log(e) {
     return e;
 }
 
-database.open().then(database.language.download()).then(log).then(
-        database.settings.getLanguage).then(log).then(database.catalog.exists).then(log).then(
-        function(exists) {
-            if (!exists)
-                return database.settings.getLanguage().then(database.catalog.download).then(log);
-        });
+database.open().then(database.settings.getLanguage).then(function(id) {
+    languageId = id;
+});
 
 messageProvider.on('path-exists', function(e, sender) {
-    // return true;
-    return database.path.exists(e.path);
+    e.languageId = e.languageId || languageId;
+    return database.path.exists(e.languageId, e.path);
 });
 
 messageProvider.on('path-get', function(e, sender) {
+    e.languageId = e.languageId || languageId;
     return database.path.get(e.languageId, e.path);
 });
 
 messageProvider.on('open', function(e, sender) {
     chrome.tabs.create({
-        url: e.href,
+        url: e.path,
         openerTabId: sender.tab.id
     });
 });

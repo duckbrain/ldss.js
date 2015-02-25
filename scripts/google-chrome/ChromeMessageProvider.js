@@ -48,6 +48,10 @@ function ChromeMessageProvider() {
                 title: title,
                 message: message
             }, function(e) {
+                if (!e) {
+                    reject('No response');
+                    return;
+                }
                 if (e.success) {
                     fulfill(e.response);
                 } else {

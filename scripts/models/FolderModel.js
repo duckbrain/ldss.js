@@ -31,7 +31,7 @@ function FolderModel(database) {
     }
 
     that.get = function get(languageId, id) {
-        return that.database.server.folder.get([ languageId, id ]);
+        return that.database.server.folders.get([ languageId, id ]);
     }
 
     that.getByName = function getByPath(languageId, name) {

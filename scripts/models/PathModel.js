@@ -3,8 +3,8 @@ function PathModel(database) {
 }
 
 PathModel.prototype = {
-    exists: function exists(path) {
-        return this.get(path).then(function onSuccess(pathObj) {
+    exists: function exists(languageId, path) {
+        return this.get(languageId, path).then(function onSuccess(pathObj) {
             return !!pathObj;
         }, function onError() {
             return false;
@@ -19,8 +19,8 @@ PathModel.prototype = {
             function fulfillSafe(data) {
                 if (!fulfilled && data) {
                     fulfill(data);
+                    fulfilled = true;
                 }
-                fulfilled = true;
                 return data;
             }
 
@@ -44,31 +44,70 @@ PathModel.prototype = {
         });
     },
 
-    get: function get(languageId, path) {
-        var i, id, db = this.database;
+    /**
+     * Bizarre path of id's. All front '/' are optional. Numbers represent the
+     * id's 
+     * 
+     * <ul>
+     * <li>/ - Catalog</li>
+     * <li>/1 - Folder</li>
+     * <li>/1/ - Book</li>
+     * <li>/1/2 - Node (book id, node id)
+     * </ul>
+     * 
+     * @param {Integer} languageId
+     * @param path
+     * @returns
+     */
+    parsePath: function(languageId, path) {
+        var parsePath = path, elements, id;
 
-        if (path == '' || path == '/') {
+        if (parsePath.indexOf('/') == 0) {
+            parsePath = parsePath.substring(1);
+        }
+
+        if (parsePath == '') {
             return db.catalog.get(languageId).then(this.getCatalogInfo);
         }
-        
-        id = Number.parseInt(id);
-        if (!Number.isNaN(id)) {
-            return db.folder.get(languageId, id).then(this.getFolderInfo)
+
+        elements = parsePath.split('/');
+        if (elements.length == 2) {
+            var bookId = Number.parseInt(elements[0]);
+            var nodeId = Number.parseInt(elements[1]);
+            if (!Number.isNaN(bookId)) {
+                if (elements[1].length == 0) {
+                    return db.book.get(languageId, bookId).then(
+                            this.getBookInfo);
+                } else if (!Number.isNaN(nodeId)) {
+                    return db.node.get(languageId, bookId, nodeId).then(
+                            this.getNodeInfo);
+                }
+
+            }
+        } else if (elements.length == 1) {
+            id = Number.parseInt(parsePath);
+            if (!Number.isNaN(id)) {
+                return db.folder.get(languageId, id).then(this.getFolderInfo)
+            }
+        }
+        return null
+    },
+
+    get: function get(languageId, path) {
+        var i, parse, db = this.database;
+
+        parse = this.parsePath(languageId, path);
+        if (parse) {
+            return parse;
         }
 
-        return Promise.all(
-                [ db.folder.getByName(languageId, path).then(
-                        this.getFolderInfo),
+        return this.firstSuccess(
+                [ db.folder.getByName(languageId, path)
+                        .then(this.getFolderInfo),
                         db.book.getByPath(languageId, path).then(
                                 this.getBookInfo),
                         db.node.getByPath(languageId, path).then(
-                                this.getNodeInfo) ]).then(function(e) {
-                                    for (i = 0; i < e.length; i++) {
-                                        if (e[i]) {
-                                            return e[i];
-                                        }
-                                    }
-        });
+                                this.getNodeInfo) ]);
     },
 
     getCatalogInfo: function(catalog) {
@@ -78,7 +117,8 @@ PathModel.prototype = {
         return {
             type: 'catalog',
             id: catalog.id,
-            name: catalog.name
+            name: catalog.name,
+            path: '/'
         };
     },
 
@@ -91,7 +131,8 @@ PathModel.prototype = {
             id: folder.id,
             languageId: folder.languageId,
             parentId: folder.parentId,
-            name: folder.name
+            name: folder.name,
+            path: '/' + folder.id
         };
     },
 
@@ -105,7 +146,8 @@ PathModel.prototype = {
             languageId: book.languageId,
             parentId: book.parentFolderId,
             name: book.name,
-            downloaded: book.downloaded
+            downloaded: book.downloaded,
+            path: book.path
         }
     },
 
@@ -119,7 +161,8 @@ PathModel.prototype = {
             languageId: node.languageId,
             bookId: node.bookId,
             parentId: node.parentId,
-            name: node.name
+            name: node.name,
+            path: node.path
         }
     },
 
