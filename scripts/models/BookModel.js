@@ -50,9 +50,14 @@ function BookModel(database) {
     }
 
     that.getByPath = function getByPath(languageId, path) {
-        return that.database.server.books.query('path').filter('languageId',
+        return database.server.books.query('path').filter('languageId',
                 languageId).filter('path', path).execute().then(
-                that.database.helpers.single);
+                database.helpers.single);
+    }
+
+    that.getChildren = function getChildren(languageId, parentId) {
+        return database.server.books.query('children').filter('languageId',
+                languageId).filter('parentId', parentId).execute();
     }
 }
 

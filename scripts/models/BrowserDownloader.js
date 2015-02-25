@@ -19,13 +19,13 @@ BrowserDownloader.prototype = {
                     uri += encodeURIComponent(key) + '=' +
                             encodeURIComponent(escape(args[key])) + '&';
                 }
-                client.open(method, url + '?' + uri, true);
+                client.open(method, url + '?' + uri.slice(0, -1), true);
             } else {
                 client.open(method, url, true);
             }
-            client.setRequestHeader("Content-type",
-                    "application/x-www-form-urlencoded");
-            client.setRequestHeader("Cache-Control", "no-cache");
+            //client.setRequestHeader("Content-type",
+            //        "application/x-www-form-urlencoded");
+            //client.setRequestHeader("Cache-Control", "no-cache");
             client.onreadystatechange = function() {
                 if (this.readyState == 4) {
                     if (this.status == 200) {

@@ -1,17 +1,15 @@
 function PathModel(database) {
-    this.database = database;
-}
+    var that = this;
 
-PathModel.prototype = {
-    exists: function exists(languageId, path) {
-        return this.get(languageId, path).then(function onSuccess(pathObj) {
+    that.exists = function exists(languageId, path) {
+        return that.get(languageId, path).then(function onSuccess(pathObj) {
             return !!pathObj;
         }, function onError() {
             return false;
-        })
-    },
+        });
+    }
 
-    firstSuccess: function firstSuccess(promises) {
+    function firstSuccess(promises) {
         return new Promise(function(fulfill, reject) {
 
             var fulfilled = false;
@@ -42,12 +40,11 @@ PathModel.prototype = {
 
             Promise.all(promises).then(rejectSafe, rejectSafe);
         });
-    },
+    }
 
     /**
      * Bizarre path of id's. All front '/' are optional. Numbers represent the
-     * id's 
-     * 
+     * id's
      * <ul>
      * <li>/ - Catalog</li>
      * <li>/1 - Folder</li>
@@ -55,11 +52,13 @@ PathModel.prototype = {
      * <li>/1/2 - Node (book id, node id)
      * </ul>
      * 
-     * @param {Integer} languageId
-     * @param path
-     * @returns
+     * @param {Integer}
+     *            languageId
+     * @param {String}
+     *            path
+     * @returns {Promise|Null}
      */
-    parsePath: function(languageId, path) {
+    function parsePath(languageId, path) {
         var parsePath = path, elements, id;
 
         if (parsePath.indexOf('/') == 0) {
@@ -67,7 +66,7 @@ PathModel.prototype = {
         }
 
         if (parsePath == '') {
-            return db.catalog.get(languageId).then(this.getCatalogInfo);
+            return database.catalog.get(languageId).then(getCatalogInfo);
         }
 
         elements = parsePath.split('/');
@@ -76,53 +75,50 @@ PathModel.prototype = {
             var nodeId = Number.parseInt(elements[1]);
             if (!Number.isNaN(bookId)) {
                 if (elements[1].length == 0) {
-                    return db.book.get(languageId, bookId).then(
-                            this.getBookInfo);
+                    return database.book.get(languageId, bookId).then(
+                            getBookInfo);
                 } else if (!Number.isNaN(nodeId)) {
-                    return db.node.get(languageId, bookId, nodeId).then(
-                            this.getNodeInfo);
+                    return database.node.get(languageId, bookId, nodeId).then(
+                            getNodeInfo);
                 }
 
             }
         } else if (elements.length == 1) {
             id = Number.parseInt(parsePath);
             if (!Number.isNaN(id)) {
-                return db.folder.get(languageId, id).then(this.getFolderInfo)
+                return database.folder.get(languageId, id).then(getFolderInfo)
             }
         }
         return null
-    },
+    }
 
-    get: function get(languageId, path) {
-        var i, parse, db = this.database;
+    that.get = function get(languageId, path) {
+        var parse;
 
-        parse = this.parsePath(languageId, path);
+        parse = parsePath(languageId, path);
         if (parse) {
             return parse;
         }
 
-        return this.firstSuccess(
-                [ db.folder.getByName(languageId, path)
-                        .then(this.getFolderInfo),
-                        db.book.getByPath(languageId, path).then(
-                                this.getBookInfo),
-                        db.node.getByPath(languageId, path).then(
-                                this.getNodeInfo) ]);
-    },
+        return firstSuccess([ database.folder.getByName(languageId, path).then(
+                getFolderInfo),
+                database.book.getByPath(languageId, path).then(getBookInfo),
+                database.node.getByPath(languageId, path).then(getNodeInfo) ]);
+    }
 
-    getCatalogInfo: function(catalog) {
+    function getCatalogInfo(catalog) {
         if (!catalog) {
             return null;
         }
         return {
             type: 'catalog',
-            id: catalog.id,
+            id: catalog.languageId,
             name: catalog.name,
             path: '/'
         };
-    },
+    }
 
-    getFolderInfo: function(folder) {
+    function getFolderInfo(folder) {
         if (!folder) {
             return null;
         }
@@ -134,9 +130,9 @@ PathModel.prototype = {
             name: folder.name,
             path: '/' + folder.id
         };
-    },
+    }
 
-    getBookInfo: function(book) {
+    function getBookInfo(book) {
         if (!book) {
             return null;
         }
@@ -149,9 +145,9 @@ PathModel.prototype = {
             downloaded: book.downloaded,
             path: book.path
         }
-    },
+    }
 
-    getNodeInfo: function(node) {
+    function getNodeInfo(node) {
         if (!node) {
             return null;
         }
@@ -164,9 +160,9 @@ PathModel.prototype = {
             name: node.name,
             path: node.path
         }
-    },
+    }
 
-    getDetails: function(info) {
+    that.getDetails = function(info) {
         var details = {
             type: info.type,
             id: info.type,
@@ -175,23 +171,21 @@ PathModel.prototype = {
             parentId: info.parentId,
             name: info.name
         };
-        return Promise.all(
-                [ this.getChildren(info), this.fillHeiarchy([ info ]) ]).then(
+        return Promise.all([ getChildren(info), fillHeiarchy([ info ]) ]).then(
                 function(data) {
                     details.children = data[0];
                     details.heiarchy = data[1];
                     details.parent = details.children[details.length - 2];
-                    return Promise.all(
-                            [ this.getPrevious(details.heiarchy, 1) ]).then(
+                    return Promise.all([ getPrevious(details.heiarchy, 0) ]).then(
                             function(data) {
                                 details.previous = data[0];
                                 // TODO: next
                                 return details;
                             });
                 })
-    },
+    }
 
-    getPrevious: function(heiarchy, level) {
+    function getPrevious(heiarchy, level) {
         if (heiarchy.length >= level) {
             return null;
         }
@@ -211,83 +205,82 @@ PathModel.prototype = {
                         getPrevious(heiarchy, level + 1)
                     }
                 });
-    },
+    }
 
-    fillHeiarchy: function(heiarchy) {
-        return this.getParentInfo(heiarchy[0]).then(function(parent) {
+    function fillHeiarchy(heiarchy) {
+        return getParentInfo(heiarchy[0]).then(function(parent) {
             if (parent) {
-                heiarchy.insert(0, value);
-                return this.fillHeiarchy(heiarchy);
+                heiarchy.unshift(parent);
+                return fillHeiarchy(heiarchy);
             } else {
                 return heiarchy;
             }
         });
-    },
+    }
 
-    getParentInfo: function(c) {
-        var db = this.database;
+    function getParentInfo(c) {
         switch (c.type) {
         case 'catalog':
             return Promise.resolve(null);
         case 'folder':
         case 'book':
             if (typeof c.parentId == "undefined") {
-                return db.catalog.get(c.languageId).then(this.getCatalogInfo);
+                return database.catalog.get(c.languageId).then(getCatalogInfo);
             } else {
-                return db.folder.get(c.languageId, c.id).then(
-                        this.getFolderInfo);
+                return database.folder.get(c.languageId, c.id).then(
+                        getFolderInfo);
             }
         case 'node':
             if (typeof c.parentId == "undefined") {
-                return db.book.get(c.languageId, c.bookId).then(
-                        this.getBookInfo);
+                return database.book.get(c.languageId, c.bookId).then(
+                        getBookInfo);
             } else {
-                return db.node.get(c.languageId, c.bookId, c.id).then(
-                        this.getNodeInfo);
+                return database.node.get(c.languageId, c.bookId, c.id).then(
+                        getNodeInfo);
             }
         default:
             throw "Unknown info type";
         }
-    },
+    }
 
-    getChildren: function(c) {
+    function getChildren(c) {
         switch (c.type) {
         case 'catalog':
-            return this.getFolderAndBookChildren(c.id, null);
+            return getFolderAndBookChildren(c.id, -1);
         case 'folder':
-            return this.getFolderAndBookChildren(c.languageId, c.id);
+            return getFolderAndBookChildren(c.languageId, c.id);
         case 'book':
-            return this.getNodeChildren(c.languageId, c.id, null);
+            return getNodeChildren(c.languageId, c.id, -1);
         case 'node':
-            return this.getNodeChildren(c.languageId, c.bookId, c.id);
+            return getNodeChildren(c.languageId, c.bookId, c.id);
         default:
             throw "Unknown info type";
         }
-    },
+    }
 
-    getFolderAndBookChildren: function(languageId, parentId) {
-        var db = this.database;
+    function getFolderAndBookChildren(languageId, parentId) {
         return Promise.all(
-                [ db.folder.getChildren(languageId, parentId),
-                        db.book.getChildren(languageId, parentId) ]).then(
+                [ database.folder.getChildren(languageId, parentId),
+                  database.book.getChildren(languageId, parentId) ]).then(
                 function(children) {
                     var folder, books, i;
                     folders = children[0];
                     books = children[1];
                     children = [ ];
                     for (i = 0; i < folders.length; i++) {
-                        children.push(this.getFolderInfo(folders[i]));
+                        children.push(getFolderInfo(folders[i]));
                     }
                     for (i = 0; i < books.length; i++) {
-                        children.push(this.getBookInfo(books[i]));
+                        children.push(getBookInfo(books[i]));
                     }
                     return children;
                 });
-    },
-
-    getNodeChildren: function(languageId, bookId, parentId) {
     }
-};
+
+    function getNodeChildren(languageId, bookId, parentId) {
+        throw "getNodeChildren: Not Implemented";
+    }
+}
 
 if (typeof module != 'undefined') {
     module.exports = PathModel;
