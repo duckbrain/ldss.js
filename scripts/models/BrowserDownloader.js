@@ -3,9 +3,42 @@ function BrowserDownloader() {
 
 BrowserDownloader.prototype = {
     download: function download(params) {
-        // TODO: Replace with source on MDN and remove jQuery dependency 
+        // Source modified from MDN documentation on promises
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-        return $.ajax(params);
+        var method = params.method || 'GET'
+        var url = params.url
+        var args = params.data;
+
+        return new Promise(function(resolve, reject) {
+
+            // Instantiates the XMLHttpRequest
+            var client = new XMLHttpRequest();
+            var uri = '';
+            if (args != undefined) {
+                for (key in args) {
+                    uri += encodeURIComponent(key) + '=' +
+                            encodeURIComponent(escape(args[key])) + '&';
+                }
+                client.open(method, url + '?' + uri, true);
+            } else {
+                client.open(method, url, true);
+            }
+            client.setRequestHeader("Content-type",
+                    "application/x-www-form-urlencoded");
+            client.setRequestHeader("Cache-Control", "no-cache");
+            client.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        resolve(JSON.parse(this.response));
+                    } else {
+                        reject({
+                            "error": this.statusText
+                        });
+                    }
+                }
+            };
+            client.send(uri);
+        });
     },
 
     downloadBinary: function(url) {

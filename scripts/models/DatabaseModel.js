@@ -1,25 +1,20 @@
-if (typeof require == 'function') {
-    var SettingsModel = require('./SettingsModel.js');
-    var LanguageModel = require('./LanguageModel.js');
-    var CatalogModel = require('./CatalogModel.js');
-    var BookModel = require('./BookModel.js');
-    var FolderModel = require('./FolderModel.js');
-    var PathModel = require('./PathModel.js');
-    var LDSContentProvider = require('./LDSContentProvider.js');
-    var db = require('../dependencies/db.js');
-}
-
+/**
+ * @name DatabaseModel
+ * @class
+ * 
+ * @param {LDSContentProvider} contentProvider
+ */
 function DatabaseModel(contentProvider) {
     this.server = null;
     this.connection = {
         server: 'duck.jonathan.lds-scriptures',
-        version: 7,
+        version: 11,
         schema: {
             languages: {
                 key: { keyPath: 'id' },
                 indexes: {
-                    id: { unique: true },
-                    code: { unique: true }
+                    code: { unique: true },
+                    code_three: { }
                 }
             },
             settings: {
@@ -36,14 +31,14 @@ function DatabaseModel(contentProvider) {
                 key: { keyPath: [ 'languageId', 'bookId', 'id' ] },
                 indexes: {
                     children: { key: [ 'languageId', 'bookId', 'parentId' ] },
-                    path: { key: [ 'languageId', 'path' ], unique: true }
+                    path: { key: [ 'languageId', 'path' ], unique: false }
                 }
             },
             books: {
                 key: { keyPath: [ 'languageId', 'id' ] },
                 indexes: {
                     children: { key: [ 'languageId', 'parentFolderId' ] },
-                    path: { key: [ 'languageId', 'path' ], unique: true }
+                    path: { key: [ 'languageId', 'path' ], unique: false }
                 }
             },
             folders: {
@@ -78,7 +73,10 @@ DatabaseModel.helpers = {
     existsSingle: function existsSingle(promiseAttempt) {
         // TODO: Return a promise that returns true or false
     },
-    listToSingle: function listToSingle(list) {
+    single: function single(list) {
+        if (list.length > 1) {
+            throw "single had more than one.";
+        }
         return list[0];
     },
     dataToIdArray: function dataToIdArray(array) {

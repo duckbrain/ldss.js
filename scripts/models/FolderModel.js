@@ -1,38 +1,43 @@
 function FolderModel(database) {
-    this.database = database;
-}
+    var that = this;
+    that.database = database;
 
-FolderModel.prototype = {
-    addChildren: function addChildren(glFolder) {
-        var i, t = [ ];
+    that.addChildren = function addChildren(glFolder) {
         var f = glFolder;
 
-        for (i = 0; i < f.books.length; i++) {
-            f.books[i].parentId = f.id;
-            f.books[i].languageId = f.languageId;
-            t.push(this.database.book.add(f.books[i]));
-        }
-        for (i = 0; i < f.folders.length; i++) {
-            f.folders[i].parentId = f.id;
-            f.folders[i].languageId = f.languageId;
-            t.push(this.add(f.folders[i]));
-        }
+        return Promise.all(f.books.map(function(book) {
+            book.parentId = f.id;
+            book.languageId = f.languageId;
+            return that.database.book.add(book);
+        }).concat(f.folders.map(function(folder) {
+            folder.parentId = f.id;
+            folder.languageId = f.languageId;
+            return that.add(folder);
+        })));
+    }
 
-        return Promise.all(t);
-    },
-
-    add: function add(glFolder) {
+    that.add = function add(glFolder) {
         var f = glFolder;
-        var transaction = this.database.server.folders.update({
+        var transaction = that.database.server.folders.update({
             id: f.id,
             languageId: f.languageId,
             parentId: f.parentId, // undefined if catalog
             name: f.name,
             displayOrder: f.display_order,
-            books: this.database.helpers.dataToIdArray(f.books),
-            folders: this.database.helpers.dataToIdArray(f.folders),
+            books: that.database.helpers.dataToIdArray(f.books),
+            folders: that.database.helpers.dataToIdArray(f.folders),
         });
-        return Promise.all([ transaction, this.addChildren(f) ]);
+        return Promise.all([ transaction, that.addChildren(f) ]);
+    }
+
+    that.get = function get(languageId, id) {
+        return that.database.server.folder.get([ languageId, id ]);
+    }
+
+    that.getByName = function getByPath(languageId, name) {
+        return that.database.server.folders.query('name').filter('languageId',
+                languageId).filter('name', name).execute().then(
+                that.database.helpers.single);
     }
 }
 

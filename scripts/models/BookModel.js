@@ -1,9 +1,8 @@
 function BookModel(database) {
+    var that = this;
     this.database = database;
-}
 
-BookModel.prototype = {
-    add: function add(ldsBook) {
+    that.add = function add(ldsBook) {
         var b = ldsBook;
         return this.database.server.books.update({
             id: b.id,
@@ -24,20 +23,19 @@ BookModel.prototype = {
             size: b.size,
             sizeIndex: b.size_index,
             mediaAvailable: !!b.media_available
-        // 0 or 1
         });
-    },
-    
-    download: function download(languageId, id) {
-        var database = this.database;
-        return this.get(languageId, id).then(function (book) {
+    }
+
+    that.download = function download(languageId, id) {
+        var database = that.database;
+        return that.get(languageId, id).then(function(book) {
             if (!book) {
                 throw "Book does not exists";
             }
             return database.contentProvider.getBook(book.url);
-        }).then(function (db) {
+        }).then(function(db) {
             var metadata = db.exec('SELECT version FROM bookmeta')[0];
-            //TODO: Update the book's version and other info if needed
+            // TODO: Update the book's version and other info if needed
             var nodes = db.exec('SELECT * FROM nodes');
             db.close();
             delete db;
@@ -45,10 +43,16 @@ BookModel.prototype = {
             nodes.bookId = id;
             return database.node.addList(nodes);
         });
-    },
-    
-    get: function get(languageId, id) {
-        return this.database.server.books.get([languageId, id]);
+    }
+
+    that.get = function get(languageId, id) {
+        return that.database.server.books.get([ languageId, id ]);
+    }
+
+    that.getByPath = function getByPath(languageId, path) {
+        return that.database.server.books.query('path').filter('languageId',
+                languageId).filter('path', path).execute().then(
+                that.database.helpers.single);
     }
 }
 
