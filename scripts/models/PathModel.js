@@ -163,22 +163,18 @@ function PathModel(database) {
     }
 
     that.getDetails = function(info) {
-        var details = {
-            type: info.type,
-            id: info.type,
-            languageId: info.languageId,
-            bookId: info.bookId,
-            parentId: info.parentId,
-            name: info.name
-        };
+        var details = info;
         return Promise.all([ getChildren(info), fillHeiarchy([ info ]) ]).then(
                 function(data) {
                     details.children = data[0];
                     details.heiarchy = data[1];
-                    details.parent = details.children[details.length - 2];
-                    return Promise.all([ getPrevious(details.heiarchy, 0) ]).then(
+                    details.parent = details.heiarchy[details.heiarchy.length - 2];
+                    return Promise.all([ 
+                                getPrevious(details.heiarchy, 1),
+                                getNext(details.heiarchy, 1) ]).then(
                             function(data) {
                                 details.previous = data[0];
+                                details.next = data[1];
                                 // TODO: next
                                 return details;
                             });
@@ -186,28 +182,62 @@ function PathModel(database) {
     }
 
     function getPrevious(heiarchy, level) {
-        if (heiarchy.length >= level) {
+        if (heiarchy.length <= level) {
             return null;
         }
 
-        return getChildren(heiarchy[heiarcy.length - level - 1]).then(
+        var parent = heiarchy[heiarchy.length - level - 1];
+        var item = heiarchy[heiarchy.length - level];
+
+        return getChildren(parent).then(
                 function(siblings) {
                     var i;
-                    for (i = 0; i < siblings; i++) {
-                        if (siblings[i].id == heiarchy[level].id) {
+                    for (i = 0; i < siblings.length; i++) {
+                        if (siblings[i].id == item.id && siblings[i].type == item.type) {
                             break;
                         }
                     }
 
                     if (i > 0) {
-                        return siblings[i];
+                        //TODO: Refactor getNext and getPrevious into one function.
+                        //TODO: Decend back down the tree to level 1
+                        return siblings[i - 1];
                     } else {
-                        getPrevious(heiarchy, level + 1)
+                        return getPrevious(heiarchy, level + 1)
+                    }
+                });
+    }
+
+    function getNext(heiarchy, level) {
+        if (heiarchy.length <= level) {
+            return null;
+        }
+
+        var parent = heiarchy[heiarchy.length - level - 1];
+        var item = heiarchy[heiarchy.length - level];
+
+        return getChildren(parent).then(
+                function(siblings) {
+                    var i;
+                    for (i = 0; i < siblings.length; i++) {
+                        if (siblings[i].id == item.id && siblings[i].type == item.type) {
+                            break;
+                        }
+                    }
+
+                    if (i < siblings.length - 1) {
+                        return siblings[i + 1];
+                    } else {
+                        return getNext(heiarchy, level + 1)
                     }
                 });
     }
 
     function fillHeiarchy(heiarchy) {
+        if (!heiarchy.length) {
+            heiarchy = [ heiarchy ];
+        }
+
         return getParentInfo(heiarchy[0]).then(function(parent) {
             if (parent) {
                 heiarchy.unshift(parent);
@@ -218,25 +248,24 @@ function PathModel(database) {
         });
     }
 
+    that.fillHeiarchy = fillHeiarchy;
+
     function getParentInfo(c) {
         switch (c.type) {
         case 'catalog':
-            return Promise.resolve(null);
+            return Promise.resolve(false);
         case 'folder':
         case 'book':
-            if (typeof c.parentId == "undefined") {
+            if (c.parentId == 0) {
                 return database.catalog.get(c.languageId).then(getCatalogInfo);
             } else {
-                return database.folder.get(c.languageId, c.id).then(
-                        getFolderInfo);
+                return database.folder.get(c.languageId, c.parentId).then(getFolderInfo);
             }
         case 'node':
-            if (typeof c.parentId == "undefined") {
-                return database.book.get(c.languageId, c.bookId).then(
-                        getBookInfo);
+            if (c.parentId == 0) {
+                return database.book.get(c.languageId, c.bookId).then(getBookInfo);
             } else {
-                return database.node.get(c.languageId, c.bookId, c.id).then(
-                        getNodeInfo);
+                return database.node.get(c.languageId, c.bookId, c.parentId).then(getNodeInfo);
             }
         default:
             throw "Unknown info type";
@@ -244,41 +273,51 @@ function PathModel(database) {
     }
 
     function getChildren(c) {
+        if (typeof c == 'undefined') {
+            return undefined;
+        }
+
         switch (c.type) {
         case 'catalog':
-            return getFolderAndBookChildren(c.id, -1);
+            return getFolderAndBookChildren(c.id, 0);
         case 'folder':
             return getFolderAndBookChildren(c.languageId, c.id);
         case 'book':
-            return getNodeChildren(c.languageId, c.id, -1);
+            return getNodeChildren(c.languageId, c.id, 0);
         case 'node':
             return getNodeChildren(c.languageId, c.bookId, c.id);
         default:
-            throw "Unknown info type";
+            throw "Unknown info type in 'getChildren'";
         }
     }
+
+    that.getChildren = getChildren;
 
     function getFolderAndBookChildren(languageId, parentId) {
         return Promise.all(
                 [ database.folder.getChildren(languageId, parentId),
                   database.book.getChildren(languageId, parentId) ]).then(
                 function(children) {
-                    var folder, books, i;
+                    var folders, books, i;
                     folders = children[0];
                     books = children[1];
                     children = [ ];
-                    for (i = 0; i < folders.length; i++) {
-                        children.push(getFolderInfo(folders[i]));
-                    }
                     for (i = 0; i < books.length; i++) {
                         children.push(getBookInfo(books[i]));
+                    }
+                    for (i = 0; i < folders.length; i++) {
+                        children.push(getFolderInfo(folders[i]));
                     }
                     return children;
                 });
     }
 
     function getNodeChildren(languageId, bookId, parentId) {
-        throw "getNodeChildren: Not Implemented";
+        return database.node.getChildren(languageId, bookId, parentId).then(function (nodes) {
+            return nodes.map(function(node) {
+                return getNodeInfo(node);
+            });
+        });
     }
 }
 

@@ -42,7 +42,7 @@ function NodeModel(database) {
             id: n.id,
             languageId: n.language_id,
             bookId: n.book_id,
-            parentId: n.parent_id,
+            parentId: n.parent_id || 0,
             contentId: n.content_id,
             displayOrder: n.display_order,
             name: n.title,
@@ -62,6 +62,13 @@ function NodeModel(database) {
         return that.database.server.nodes.query('path')
             .filter('languageId', languageId)
             .filter('path', path).execute().then(that.database.helpers.single);
+    }
+    
+    that.getChildren = function getChildren(languageId, bookId, parentId) {
+        return that.database.server.nodes.query('children')
+            .filter('languageId', languageId)
+            .filter('bookId', bookId)
+            .filter('parentId', parentId).execute();
     }
 }
 

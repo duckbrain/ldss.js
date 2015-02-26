@@ -20,7 +20,7 @@ function FolderModel(database) {
         var transaction = database.server.folders.update({
             id: f.id,
             languageId: f.languageId,
-            parentId: f.parentId, // undefined if catalog
+            parentId: f.parentId || 0, // 0 if catalog
             name: f.name,
             displayOrder: f.display_order,
             books: database.helpers.dataToIdArray(f.books),

@@ -16,7 +16,7 @@ function BookModel(database) {
             fileVersion: b.file_version,
             url: b.url,
             path: b.gl_uri,
-            parentFolderId: b.parentId,
+            parentFolderId: b.parentId || 0,
             downloaded: false,
             addedDate: b.dateadded,
             modifiedDate: b.datemodified,
@@ -57,7 +57,7 @@ function BookModel(database) {
 
     that.getChildren = function getChildren(languageId, parentId) {
         return database.server.books.query('children').filter('languageId',
-                languageId).filter('parentId', parentId).execute();
+                languageId).filter('parentFolderId', parentId).execute();
     }
 }
 

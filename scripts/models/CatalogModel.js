@@ -44,7 +44,7 @@ function CatalogModel(database) {
             }
 
             response.catalog.languageId = id;
-            response.catalog.parentId = -1;
+            response.catalog.parentId = 0;
             return that.add(response.catalog);
         });
     }
