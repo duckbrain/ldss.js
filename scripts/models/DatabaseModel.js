@@ -21,6 +21,9 @@ function DatabaseModel(contentProvider) {
                 key: { keyPath: 'id' },
                 indexes: { 'id': {} }
             },
+            themes: {
+				key: { keyPath: 'id', autoIncrement: true },
+			},
             /**
              * Represents the root catalog for any given language
              */
