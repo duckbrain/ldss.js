@@ -1,6 +1,5 @@
 function LanguageModel(database) {
     var that = this;
-    this.database = database;
 
     /**
      * Downloads and installs the language list.
@@ -8,14 +7,14 @@ function LanguageModel(database) {
      * @returns Promise
      */
     that.download = function() {
-        return this.database.contentProvider.getLanguages().then(
+        return database.contentProvider.getLanguages().then(
                 function(response) {
                     return that.addAll(response.languages)
                 });
     }
 
     that.addAll = function addAll(languages) {
-        var server = this.database.server;
+        var server = database.server;
         return Promise.all(languages.map(function(language) {
             return server.languages.update(language);
         }));
@@ -27,7 +26,7 @@ function LanguageModel(database) {
      * @returns Promise
      */
     that.getAll = function getAll() {
-        return this.database.server.languages.query().all().execute();
+        return database.server.languages.query().all().execute();
     }
 
     /**
@@ -36,7 +35,7 @@ function LanguageModel(database) {
      * @returns Promise
      */
     that.get = function get(id) {
-        return this.database.server.languages.get(id);
+        return database.server.languages.get(id);
     }
 
     /**
@@ -45,8 +44,18 @@ function LanguageModel(database) {
      * @returns Promise
      */
     that.getByCode = function getByCode(code) {
-        return this.database.server.languages.query('code').only(code)
-                .execute().then(this.database.helpers.listToSingle);
+        return database.server.languages.query('code').only(code)
+                .execute().then(database.helpers.single);
+    }
+
+    /**
+     * Gets the language with the given LDS language code (eg: 'eng' for English)
+     * 
+     * @returns Promise
+     */
+    that.getByLdsCode = function getByLdsCode(code) {
+        return database.server.languages.query('code_three').only(code)
+                .execute().then(database.helpers.single);
     }
 };
 

@@ -55,6 +55,9 @@ function DatabaseQuery() {
             getDefaults: action('setting-get-defaults', [ ]),
             set: action('setting-set', [ 'name', 'value' ]),
             update: action('setting-update', [ 'values' ])
+        },
+        theme: {
+            get: action('theme-get', id)
         }
     }
 }

@@ -3,6 +3,10 @@ function BrowserDownloader() {
 
 BrowserDownloader.prototype = {
     download: function download(params) {
+        if (typeof params == 'string') {
+            params = { url : params };
+        }
+
         // Source modified from MDN documentation on promises
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
         var method = params.method || 'GET'
@@ -29,7 +33,11 @@ BrowserDownloader.prototype = {
             client.onreadystatechange = function() {
                 if (this.readyState == 4) {
                     if (this.status == 200) {
-                        resolve(JSON.parse(this.response));
+                        try {
+                            resolve(JSON.parse(this.response));
+                        } catch (ex) {
+                            resolve(this.response);
+                        }
                     } else {
                         reject({
                             "error": this.statusText

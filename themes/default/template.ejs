@@ -1,0 +1,7 @@
+<ul>
+<% info.children.forEach(function(child) { %>
+	<li data-info="<%= JSON.stringify(child) %>">
+		<a href="<%= child.path %>"><%= child.title %></a>
+	</li>
+<% }); %>
+</ul>

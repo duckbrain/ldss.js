@@ -55,6 +55,7 @@ function SettingsModel(database, messageProvider) {
     that.getDefaults = function getDefaults() {
         return Promise.resolve({
             language: 1,
+            theme: 1,
         });
     }
 

@@ -158,7 +158,9 @@ function PathModel(database) {
             bookId: node.bookId,
             parentId: node.parentId,
             name: node.name,
-            path: node.path
+            path: node.path,
+            content: node.content,
+            refrences: node.refrences
         }
     }
 

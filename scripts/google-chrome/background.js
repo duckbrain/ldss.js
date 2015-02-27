@@ -1,22 +1,15 @@
 var messageProvider = new ChromeMessageProvider();
-var database = new DatabaseModel(
-        new LDSContentProvider(new BrowserDownloader()));
+var database = new DatabaseModel(new LDSContentProvider(new BrowserDownloader()));
 var languageId;
-database.settings = new SettingsModel(database);
-database.language = new LanguageModel(database);
-database.catalog = new CatalogModel(database);
-database.node = new NodeModel(database);
-database.book = new BookModel(database);
-database.folder = new FolderModel(database);
-database.path = new PathModel(database);
 
 function log(e) {
     console.log(e);
     return e;
 }
 
-database.open().then(database.settings.getLanguage).then(function(id) {
+database.open().then(database.language.download).then(database.settings.getLanguage).then(function(id) {
     languageId = id;
+    log(id);
 });
 
 messageProvider.on('path-exists', function(e, sender) {

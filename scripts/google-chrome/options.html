@@ -5,21 +5,32 @@
 </head>
 <body>
 
-Favorite color:
-<select id="color">
- <option value="red">red</option>
- <option value="green">green</option>
- <option value="blue">blue</option>
- <option value="yellow">yellow</option>
-</select>
+	<div class="content-area">
+		<section>
+			<div class="section-header">
+				<h3 i18n-content="themes">Themes</h3>
+			</div>
+			<select id="color">
+				<option value="red">red</option>
+				<option value="green">green</option>
+				<option value="blue">blue</option>
+				<option value="yellow">yellow</option>
+			</select>
+			
+			<label>
+				<input type="checkbox" id="like">
+				I like colors.
+			</label>
+		</section>
+	</div>
+	<div class="action-area">
+		<button id="save">Save</button>
+	</div>	
 
-<label>
-  <input type="checkbox" id="like">
-  I like colors.
-</label>
+Favorite color:
+
 
 <div id="status"></div>
-<button id="save">Save</button>
 
 </body>
 </html>

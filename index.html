@@ -13,54 +13,26 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="viewport" content="width=device-width, user-scalable=no">
 	</head>
-	<body class="showmenu">
-	<div id="menu">
-		<ul>
-			<li><a id="previous" title="Go to the previous node">
-				<span>Previous</span>
-			</a></li>
-			<li><a id="uplevel" title="Go to the parent node">
-				<span>Up</span>
-			</a></li>
-			<li><a id="ldsorg" href="http://lds.org">
-				<span>View on LDS.org</span>
-			</a></li>
-			<li id="breadcrumbs">
-				<ul></ul>
-				<select></select>
-			</li>
-			<li><a id="options" href="options.html">
-				<span>Options</span>
-			</a></li>
-			<li><a id="bookmark">
-				<span>Update Bookmark</span>
-			</a></li>
-			<!--
-			<li><a id="autoscroll-link">
-				<span>Auto-scroll</span>
-			</a></li>
-			<li>
-				<a id="searchshow"><span>Search</span></a>
-				
-			</li>
-			-->
-			<li><a id="next" href="#"><span>Next</span></a></li>
-		</ul>
-		<div id="searchpane">
-			<input id="searchbox">
-			<button id="searchbutton">Search</button>
-		</div>
+	<body>
+	
+	<div id="main-content">
 	</div>
 	
-	<div id="content"></div>
-	
-	<div id="ref-container">
-		<div id="ref-toolbar">
-			<button id="ref-close">Close</button>
-		</div>
-		<div id="ref-content"></div>
-	</div>
-	
+	<script type="text/javascript" src="scripts/dependencies/db.js"></script>
+	<script type="text/javascript" src="scripts/models/BrowserDownloader.js"></script>
+	<script type="text/javascript" src="scripts/google-chrome/ChromeMessageProvider.js"></script>
+	<script type="text/javascript" src="scripts/models/LDSContentProvider.js"></script>
+	<script type="text/javascript" src="scripts/models/DatabaseModel.js"></script>
+	<script type="text/javascript" src="scripts/models/CatalogModel.js"></script>
+	<script type="text/javascript" src="scripts/models/LanguageModel.js"></script>
+	<script type="text/javascript" src="scripts/models/ThemeModel.js"></script>
+	<script type="text/javascript" src="scripts/models/SettingsModel.js"></script>
+	<script type="text/javascript" src="scripts/models/FolderModel.js"></script>
+	<script type="text/javascript" src="scripts/models/BookModel.js"></script>
+	<script type="text/javascript" src="scripts/models/NodeModel.js"></script>
+	<script type="text/javascript" src="scripts/models/PathModel.js"></script>
+	<script type="text/javascript" src="scripts/dependencies/ejs.js"></script>
+	<script type="text/javascript" src="scripts/dependencies/less.min.js"></script>
 	<script type="text/javascript" src="scripts/index.js"></script>
 	</body>
 </html>
