@@ -165,8 +165,12 @@ function PathModel(database) {
     }
 
     that.getDetails = function(info) {
+        if (typeof info == 'undefined' || info == null) {
+            return Promise.resolve(null);
+        }
+
         var details = info;
-        return Promise.all([ getChildren(info), fillHeiarchy([ info ]) ]).then(
+        return Promise.all([ getChildren(info), fillHeiarchy([ JSON.parse(JSON.stringify(info)) ]) ]).then(
                 function(data) {
                     details.children = data[0];
                     details.heiarchy = data[1];

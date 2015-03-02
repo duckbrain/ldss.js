@@ -1,7 +1,45 @@
-<ul>
-<% info.children.forEach(function(child) { %>
-	<li data-info="<%= JSON.stringify(child) %>">
-		<a href="<%= child.path %>"><%= child.title %></a>
-	</li>
-<% }); %>
+<%
+
+var language_code = lang;
+var i18n = _;
+
+function link(i, name) {
+	if (!i) {
+	    return "<a>" + (i18n(name) || '') + "</a>"; 
+	} else {
+		%><a href="index.html?q=<%= i.path %>&lang=<%= language_code %>" data-info='<%= JSON.stringify(i) %>'><%= name ? i18n(name) : i.name %></a><%
+	}
+}
+
+function li(array) {
+	var html = '';
+	if (array) {
+		array.forEach(function(child) {
+			if (child) {
+		    	html += link(child);
+		    }
+		});
+	}
+	return html;
+}
+
+%>
+
+<div class="toolbar">
+	<div class="previous"><%= link(info.previous, "previous") %></div>
+	<div class="next"><%= link(info.previous, "next") %></div>
+	<div class="up-level"><%= link(info.previous, "up_level") %></div>
+	<div class="heiarchy">
+		<ul>
+			<%= li(info.heiarchy) %>
+		</ul>
+	</div>
+</div>
+
+<ul class="children">
+	<% li(info.children) %>
 </ul>
+
+<div class="content">
+	<%= info.content %>
+</div>

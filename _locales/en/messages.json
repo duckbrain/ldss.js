@@ -6,5 +6,13 @@
     "app_description": {
       "message": "A very lightweight, offline version of the scriptures of the Church of Jesus Christ of Latter Day Saints.",
       "description": "The description in the app manifest that is shown in the extensions tab and in the webstore."
+    },
+    "previous": {
+        "message": "Previous",
+        "description": "Displayed on the toolbar (if not hidden by theme"
+    },
+    "next": {
+        "message": "Next",
+        "description": "Displayed on the toolbar (if not hidden by theme"
     }
 }
