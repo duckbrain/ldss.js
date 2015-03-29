@@ -1,10 +1,10 @@
 (function() {
 
 	database = new DatabaseModel();
-	database.path = new PathCacheModel(database, database.path);
 
 	var private = {
 		debug: window.debug || true,
+		configuration: null,
 		theme: null,
 		page: null,
 		template: null,
@@ -12,10 +12,12 @@
 	};
 
 	function displayPage(info) {
+		var conf = private.configuration;
+
 		console.log(info);
 		private.page = info;
 		private.contentElement.innerHTML = private.template.render({
-			lang: getUrlParameter('lang'),
+			lang: conf.language,
 			info: info,
 			_: getI18nMessage
 		});
@@ -45,48 +47,6 @@
 
 	}
 
-	function prefetch(info) {
-
-		function clean(i) {
-			if (!i) {
-				return i;
-			}
-			delete i['content'];
-			delete i['refrences'];
-			if (i.children && i.heiarchy) {
-				i.children = i.children.map(clean);
-				i.heiarchy = i.heiarchy.map(clean);
-				i.next = clean(i.next);
-				i.previous = clean(i.previous);
-				i.up = clean(i.up);
-			}
-			return i;
-		}
-
-		function mapDetails(array) {
-			if (!array) {
-				return Promise.resolve(array);
-			}
-			return Promise.all(array.map(function(e) {
-				return database.path.getDetails(e).then(clean);
-			}));
-
-		}
-
-		return Promise.all([
-			database.path.getDetails(info.previous).then(clean),
-			database.path.getDetails(info.next).then(clean),
-			mapDetails(info.children),
-			mapDetails(info.heiarchy)
-		]).then(function(e) {
-			info.previous = e[0];
-			info.next = e[1];
-			info.children = e[2];
-			info.heiarchy = e[3];
-			return info;
-		});
-	}
-
 	function loadTheme(theme) {
 		private.theme = theme;
 		private.template = new EJS({
@@ -101,14 +61,6 @@
 			null
 	}
 
-	function getPathInfo() {
-		return {
-			query: getUrlParameter('q') || '/',
-			lang: getUrlParameter('lang'),
-			ref: getUrlParameter('ref')
-		}
-	}
-
 	function getI18nMessage(name, params) {
 		var message = chrome.i18n.getMessage(name, params);
 		if (!message) {
@@ -117,37 +69,51 @@
 		return message;
 	}
 
-	var pathInfo = getPathInfo();
-	database.open().then(
-		function() {
-			return Promise.all([pathInfo.lang ? database.language
-				.getByLdsCode(pathInfo.lang) : database.settings
-				.getLanguage().then(database.language.get),
-				database.settings.getAll()
-			]);
-		}).then(
-		function(e) {
-			var language = e[0];
-			var settings = e[1];
-			return Promise.all([database.path.get(language.id,
-					pathInfo.query).then(database.path.getDetails),
-				database.theme.get(settings.theme)
+	function getConfiguration() {
+		var name, param, overrides, value;
+
+		overrides = {
+			language: 'lang',
+			path: 'q',
+			refrence: 'ref'
+		};
+
+		return database.settings.getAll().then(function(configuration) {
+			for (name in overrides) {
+				param = overrides[name];
+				value = getUrlParameter(param);
+				if (value) {
+					configuration[name] = value;
+				}
+			}
+
+			if (!configuration.path) {
+				configuration.path = '/';
+			}
+
+			private.configuration = configuration;
+			return configuration;
+		});
+	}
+
+	database.open()
+		.then(getConfiguration)
+		.then(function(conf) {
+			return Promise.all([
+				database.path.get(conf.language, conf.path),
+				database.theme.get(conf.theme)
 			]);
 		}).then(function(e) {
-		loadTheme(e[1]);
-		return displayPage(e[0]);
-	});
+			loadTheme(e[1]);
+			return displayPage(e[0]);
+		});
 
 	if (private.debug) {
 		window.debug = private;
 		window.database = database;
-		private.displayPage = displayPage;
-		private.getPathInfo = getPathInfo;
 		window.log = function log(e) {
 			console.log(e);
 			return e;
 		};
 	}
-
-	window.displayPage = displayPage;
 })();
