@@ -1,36 +1,35 @@
 function PathModel(database) {
-  var that = this;
+	var that = this;
 
-  function get(id) {
-    return database.server.paths.get(id);
-  }
+	function get(id) {
+		return database.server.paths.get(id);
+	}
 
-  function getPath(languageId, path) {
-    return database.server.paths.query('path')
-      .filter('languageId', languageId)
-      .filter('path', path).execute();
-  }
+	function getPath(languageId, path) {
+		return database.server.paths.query('path')
+			.only([languageId, path]).execute().then(database.helpers.single);
+	}
 
-  function add(item) {
-    return database.server.paths.add(item);
-  }
+	function add(item) {
+		return database.server.paths.add(item);
+	}
 
-  function update(item) {
-    return database.server.paths.update(item);
-  }
+	function update(item) {
+		return database.server.paths.update(item);
+	}
 
-  function clear(languageId) {
-    //TODO: Limit to languageId
-    return database.server.paths.clear();
-  }
+	function clear(languageId) {
+		//TODO: Limit to languageId
+		return database.server.paths.clear();
+	}
 
-  that.add = add;
-  that.clear = clear;
-  that.get = get;
-  that.getPath = getPath;
-  that.update = update;
+	that.add = add;
+	that.clear = clear;
+	that.get = get;
+	that.getPath = getPath;
+	that.update = update;
 }
 
 if (typeof module != 'undefined') {
-  module.exports = PathModel;
+	module.exports = PathModel;
 }

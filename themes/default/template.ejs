@@ -1,45 +1,27 @@
 <%
+// Page will always contain all of the information needed to display the page
 
-var language_code = lang;
-var i18n = _;
-
-function link(i, name) {
-	if (!i) {
-	    return "<a>" + (i18n(name) || '') + "</a>"; 
-	} else {
-		%><a href="index.html?q=<%= i.path %>&lang=<%= language_code %>" data-info='<%= JSON.stringify(i) %>'><%= name ? i18n(name) : i.name %></a><%
-	}
-}
-
-function li(array) {
-	var html = '';
-	if (array) {
-		array.forEach(function(child) {
-			if (child) {
-		    	html += link(child);
-		    }
-		});
-	}
-	return html;
-}
-
+// The generator contains usefull functions for generating HTML markup quickly
+var gen = page.generator;
+var path = page.path;
 %>
 
+
 <div class="toolbar">
-	<div class="previous"><%= link(info.previous, "previous") %></div>
-	<div class="next"><%= link(info.previous, "next") %></div>
-	<div class="up-level"><%= link(info.previous, "up_level") %></div>
+	<div class="previous"><%= gen.a(path.previous, "previous") %></div>
+	<div class="next"><%= gen.a(path.next, "next") %></div>
+	<div class="up-level"><%= gen.a(path.parent, "up_level") %></div>
 	<div class="heiarchy">
-		<ul>
-			<%= li(info.heiarchy) %>
-		</ul>
+		<%= gen.ul(path.heiarchy, gen.a) %>
 	</div>
 </div>
 
 <ul class="children">
-	<% li(info.children) %>
+	<%= gen.li(path.children, gen.a) %>
 </ul>
 
 <div class="content">
-	<%= info.content %>
+	<%= path.content %>
 </div>
+
+<%= JSON.stringify(page)  %>
