@@ -27,6 +27,7 @@
 				configuration: conf,
 				path: info,
 				getI18nMessage: getI18nMessage,
+				languages: private.languages,
 				generator: new HtmlGenerator(conf, getI18nMessage)
 			}
 		});
@@ -78,7 +79,10 @@
 
 	function getConfiguration() {
 		var param = getUrlParameter;
-		return database.settings.getAll().then(function(conf) {
+		return Promise.all([database.settings.getAll(),
+		database.language.getAll() ])
+		 .then(function(e) {
+		 	var conf = e[0];
 
 			conf.language = parseInt(param('lang')) || conf.language;
 			conf.path = param('q') || '/';
@@ -86,6 +90,7 @@
 			//TODO: Parse the refrences
 
 			private.configuration = conf;
+			private.languages = e[1];
 			return conf;
 		});
 	}

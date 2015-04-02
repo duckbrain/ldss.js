@@ -4,16 +4,20 @@
 // The generator contains usefull functions for generating HTML markup quickly
 var gen = page.generator;
 var path = page.path;
+var conf = page.configuration;
 %>
 
 
 <div class="toolbar">
 	<div class="previous"><%= gen.a(path.previous, "previous") %></div>
-	<div class="next"><%= gen.a(path.next, "next") %></div>
 	<div class="up-level"><%= gen.a(path.parent, "up_level") %></div>
 	<div class="heiarchy">
 		<%= gen.ul(path.heiarchy, gen.a) %>
 	</div>
+	<div class="languages">
+		<%= gen.select(page.languages) %>
+	</div>
+	<div class="next"><%= gen.a(path.next, "next") %></div>
 </div>
 
 <ul class="children">
@@ -21,7 +25,5 @@ var path = page.path;
 </ul>
 
 <div class="content">
-	<%= path.content %>
+	<%= path.details ? path.details.content : '' %>
 </div>
-
-<%= JSON.stringify(page)  %>

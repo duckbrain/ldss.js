@@ -9,10 +9,14 @@
     },
     "previous": {
         "message": "Previous",
-        "description": "Displayed on the toolbar (if not hidden by theme"
+        "description": "May be displayed on the toolbar"
     },
     "next": {
         "message": "Next",
-        "description": "Displayed on the toolbar (if not hidden by theme"
+        "description": "May be displayed on the toolbar"
+    },
+    "up_level": {
+        "message": "Up",
+        "description": "May be displayed on the toolbar"
     }
 }

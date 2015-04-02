@@ -3,27 +3,28 @@
  * objectStore.
  * @param {DatabaseModel} database Database model for inter-class communication.
  */
-function LDSCatalogInstaller(database) {
+function LDSCatalogInstaller(db, languageId) {
   var that = this;
+  var helpers = new LDSInstallerHelpers(db);
 
-  function install(root, languageId) {
+  function install(root) {
     //
     // Add all of the items and have ID's assigned.
     //
-    return database.path.clear(languageId).then(function() {
-      add(root.catalog, formatCatalog, null, true, languageId)
+    return db.clear(languageId).then(function() {
+      return add(root.catalog, formatCatalog, null, true)
         //
         // Then update those items to make refrence to those ID's for
         // their family members.
         //
-        .then(update);
+        .then(helpers.update);
     });
   }
 
-  function add(glItem, formatter, parent, hasChildren, languageId) {
-    var item = formatter(glItem, languageId);
+  function add(glItem, format, parent, hasChildren) {
+    var item = format(glItem);
 
-    return database.path.add(item).then(function(item) {.
+    return db.add(item).then(function(item) {
       var folderAdds, bookAdds;
 
       item = item[0]; // Item comes back as an array with one item
@@ -39,15 +40,15 @@ function LDSCatalogInstaller(database) {
 
       if (hasChildren) { // Catalog or folder
         folderAdds = glItem.folders.map(function(glFolder) {
-          return add(glFolder, formatFolder, item, true, languageId);
+          return add(glFolder, formatFolder, item, true);
         });
         bookAdds = glItem.books.map(function(glBook) {
-          return add(glBook, formatBook, item, false, languageId);
+          return add(glBook, formatBook, item, false);
         });
         return Promise.all(folderAdds.concat(bookAdds)).then(function() {
           //TODO: Sort by display order
-          item.next = findSibling(+1, item);
-          item.previous = findSibling(-1, item);
+          item.next = helpers.findSibling(+1, item);
+          item.previous = helpers.findSibling(-1, item);
           return item;
         });
       } else { //It's a book
@@ -57,27 +58,9 @@ function LDSCatalogInstaller(database) {
     });
   }
 
-  function findSibling(direction, item) {
-    var index, siblings;
-
-    if (item.parent) {
-      siblings = item.parent.children
-      index = siblings.indexOf(item);
-
-      if (siblings[index + direction]) {
-        return siblings[index + direction];
-      } else {
-        //TODO Traverse to find better sibling
-        return null;
-      }
-    } else {
-      return null;
-    }
-  }
-
   function formatBlank(item) {
     return {
-      languageId: item.languageId,
+      languageId: languageId,
       parent: null,
       path: item.path,
       next: null,
@@ -96,27 +79,24 @@ function LDSCatalogInstaller(database) {
     };
   }
 
-  function formatCatalog(item, languageId) {
+  function formatCatalog(item) {
     return formatBlank({
-      languageId: languageId,
       path: '/',
       name: item.name,
       type: 'catalog'
     });
   }
 
-  function formatFolder(item, languageId) {
+  function formatFolder(item) {
     return formatBlank({
-      languageId: languageId,
       path: '/' + item.id,
       name: item.name,
       type: 'folder'
     });
   }
 
-  function formatBook(item, languageId) {
+  function formatBook(item) {
     return formatBlank({
-      languageId: languageId,
       path: item.gl_uri,
       name: item.name,
       type: 'book',
@@ -124,33 +104,6 @@ function LDSCatalogInstaller(database) {
       url: item.url,
       version: item.datemodified
     })
-  }
-
-  function update(item) {
-    var children = item.children;
-    item.heiarchy = summary(item.heiarchy);
-    item.next = summary(item.next);
-    item.preivous = summary(item.previous);
-    item.children = summary(item.children);
-    return Promise.all([
-      database.path.update(item),
-      children.map(updateSummaries)
-    ]);
-  }
-
-  function summary(item) {
-    if (!item) {
-      return null;
-    } else if (Array.isArray(item)) {
-      return item.map(summary);
-    } else {
-      return {
-        id: item.id,
-        name: item.name,
-        path: item.path,
-        type: item.type
-      };
-    }
   }
 
   that.install = install;
