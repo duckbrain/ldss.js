@@ -6,24 +6,37 @@ var gen = page.generator;
 var path = page.path;
 var conf = page.configuration;
 %>
-
-
 <div class="toolbar">
-	<div class="previous"><%= gen.a(path.previous, "previous") %></div>
-	<div class="up-level"><%= gen.a(path.parent, "up_level") %></div>
+	<div class="previous"><%= gen.a(path && path.previous, "previous") %></div>
+	<div class="up-level"><%= gen.a(path && path.parent, "up_level") %></div>
 	<div class="heiarchy">
-		<%= gen.ul(path.heiarchy, gen.a) %>
+		<%= gen.ul(path && path.heiarchy, gen.a) %>
 	</div>
 	<div class="languages">
-		<%= gen.select(page.languages) %>
+		<%= gen.select(page.languages, function(lang) {
+			if (conf.language != 1 || lang.eng_name == lang.name || lang.name.endsWith("(" + lang.eng_name + ")")) {
+				return lang.name;
+			} else {
+				return lang.name + " (" + lang.eng_name + ")";
+			}
+		}) %>
 	</div>
-	<div class="next"><%= gen.a(path.next, "next") %></div>
+	<div class="settings">
+		<a href="settings.html">Settings</a>
+	</div>
+	<div class="next"><%= gen.a(path && path.next, "next") %></div>
 </div>
-
-<ul class="children">
-	<%= gen.li(path.children, gen.a) %>
-</ul>
-
-<div class="content">
-	<%= path.details ? path.details.content : '' %>
+<div class="page-content">
+	<ul class="children">
+		<%= gen.li(path && path.children, gen.a) %>
+	</ul>
+	<div class="content">
+		<%= path && path.details ? path.details.content : '' %>
+	</div>
+</div>
+<div id="refrences" class="refrences">
+	<div class="refrences-bar">
+		<a class="refrences-close" href>Close</a>
+	</div>
+	<%= path && path.details ? path.details.refrences : '' %>
 </div>

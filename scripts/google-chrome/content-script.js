@@ -12,7 +12,7 @@
 
 	var database = new DatabaseQuery();
 	var path = location.pathname;
-	var href = chrome.extension.getURL("index.html") + "?q=" + path;
+	var href = chrome.extension.getURL("index.html") + '?' + path;
 	var lang = null; //TODO: Get the lang from the get parameter
 
 	function insertLink(allow) {

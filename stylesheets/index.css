@@ -1,0 +1,56 @@
+body>.settings {
+  background: rgba(255,255,255,.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: table-cell;
+  vertical-align: middle;
+  display: -webkit-box;
+  /* display: table; */
+  display: none;
+}
+
+body>.settings>* {
+  margin: 6em auto;
+  width: 25em;
+  max-height: 20em;
+  box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0,0,0,0.15);
+  display: block;
+  height: auto !important;
+  transition: height 1s;
+  /* display: table-cell; */
+  /* height: 0 !important; */
+  vertical-align: middle;
+  /* display: table-cell; */
+}
+body>.settings iframe {
+  border: none;
+}
+.close-button {
+  background-image: url(chrome://theme/IDR_CLOSE_DIALOG);
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 14px;
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  width: 14px;
+  z-index: 1;
+}
+#extension-options-overlay-header {
+  align-items: center;
+  border-bottom: solid lightgray 1px;
+  display: flex;
+  position: relative;
+}
+h1 {
+  -webkit-padding-end: 24px;
+  -webkit-user-select: none;
+  color: #333;
+  font-size: 120%;
+  margin: 0;
+  padding: 14px 17px 14px;
+  text-shadow: white 0 1px 2px;
+}

@@ -39,4 +39,5 @@ function PathModel(database) {
 
 if (typeof module != 'undefined') {
   module.exports = PathModel;
+  module.exports = PathModel;
 }
