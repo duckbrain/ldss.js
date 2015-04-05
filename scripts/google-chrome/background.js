@@ -23,6 +23,11 @@ database.open().then(database.language.download).then(database.settings.getLangu
 	languageId = id;
 }).then(log);
 
+messageProvider.on('download-catalog', function(e, sender) {
+	e.languageId = e.languageId || languageId;
+	return database.download.downloadCatalog(e.languageId);
+});
+
 messageProvider.on('path-exists', function(e, sender) {
 	e.languageId = e.languageId || languageId;
 	return database.path.exists(e.languageId, e.path);
