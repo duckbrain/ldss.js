@@ -44,16 +44,22 @@
     }
     var conf = private.configuration;
     var ele = private.elements;
+    var d = info.details;
+    var needsDownload = info.type == 'book' 
+      ? !d.downloadedVersion || d.downloadedVersion < d.catalogVersion
+      : false;
 
     console.log(info);
     private.page = info;
+
     ele.content.innerHTML = private.template.render({
       page: {
         configuration: conf,
         path: info,
         getI18nMessage: getI18nMessage,
         languages: private.languages,
-        generator: new HtmlGenerator(conf, getI18nMessage)
+        generator: new HtmlGenerator(conf, getI18nMessage),
+        needsDownload: needsDownload
       }
     });
     attachLinks('a[data-path]', onLinkClicked);
@@ -61,6 +67,13 @@
     attachLinks('.refrences-close', onRefrenceClosedClicked);
     attachLinks('.refrences a[href]', onFootnoteClicked);
     ele.refrences = document.querySelector('.refrences')
+
+    // Begin downloading book if not up to day. The template can similarly check if this is needed
+    if (needsDownload) {
+      return database.download.downloadBook(info.id).then(function() {
+        return database.path.get(info.id).then(displayPage);
+      });
+    }
 
     return info;
   }
@@ -200,8 +213,10 @@
               return database.download.downloadCatalog(lang).then(startPage);
             } else {
               //TODO: A book probably neeeds to be downloaded. Tell the user
-              alert("It looks like your book is not downloaded. We'll take to you the catalog to sort things out.");
-              
+              alert(
+                "It looks like your book is not downloaded. We'll take to you the catalog to sort things out."
+              );
+
             }
           });
         } else {
