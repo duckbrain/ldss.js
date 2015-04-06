@@ -15,7 +15,7 @@ var conf = page.configuration;
 	<div class="languages">
 		<%= gen.select(page.languages, function(lang) {
 			var displayName = (conf.language != 1 || lang.eng_name == lang.name || lang.name.endsWith("(" + lang.eng_name + ")"))
-				? lang.name : lang.name + " (" + lang.eng_name + ")";
+				? lang.name : lang.name + " - " + lang.eng_name;
 			return displayName;
 		}) %>
 	</div>

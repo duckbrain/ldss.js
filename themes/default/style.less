@@ -1,50 +1,122 @@
+/*
+ * Default Less theme for LDS Scriptures
+ *
+ * There are a number of variables that are injected into your scripts. You may use any of these
+ * to allow your theme to be customized by the user.
+ *
+ * @background
+ * @color
+ * @accent
+ * @highlight
+ * @margins
+ * @fontFamily
+ * @fontSize
+ */
+
+@toolbar-size: 2em;
+@refrences-size: 30%;
+
 html, body {
   height: 100%;
+  background-color: @background;
+  color: @color;
 }
 
-.content {
+.loading {
+  background: rgba(0,0,0,.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  //TODO: Center the text in the middle of the screen and make it big with a box around it.
+}
+
+.page-content {
   overflow: auto;
-  margin-bottom: 30%;
+  margin-top: @toolbar-size;
+  margin-bottom: @refrences-size;
 }
 
 .selected {
-  background-color: #ff0;
+  background-color: @highlight;
 }
 
 .refrences {
   display: none;
+  background: @accent;
   position: fixed;
-  top: 70%;
+  height: @refrences-size;
   bottom: 0;
   left: 0;
   right: 0;
-  background: white;
   overflow: auto;
+}
+
+.toolbar {
+  height: @toolbar-size;
+  background: @accent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding-top: .5em;
+
+  div {
+    display: inline-block;
+  }
+
+  .heiarchy ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+
+    li {
+      display: inline-block;
+      // Don't allow names that are too long.
+      text-overflow: ellipsis;
+      max-width: 12em;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    li:last-child {
+      // Don't limit the size of the last item
+      max-width: inherit;
+      max-width: initial;
+    }
+    li:first-child:before {
+      display: none;
+    }
+    li:first-child a {
+      display: inline-block;
+      overflow: hidden;
+      color: transparent;
+      background: url('img/icon_16.png');
+      vertical-align: middle;
+      width: 16px;
+      height: 16px;
+    }
+    li:before {
+      content: "»";
+      margin: 0 0 0 .4em;
+      text-decoration: none;
+    }
+  }
+
+  .languages {
+    select {
+      max-width: 10em;
+    }
+  }
 }
 
 .refrences-open {
   .refrences {
     display: block;
   }
-  .content {
-  	padding-bottom: 30%;
+  .page-content {
+  	padding-bottom: @refrences-size;
   }
-}
-
-.toolbar {
-  div {
-    display: inline-block;
-  }
-
-  ul.heiarchy {
-    list-style: none;
-
-    li {
-      display: inline-block;
-    }
-  }
-}
-
-.spacer {
-  height: 100%;
 }
