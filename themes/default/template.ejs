@@ -14,11 +14,9 @@ var conf = page.configuration;
 	</div>
 	<div class="languages">
 		<%= gen.select(page.languages, function(lang) {
-			if (conf.language != 1 || lang.eng_name == lang.name || lang.name.endsWith("(" + lang.eng_name + ")")) {
-				return lang.name;
-			} else {
-				return lang.name + " (" + lang.eng_name + ")";
-			}
+			var displayName = (conf.language != 1 || lang.eng_name == lang.name || lang.name.endsWith("(" + lang.eng_name + ")"))
+				? lang.name : lang.name + " (" + lang.eng_name + ")";
+			return displayName;
 		}) %>
 	</div>
 	<div class="settings">
@@ -26,6 +24,13 @@ var conf = page.configuration;
 	</div>
 	<div class="next"><%= gen.a(path && path.next, "next") %></div>
 </div>
+<% if (page.loading) { %>
+<div class="loading">
+	<div>
+		<%= page.loading %>
+	</div>
+</div>
+<% } %>
 <div class="page-content">
 	<ul class="children">
 		<%= gen.li(path && path.children, gen.a) %>

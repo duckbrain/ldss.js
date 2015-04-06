@@ -2,9 +2,41 @@ function HtmlGenerator(conf, i18n) {
 	var that = {};
 
 	function href(target) {
-		return 'index.html?q=' + target.path + '&lang=' + conf.language;
+		switch (typeof target) {
+		case 'string':
+			return target;
+		case 'object':
+			if ('path' in target) {
+				return 'index.html?' + target.path + '?lang=' + conf.language;
+			} else if ('code_three' in target) {
+				return 'index.html?' + conf.path.path + '?lang=' + target.code_three;
+			} else {
+				throw "Unknown object 'target'";
+			}
+		default:
+			return target;
+		}
 	}
-	
+
+	function value(target) {
+		switch (typeof target) {
+		case 'string':
+			return target;
+		case 'object':
+			if ('id' in target) {
+				return target.id;
+			} else if ('path' in target) {
+				return target.path;
+			} else if ('code_three' in target) {
+				return target.code_three;
+			} else {
+				throw "Unknown object 'target'";
+			}
+		default:
+			return target;
+		}
+	}
+
 	function getName(target) {
 		return target.name;
 	}
@@ -22,17 +54,17 @@ function HtmlGenerator(conf, i18n) {
 	}
 
 	function list(before, after) {
-	
+
 		if (typeof before != 'function') {
 			var beforeVal = before;
 			before = function() { return beforeVal; }
-		}	
-	
+		}
+
 		var myList = function(item, template) {
 			if (!template) {
 				template = getName;
 			}
-		
+
 			if (!item) {
 				return '';
 			} else if (Array.isArray(item)) {
@@ -45,19 +77,16 @@ function HtmlGenerator(conf, i18n) {
 		}
 		return myList;
 	}
-	
+
 	function optionBefore(item) {
-		if (item.id) {
-			return '<option value="' + item.id + '">';
-		} else {
-			return '<option>';
-		}
+		var v = value(item);
+		return v ? '<option value="' + v + '">' : '<option>';
 	}
 
 	function ul(item, template) {
 		return '<ul>' + that.li(item, template) + '</ul>';
 	}
-	
+
 	function select(item, template) {
 		return '<select>' + that.option(item, template) + '</select>';
 	}

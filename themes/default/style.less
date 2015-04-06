@@ -1,13 +1,14 @@
-html, body {height: 100%;}
-
-#main-content {min-height: 100%;}
+html, body {
+  height: 100%;
+}
 
 .content {
-  overflow:auto;
-}  /* must be same height as the footer */
+  overflow: auto;
+  margin-bottom: 30%;
+}
 
 .selected {
-  background-color: yellow;
+  background-color: #ff0;
 }
 
 .refrences {
@@ -21,9 +22,29 @@ html, body {height: 100%;}
   overflow: auto;
 }
 
-.refrences-open .refrences {
-  display: block;
+.refrences-open {
+  .refrences {
+    display: block;
+  }
+  .content {
+  	padding-bottom: 30%;
+  }
 }
-.refrences-open .content {
-	padding-bottom: 30%;
+
+.toolbar {
+  div {
+    display: inline-block;
+  }
+
+  ul.heiarchy {
+    list-style: none;
+
+    li {
+      display: inline-block;
+    }
+  }
+}
+
+.spacer {
+  height: 100%;
 }

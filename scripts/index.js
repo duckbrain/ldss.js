@@ -45,7 +45,7 @@
     var conf = private.configuration;
     var ele = private.elements;
     var d = info.details;
-    var needsDownload = info.type == 'book' 
+    var needsDownload = info.type == 'book'
       ? !d.downloadedVersion || d.downloadedVersion < d.catalogVersion
       : false;
 
@@ -59,7 +59,7 @@
         getI18nMessage: getI18nMessage,
         languages: private.languages,
         generator: new HtmlGenerator(conf, getI18nMessage),
-        needsDownload: needsDownload
+        loading: needsDownload ? getI18nMessage('downloading') : false
       }
     });
     attachLinks('a[data-path]', onLinkClicked);
@@ -128,10 +128,10 @@
     console.log("Theme: ", theme)
     private.theme = theme;
     private.template = new EJS({
-      text: private.theme.template
+      text: theme.template
     });
     less.render(theme.style, {
-      globalVars: private.configuration
+      globalVars: {}
     }).then(function(output) {
       document.getElementById('custom-css').innerHTML = output.css;
     });
@@ -210,12 +210,10 @@
           return database.path.getPath(lang, '/').then(function(catalogRoot) {
             if (!catalogRoot) {
               //The catalog has not been downloaded. Lets do it.
+              //TODO: Display Loading screen
               return database.download.downloadCatalog(lang).then(startPage);
             } else {
-              //TODO: A book probably neeeds to be downloaded. Tell the user
-              alert(
-                "It looks like your book is not downloaded. We'll take to you the catalog to sort things out."
-              );
+              //TODO: Navigate up the path and redirect
 
             }
           });
