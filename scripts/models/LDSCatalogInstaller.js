@@ -60,6 +60,35 @@ function LDSCatalogInstaller(db, languageId) {
     });
   }
 
+  function createFolderPath(item) {
+    if (item.children.length > 0) {
+      // Try making one from the children
+      pathElements = item.children[0].path.split('/');
+      for (i = 1; i < item.children.length; i++) {
+        otherPath = item.children[i].path.split('/');
+        for (j = 0; j < pathElements.length; j++) {
+          if (pathElements[j] != otherPath[j]) {
+            pathElements = pathElements.slice(0, j);
+          }
+        }
+      }
+      newPath = pathElements.join('/');
+      if (!newPath in paths) {
+        path = newPath;
+      } else {
+        // Try making one from the parent and name
+        otherPath = item.name.replace(/\W+/g, '-').toLowerCase();
+        pathElements = item.parent.path.split('/');
+        pathElements.push(otherPath);
+        newPath = pathElements.join('/');
+        if (!newPath in paths) {
+          path = newPath;
+        }
+        //else default to number
+      }
+    }
+  }
+
   function formatBlank(item) {
     return {
       languageId: languageId,
@@ -94,34 +123,6 @@ function LDSCatalogInstaller(db, languageId) {
     //is not used more than once. If the generated name matches an existing one, fall back to the id number
     var path = '/' + item.id;
     var i, j, pathElements, otherPath, newPath;
-
-    if (item.children.length > 0) {
-      // Try making one from the children
-      pathElements = item.children[0].path.split('/');
-      for (i = 1; i < item.children.length; i++) {
-        otherPath = item.children[i].path.split('/');
-        for (j = 0; j < pathElements.length; j++) {
-          if (pathElements[j] != otherPath[j]) {
-            pathElements = pathElements.slice(0, j);
-          }
-        }
-      }
-      newPath = pathElements.join('/');
-      if (!newPath in paths) {
-        path = newPath;
-      } else {
-        // Try making one from the parent and name
-        otherPath = item.name.replace(/\W+/g, '-').toLowerCase();
-        pathElements = item.parent.path.split('/');
-        pathElements.push(otherPath);
-        newPath = pathElements.join('/');
-        if (!newPath in paths) {
-          path = newPath;
-        }
-        //else default to number
-      }
-    }
-
 
     return formatBlank({
       path: path,

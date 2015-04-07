@@ -19,7 +19,7 @@ function LDSContentProvider(database) {
         return that.download({
             url: 'http://tech.lds.org/glweb',
             data: data
-        });
+        }).then(JSON.parse);
     };
 
     that.getLanguages = function() {

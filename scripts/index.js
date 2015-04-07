@@ -36,7 +36,13 @@
 	};
 	window.private = private;
 
+	function getIndexPath(path, language, verses) {
+		var fullPath = [path].concat(verses).join('.');
+		return 'index.html?' + fullPath + '?lang=' + language
+	}
+
 	function displayPage(info) {
+		//TODO: Move traversal logic here to accomidate books in links not downloaded.
 		if (!private.historyCaused) {
 			if (info) {
 				history.pushState(info, info.name, "index.html?" + info.path);
@@ -58,7 +64,7 @@
 				getI18nMessage: getI18nMessage,
 				languages: private.languages,
 				generator: new HtmlGenerator(conf, getI18nMessage),
-				loading: needsDownload ? getI18nMessage('downloading') : false
+				loading: (needsDownload || !'type' in info) ? getI18nMessage('downloading') : false
 			}
 		});
 		attachLinks('a[data-path]', onLinkClicked);
@@ -66,6 +72,9 @@
 		attachLinks('.refrences-close', onRefrenceClosedClicked);
 		attachLinks('.refrences a[href]', onFootnoteClicked);
 		ele.refrences = document.querySelector('.refrences')
+
+		//TODO: Check for verses and scroll to there instead,
+		document.body.scrollTop = 0;
 
 		// Begin downloading book if not up to day. The template can similarly check if this is needed
 		if (needsDownload) {
@@ -171,14 +180,17 @@
 			.then(function(e) {
 				var path, conf;
 
-				conf = e[0];
-				if (search.lastIndexOf('?') != -1) {
+				if (!search) {
+					path = ['/'];
+				} else if (search.lastIndexOf('?') != -1) {
 					path = search.substring(0, search.lastIndexOf('?')).split('.');
 					search = search.substring(search.lastIndexOf('?'))
 				} else {
 					path = search.split('.');
 					search = '';
 				}
+
+				conf = e[0];
 				conf.path = path[0];
 				conf.verses = path;
 				conf.verses.shift(1);
@@ -214,10 +226,25 @@
 						if (!catalogRoot) {
 							//The catalog has not been downloaded. Lets do it.
 							//TODO: Display Loading screen
+							displayPage({
+								path: '/'
+							});
 							return database.download.downloadCatalog(lang).then(startPage);
 						} else {
 							//TODO: Navigate up the path and redirect
-
+							function findValidPath(path) {
+								var path = path.split('/');
+								path.pop();
+								path = path.join('/');
+								return database.path.getPath(lang, path).then(function(node) {
+									if (node) {
+										location.search = '?' + path + "?lang=" + lang
+									} else {
+										return findValidPath(path);
+									}
+								});
+							}
+							findValidPath(private.configuration.path);
 						}
 					});
 				} else {

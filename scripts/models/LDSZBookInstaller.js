@@ -65,9 +65,11 @@ function LDSZBookInstaller(db, sqlitedb, book) {
   }
 
   function findRelations(node) {
-    node.heiarchy = node.parent.heiarchy.concat([node]);
-    node.next = helpers.findSibling(+1, node);
-    node.previous = helpers.findSibling(-1, node);
+    if (node.type == 'node') {
+      node.heiarchy = node.parent.heiarchy.concat([node]);
+      node.next = helpers.findSibling(+1, node);
+      node.previous = helpers.findSibling(-1, node);
+    }
     for (var i = 0; i < node.children.length; i++) {
       findRelations(node.children[i]);
     }

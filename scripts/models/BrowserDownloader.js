@@ -33,11 +33,7 @@ BrowserDownloader.prototype = {
             client.onreadystatechange = function() {
                 if (this.readyState == 4) {
                     if (this.status == 200) {
-                        try {
-                            resolve(JSON.parse(this.response));
-                        } catch (ex) {
-                            resolve(this.response);
-                        }
+                        resolve(this.response);
                     } else {
                         reject({
                             "error": this.statusText
