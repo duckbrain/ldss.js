@@ -2,12 +2,14 @@ function ThemeModel(database) {
   var that = this;
   var builtIn = {
     'default': {
-      name: 'default',
-      displayName: 'Default',
       template: 'themes/default/template.ejs',
-      style: 'themes/default/style.less',
-      script: null,
+      stylesheet: 'themes/default/style.less',
+      script: null, //optional
     }
+    //TODO: Midnight
+    //TODO: Sepia
+    //TODO: Gold plates
+    //TODO: Bootstrap
   };
 
   function reset() {
@@ -47,18 +49,18 @@ function ThemeModel(database) {
   function getBuiltIn(name) {
     var t = builtIn[name];
     return Promise.all(
-      [database.downloader.download('themes/' + name + '/style.less'),
-        database.downloader.download('themes/' + name + '/template.ejs'),
-        database.downloader.download('themes/' + name + '/script.js')
+      [database.downloader.download(t.stylesheet),
+        database.downloader.download(t.template),
+        (t.script
+          ? database.downloader.download(t.script)
+          : Promise.resolve(null))
       ]).then(function(e) {
       return {
-        id: t.name,
-        name: t.displayName || t.name,
-        builtIn: true, // this will be false for custom ones
+        id: name,
+        name: name, //TODO: Get i18n name with "name" as base
         style: e[0],
         template: e[1],
-        script: e[2],
-        libraries: t.libraries || ['scripts/links.js'],
+        script: e[2]
       };
     })
 

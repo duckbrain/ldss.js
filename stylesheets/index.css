@@ -20,30 +20,11 @@ body>.settings>* {
   display: block;
   height: auto !important;
   transition: height 1s;
-  /* display: table-cell; */
-  /* height: 0 !important; */
   vertical-align: middle;
   /* display: table-cell; */
 }
 body>.settings iframe {
   border: none;
-}
-.close-button {
-  background-image: url(chrome://theme/IDR_CLOSE_DIALOG);
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 14px;
-  position: absolute;
-  right: 7px;
-  top: 7px;
-  width: 14px;
-  z-index: 1;
-}
-#extension-options-overlay-header {
-  align-items: center;
-  border-bottom: solid lightgray 1px;
-  display: flex;
-  position: relative;
 }
 h1 {
   -webkit-padding-end: 24px;

@@ -13,14 +13,6 @@
  * @fontSize
  */
 
- @font-face {
-   font-family: 'FontAwesome';
-   src: url('fonts/fontawesome-webfont.eot?v=4.3.0');
-   src: url('fonts/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'), url('fonts/fontawesome-webfont.woff2?v=4.3.0') format('woff2'), url('fonts/fontawesome-webfont.woff?v=4.3.0') format('woff'), url('fonts/fontawesome-webfont.ttf?v=4.3.0') format('truetype'), url('fonts/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
-   font-weight: normal;
-   font-style: normal;
- }
-
 @toolbar-size: 2em;
 @refrences-size: 30%;
 
@@ -30,6 +22,14 @@ html, body {
   color: @color;
 }
 
+.page-content {
+  overflow: auto;
+  margin-top: @toolbar-size * 2;
+  margin-bottom: 100%;
+  margin-left: @margins;
+  margin-right: @margins;
+}
+
 .loading {
   background: rgba(0,0,0,.4);
   position: fixed;
@@ -37,15 +37,22 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  //TODO: Center the text in the middle of the screen and make it big with a box around it.
-}
-
-.page-content {
-  overflow: auto;
-  margin-top: @toolbar-size * 2;
-  margin-bottom: 100%;
-  margin-left: @margins;
-  margin-right: @margins;
+  &>div {
+    background: @background;
+    color: @color;
+    font-size: 1.5em;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: auto;
+    padding: 1em;
+    &:before {
+      // TODO: Show spinner
+      content: "Test";
+    }
+  }
 }
 
 .children, .children ul, .children li {
@@ -104,7 +111,7 @@ html, body {
 }
 
 .toolbar {
-  height: @toolbar-size;
+  min-height: @toolbar-size;
   background: @accent;
   position: fixed;
   top: 0;
