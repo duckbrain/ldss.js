@@ -79,7 +79,7 @@
 		// Begin downloading book if not up to day. The template can similarly check if this is needed
 		if (needsDownload) {
 			return database.download.downloadBook(info.id).then(function() {
-				return database.path.get(info.id).then(displayPage);
+				return database.node.get(info.id).then(displayPage);
 			});
 		}
 
@@ -98,8 +98,8 @@
 	}
 
 	function onLinkClicked(e) {
-		var id = parseInt(e.target.dataset.path);
-		database.path.get(id).then(displayPage);
+		var id = parseInt(e.target.dataset.id);
+		database.node.get(id).then(displayPage);
 	}
 
 	function onRefrenceClicked(e) {
@@ -123,7 +123,7 @@
 
 	function onFootnoteClicked(e) {
 		getConfiguration(e.target.pathname).then(function(conf) {
-			return database.path.getPath(conf.language, conf.path).then(displayPage);
+			return database.node.getPath(conf.language, conf.path).then(displayPage);
 		});
 	}
 
@@ -212,7 +212,7 @@
 			.then(getConfiguration)
 			.then(function(conf) {
 				return Promise.all([
-					database.path.getPath(conf.language, conf.path),
+					database.node.getPath(conf.language, conf.path),
 					database.theme.get(conf.theme)
 				]);
 			}).then(function(e) {
@@ -222,7 +222,7 @@
 
 				var path = e[0];
 				if (!path) {
-					return database.path.getPath(lang, '/').then(function(catalogRoot) {
+					return database.node.getPath(lang, '/').then(function(catalogRoot) {
 						if (!catalogRoot) {
 							//The catalog has not been downloaded. Lets do it.
 							//TODO: Display Loading screen
@@ -236,7 +236,7 @@
 								var path = path.split('/');
 								path.pop();
 								path = path.join('/');
-								return database.path.getPath(lang, path).then(function(node) {
+								return database.node.getPath(lang, path).then(function(node) {
 									if (node) {
 										location.search = '?' + path + "?lang=" + lang
 									} else {

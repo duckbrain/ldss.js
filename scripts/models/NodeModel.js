@@ -1,12 +1,12 @@
-function PathModel(database) {
+function NodeModel(database) {
   var that = this;
 
   function get(id) {
-    return database.server.paths.get(id);
+    return database.server.nodes.get(id);
   }
 
   function getPath(languageId, path) {
-    return database.server.paths.query('path')
+    return database.server.nodes.query('path')
       .only([languageId, path]).execute().then(database.helpers.single);
   }
 
@@ -17,16 +17,16 @@ function PathModel(database) {
   }
 
   function add(item) {
-    return database.server.paths.add(item);
+    return database.server.nodes.add(item);
   }
 
   function update(item) {
-    return database.server.paths.update(item);
+    return database.server.nodes.update(item);
   }
 
   function clear(languageId) {
     //TODO: Limit to languageId
-    return database.server.paths.clear();
+    return database.server.nodes.clear();
   }
 
   that.add = add;
@@ -38,6 +38,5 @@ function PathModel(database) {
 }
 
 if (typeof module != 'undefined') {
-  module.exports = PathModel;
-  module.exports = PathModel;
+  module.exports = NodeModel;
 }
