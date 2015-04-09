@@ -43,7 +43,7 @@
 
 	function displayPage(info) {
 		//TODO: Move traversal logic here to accomidate books in links not downloaded.
-		if (!private.historyCaused) {
+		if (!private.historyCaused && info.id) {
 			if (info) {
 				history.pushState(info, info.name, "index.html?" + info.path);
 			}

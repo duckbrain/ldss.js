@@ -16,6 +16,14 @@
 @toolbar-size: 2em;
 @refrences-size: 30%;
 
+.font-awesome() {
+  font: normal normal normal 14px/1 FontAwesome;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin-right: .4em;
+}
+
 html, body {
   height: 100%;
   background-color: @background;
@@ -28,6 +36,27 @@ html, body {
   margin-bottom: 100%;
   margin-left: @margins;
   margin-right: @margins;
+}
+
+@-webkit-keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
 }
 
 .loading {
@@ -49,8 +78,12 @@ html, body {
     margin: auto;
     padding: 1em;
     &:before {
-      // TODO: Show spinner
-      content: "Test";
+      // loading spinner
+      content: "\f110";
+      .font-awesome();
+      font-size: 1em;
+      -webkit-animation: fa-spin 2s infinite linear;
+      animation: fa-spin 2s infinite linear;
     }
   }
 }
@@ -79,11 +112,7 @@ html, body {
     content: "\f02d";
   }
   a:before {
-    font: normal normal normal 14px/1 FontAwesome;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    margin-right: .4em;
+    .font-awesome();
   }
   a {
     color: @color;
