@@ -1,0 +1,7 @@
+.tools li>a.chrome-app-icon:before
+{
+	content: ' ';
+	background-image: url(chrome-extension://__MSG_@@extension_id__/img/icon_16.png);
+	background-repeat: no-repeat;
+	background-position: 0px 7px;
+}

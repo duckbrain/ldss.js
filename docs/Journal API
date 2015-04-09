@@ -1,0 +1,137 @@
+#
+# Get list
+#
+
+POST /sso/UI/Login HTTP/1.1
+Host: ident.lds.org
+Connection: keep-alive
+Content-Length: 128
+Cache-Control: max-age=0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Origin: https://ident.lds.org
+X-FirePHP-Version: 0.0.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/40.0.2214.111 Chrome/40.0.2214.111 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+DNT: 1
+Referer: https://ident.lds.org/sso/UI/Login
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8,es;q=0.6
+Cookie: JSESSIONID=745652F23A65BD75DEAFD6DA0E78669C; TS01f232ea=01999b70235657924b0b3113b262ceacb7c8481b2a681b28c341760abeec63a5984bc4662b6e91120192618b4f9fca90d72c21e11f; s_vi=[CS]v1|2A6B48C485193E4F-6000060E200033FF[CE]; lds-preferred-lang=eng; BIGipServerpool_ident.lds.org_OPENAM=1259355402.36895.0000; TS01289383=01999b70237e75654290762fcea9f9ab91cfca637b1b085ef3dc2e88345475f356bae1d540; signmeout-goto=http%3a%2f%2fwww.lds.org%2fstudy-tools%3flang%3deng%26guid%3dall; mbox=session#1426056998710-685666#1426059468|disable#browser%20timeout#1426060624|check#true#1426057668; s_cc=true; s_fid=17376CA2103483A7-3787F9CA30355773; s_sq=%5B%5BB%5D%5D; s_ppv=lds.org%253Anotebook%253Ahome%2C69%2C69%2C970; ObSSOCookie=2ZqlcgGsSQISswyx43DLRfX8TJZUrf%2Bj4WsB6PqkFoRTUf5g7jYs4ZIgs6la5J3FNwcQxif59odiXIuIWYqzdqZRV7vNX17%2BQZfC7CJlvDjDdyVfVBeuA%2BRd1sLos8Ei4xodgcp%2Bqu0IwIpklIhdLnryY7VLS0%2FtibRMqS1Y2z09MS2Qf6yX3NRDg5YvN8Fx4d7%2FsLcUa7IO5EL3gcwInibZ6pobmFce%2FktEICv2DTER72Zb8GT%2FZSzGvgXKnQCubT3U%2BWxONP4d7xqlcN%2B4S9zcOV8bQ9nN9R5CGe%2BGSDh9LQwFXlOU4knlOJ5DSVsQfrcOwvqL5QEOcRC%2BYfWqNxi3KaMqVe9D3JAUqSR68aI%3D; TS01916bc2=01999b70234cf8205d2b6352c255293a563d0cb65b81dcbc81026d9d47c937521a004c783db1871c737ac8778bcf9f073d51b239fe; obLegacyLogin=signin.lds.org; TS01b89640=01999b7023cfd26c592abef367ec53500bba7ba2c4b866f5040a11ad03e87da8646a272bf4bd19000119f59800cede658d87d395cafddbb742bb10d6464486858870f9326a04c758fd94d243ad63d44abc988f4def638ad7b247458b8b9ae1777f3c3ca488; AMAuthCookie=AQIC5wM2LY4SfcwdGdYPCkJTABAY2XeU2KtRT7x-MvikKBY.*AAJTSQACMDIAAlNLABQtNTI5NzQ4MzczOTQwMjA5NjE1MgACUzEAAjA1*; amlbcookie=05; TS01d2d5e7=01999b7023efccf51ef485b0249297841e69853994a3345ab6421729325c1bdf5f13b9c054b20419ec3a56f7e7aa225f534e3bfd02c1cad5736f82076849502bfa2cd5e8be; TS0142d024=01999b702357a2e0178be344bfb1cb3fecd5807967731234bc95579df10a5a4880a5f75a21a23f7538573e42e6cff252f9c7a9f6f6319b098d352e07d112467fe2d979b62b405f61edf0c549a95cc04cef52acaf8e463543525fd5b07b3cfc815d92feada13c74d5aa0cbbc5a4432d2fafea50dd79600798d2d0e8f734d6294db0dda28ecb
+
+
+
+#
+# Save one
+#
+
+Remote Address:23.213.73.199:443
+Request URL:https://www.lds.org/study-tools/ajax/highlight/saveOne?lang=eng&clang=eng&callback=jQuery17106749902123119682_1426058422995
+Request Method:POST
+Status Code:200 OK
+Request Headersview source
+Accept:text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01
+Accept-Encoding:gzip, deflate
+Accept-Language:en-US,en;q=0.8,es;q=0.6
+Connection:keep-alive
+Content-Length:432
+Content-Type:application/x-www-form-urlencoded
+Cookie:disable-footnotes=true; ldsorg_profile=%7B%22lastUser%22%3A%222226029058%22%2C%22users%22%3A%7B%222226029058%22%3A%7B%22nbIntro%22%3A0%2C%22nbMode%22%3A1%2C%22nbToolbar%22%3A1%2C%22nbColor%22%3A%22hl-color-1%22%2C%22nbFolder%22%3Anull%2C%22editId%22%3Anull%2C%22nbView%22%3A1%7D%7D%7D; s_vi=[CS]v1|2A6B48C485193E4F-6000060E200033FF[CE]; lds-preferred-lang=eng; MWSTID=1521942093; lds-youtube=true; TS01916bc2=01999b70234cf8205d2b6352c255293a563d0cb65b81dcbc81026d9d47c937521a004c783db1871c737ac8778bcf9f073d51b239fe; signmeout-goto=http%3a%2f%2fwww.lds.org%2fstudy-tools%3fguid%3dall%26lang%3deng; amlbcookie=05; TS01b89640=01999b7023f3b083694deeaca7ee82d745e2b5fe38617280beec3195f8d4e2c95db2995b9c075b7eea602abe6e678adbb27debf9eb; lds-id=AQIC5wM2LY4SfcxluNPsGAd1p4H5KyE37O2r9mAR3oUTFgQ.*AAJTSQACMDIAAlNLABM3NTE3OTc5NTg5NDMzNTE2MTQ2AAJTMQACMDU.*; TS0142d024=01999b702369c52ff93894555884504328075cd954731234bc95579df10a5a4880a5f75a21e73f7beac079866b90ce8ed82da03b38e11261ca34a29efa9208ad9c9777502c5bd620ea546644631324b12bdf2a54d45efce9b4eceaf22234fd7708d9366cf8f37908303c9976c1962aa7fa27abddd549b54e6b1219b5ddd219f0cdc2ddc950431f22821664839164303edf9d485813; ObSSOCookie=IEjQm2HbeAqMW6qiMTB4XxW4FyT%2FBFSHMiz6%2BPXsu7A3LnnIWbeuo0kT2ltXsKQl7QRMYkqTZGxz1FjD0S7hkCd46ET5XS0LdudhdvmYD81zWFcjEY%2Bl2zV%2BW94a6oRxblJqR4SI%2BeGVzCVCGJkZoaQ7Y9gl6hiVGun6Frv867nGY%2F8xSUzfoK%2FvGtaXdE0UzcNQAqDNXNXLPDeIWbwQ6MYAvdgLRsnCwggEM8almPpPniB63%2Bs2e6XCcDElL7so7%2B25pVShhpf8Vz%2BClJRsy6Gdhg2Z2wGUKsv81s%2FAanMmwoTTiWqAFCv30BgimN5Gnh%2BuprgjGkaScIENFyg2MpncmmRa3UskUcmpegSzo3Y%3D; mbox=session#1426056998710-685666#1426060284|disable#browser%20timeout#1426060624|check#true#1426058484; s_cc=true; s_ppv=lds.org%253Anotebook%253Ahome%2C40%2C40%2C970; s_fid=17376CA2103483A7-3787F9CA30355773; s_sq=ldsall%3D%2526pid%253Dlds.org%25253Anotebook%25253Ahome%2526pidt%253D1%2526oid%253Dhttps%25253A%25252F%25252Fwww.lds.org%25252Fstudy-tools%25253Fguid%25253Dall%252526lang%25253Deng%252523%2526ot%253DA
+DNT:1
+Host:www.lds.org
+Origin:https://www.lds.org
+Referer:https://www.lds.org/study-tools?guid=all&lang=eng
+User-Agent:Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/40.0.2214.111 Chrome/40.0.2214.111 Safari/537.36
+X-FirePHP-Version:0.0.6
+X-Requested-With:XMLHttpRequest
+Query String Parametersview sourceview URL encoded
+lang:eng
+clang:eng
+callback:jQuery17106749902123119682_1426058422995
+Form Dataview sourceview URL encoded
+id:544c9425-ebe4-44a4-afff-05cb31f2998c
+data:{"title":"Personal, OT","note":"","folders":["13829587764993802029"],"tags":"","pageUri":"/scriptures/ot/num/21","source":"Android Gospel Library | App: 3.1.0-BETA | OS: 19","device":"android","typeKey":"bookmark","uri":"/scriptures/ot/num/21.23"}
+Response Headersview source
+Cache-Control:no-cache
+Connection:keep-alive
+Content-Length:846
+Content-Type:application/json
+Date:Wed, 11 Mar 2015 07:20:39 GMT
+Expires:0
+Pragma:no-cache
+
+
+
+#
+# Create New
+#
+
+Remote Address:23.213.73.199:443
+Request URL:https://www.lds.org/study-tools/ajax/highlight/saveOne?lang=eng&clang=eng&callback=jQuery17106749902123119682_1426058422996
+Request Method:POST
+Status Code:200 OK
+Request Headersview source
+Accept:text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01
+Accept-Encoding:gzip, deflate
+Accept-Language:en-US,en;q=0.8,es;q=0.6
+Connection:keep-alive
+Content-Length:233
+Content-Type:application/x-www-form-urlencoded
+Cookie:disable-footnotes=true; ldsorg_profile=%7B%22lastUser%22%3A%222226029058%22%2C%22users%22%3A%7B%222226029058%22%3A%7B%22nbIntro%22%3A0%2C%22nbMode%22%3A1%2C%22nbToolbar%22%3A1%2C%22nbColor%22%3A%22hl-color-1%22%2C%22nbFolder%22%3Anull%2C%22editId%22%3Anull%2C%22nbView%22%3A1%7D%7D%7D; s_vi=[CS]v1|2A6B48C485193E4F-6000060E200033FF[CE]; lds-preferred-lang=eng; MWSTID=1521942093; lds-youtube=true; TS01916bc2=01999b70234cf8205d2b6352c255293a563d0cb65b81dcbc81026d9d47c937521a004c783db1871c737ac8778bcf9f073d51b239fe; signmeout-goto=http%3a%2f%2fwww.lds.org%2fstudy-tools%3fguid%3dall%26lang%3deng; amlbcookie=05; TS01b89640=01999b7023f3b083694deeaca7ee82d745e2b5fe38617280beec3195f8d4e2c95db2995b9c075b7eea602abe6e678adbb27debf9eb; lds-id=AQIC5wM2LY4SfcxluNPsGAd1p4H5KyE37O2r9mAR3oUTFgQ.*AAJTSQACMDIAAlNLABM3NTE3OTc5NTg5NDMzNTE2MTQ2AAJTMQACMDU.*; TS0142d024=01999b702369c52ff93894555884504328075cd954731234bc95579df10a5a4880a5f75a21e73f7beac079866b90ce8ed82da03b38e11261ca34a29efa9208ad9c9777502c5bd620ea546644631324b12bdf2a54d45efce9b4eceaf22234fd7708d9366cf8f37908303c9976c1962aa7fa27abddd549b54e6b1219b5ddd219f0cdc2ddc950431f22821664839164303edf9d485813; mbox=session#1426056998710-685666#1426060284|disable#browser%20timeout#1426060624|check#true#1426058484; s_cc=true; s_ppv=lds.org%253Anotebook%253Ahome%2C40%2C40%2C970; ObSSOCookie=fiTSG%2FDc%2B0tT4MVHUY405aF758ZltpJfHDid3xANp%2B7YKuxZf3GsjERxOLB8SibWXKmfRo1jVlfJ4JrW1FmT3%2F%2BalVmrDXStpioBPZG7XrxzpLS4rEnRF58v8O1T%2F1SEZ27h5mHtECfH48Bihupfg0I6YNbHD7qvstv2Ucahs%2BmSFEpI9fb%2BY%2BmsDn8wA99yL29U9V0Vs89oD0icRoGXN5SlsQsNGjpY%2FyI5rRy3EGZNBAab0E%2FkCF5yABfNsHxnSeu1CMV0fy91QzlEYJAK5ePGkzN1tNvnCjinwyy58QyPxF5UFKUw5UtuosOFOl0rNllIFXNouR4mIIo37Ty6b9qLJlxj%2B1k07KFNCSdoDKw%3D; s_fid=17376CA2103483A7-3787F9CA30355773; s_sq=ldsall%3D%2526pid%253Dlds.org%25253Anotebook%25253Ahome%2526pidt%253D1%2526oid%253Dhttps%25253A%25252F%25252Fwww.lds.org%25252Fstudy-tools%25253Fguid%25253Dall%252526lang%25253Deng%252523%2526ot%253DA
+DNT:1
+Host:www.lds.org
+Origin:https://www.lds.org
+Referer:https://www.lds.org/study-tools?guid=all&lang=eng
+User-Agent:Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/40.0.2214.111 Chrome/40.0.2214.111 Safari/537.36
+X-FirePHP-Version:0.0.6
+X-Requested-With:XMLHttpRequest
+Query String Parametersview sourceview URL encoded
+lang:eng
+clang:eng
+callback:jQuery17106749902123119682_1426058422996
+Form Dataview sourceview URL encoded
+id:new
+data:{"title":"Test","note":"testogf","folders":[],"tags":"","pageUri":"/journal","source":"","device":"","typeKey":"journal"}
+Response Headersview source
+Cache-Control:no-cache,no-store
+Connection:keep-alive
+Content-Length:391
+Content-Type:application/json
+Date:Wed, 11 Mar 2015 07:21:47 GMT
+Expires:0
+Pragma:no-cache
+Set-Cookie:ObSSOCookie=FX17Q5JgYDd9CClsqXY%2FWAa0%2FcltR2q6%2F%2BHc9gGWH7YiTkI2j4ZfiWRkVNJVKtvJK7hZ2TmOntcX1Rgk7WIo0sLGvTLRNNB6BelY4Gw%2BfL%2FMgkf3AB9tgGIOAL9twQ1kKAK6PEJuDaIUGJjreiRRQr5viOPWe3HpxgNaWn%2BswbUJYt%2FIH0vyUpTrBNwvEY%2BBz4n3JTWAd%2F5L3YT%2FMLfVI1DOfCA0dgw8GETiWdhdNEdLadFpJl64F6GF4WuJ51hWVqFE%2Br%2FC9dMnuU8tuXAI6dB52Vp8rxhvMq64MTs5XMqiE1Dq0RyxZqjnQfW8FhYCuj5W66AvrqqtD94nCda2%2BsxtkKPUICEbtUs%2Bo0wzXkc%3D;secure; path=/; domain=.lds.org
+
+#
+# Delete
+#
+
+Remote Address:23.213.73.199:443
+Request URL:https://www.lds.org/study-tools/ajax/highlight/delete?callback=jQuery17108889659009873867_1426058556933&lang=eng&clang=eng&id=27199931541111904360&_=1426058562024
+Request Method:GET
+Status Code:200 OK
+Request Headersview source
+Accept:text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01
+Accept-Encoding:gzip, deflate, sdch
+Accept-Language:en-US,en;q=0.8,es;q=0.6
+Connection:keep-alive
+Cookie:disable-footnotes=true; ldsorg_profile=%7B%22lastUser%22%3A%222226029058%22%2C%22users%22%3A%7B%222226029058%22%3A%7B%22nbIntro%22%3A0%2C%22nbMode%22%3A1%2C%22nbToolbar%22%3A1%2C%22nbColor%22%3A%22hl-color-1%22%2C%22nbFolder%22%3Anull%2C%22editId%22%3Anull%2C%22nbView%22%3A1%7D%7D%7D; s_vi=[CS]v1|2A6B48C485193E4F-6000060E200033FF[CE]; lds-preferred-lang=eng; MWSTID=1521942093; lds-youtube=true; TS01916bc2=01999b70234cf8205d2b6352c255293a563d0cb65b81dcbc81026d9d47c937521a004c783db1871c737ac8778bcf9f073d51b239fe; signmeout-goto=http%3a%2f%2fwww.lds.org%2fstudy-tools%3fguid%3dall%26lang%3deng; amlbcookie=05; TS01b89640=01999b7023f3b083694deeaca7ee82d745e2b5fe38617280beec3195f8d4e2c95db2995b9c075b7eea602abe6e678adbb27debf9eb; lds-id=AQIC5wM2LY4SfcxluNPsGAd1p4H5KyE37O2r9mAR3oUTFgQ.*AAJTSQACMDIAAlNLABM3NTE3OTc5NTg5NDMzNTE2MTQ2AAJTMQACMDU.*; TS0142d024=01999b702369c52ff93894555884504328075cd954731234bc95579df10a5a4880a5f75a21e73f7beac079866b90ce8ed82da03b38e11261ca34a29efa9208ad9c9777502c5bd620ea546644631324b12bdf2a54d45efce9b4eceaf22234fd7708d9366cf8f37908303c9976c1962aa7fa27abddd549b54e6b1219b5ddd219f0cdc2ddc950431f22821664839164303edf9d485813; ObSSOCookie=FX17Q5JgYDd9CClsqXY%2FWAa0%2FcltR2q6%2F%2BHc9gGWH7YiTkI2j4ZfiWRkVNJVKtvJK7hZ2TmOntcX1Rgk7WIo0sLGvTLRNNB6BelY4Gw%2BfL%2FMgkf3AB9tgGIOAL9twQ1kKAK6PEJuDaIUGJjreiRRQr5viOPWe3HpxgNaWn%2BswbUJYt%2FIH0vyUpTrBNwvEY%2BBz4n3JTWAd%2F5L3YT%2FMLfVI1DOfCA0dgw8GETiWdhdNEdLadFpJl64F6GF4WuJ51hWVqFE%2Br%2FC9dMnuU8tuXAI6dB52Vp8rxhvMq64MTs5XMqiE1Dq0RyxZqjnQfW8FhYCuj5W66AvrqqtD94nCda2%2BsxtkKPUICEbtUs%2Bo0wzXkc%3D; mbox=session#1426056998710-685666#1426060418|disable#browser%20timeout#1426060624|check#true#1426058618; s_cc=true; s_ppv=lds.org%253Anotebook%253Ahome%2C40%2C40%2C970; s_fid=17376CA2103483A7-3787F9CA30355773; s_sq=ldsall%3D%2526pid%253Dlds.org%25253Anotebook%25253Ahome%2526pidt%253D1%2526oid%253Dhttps%25253A%25252F%25252Fwww.lds.org%25252Fstudy-tools%25253Flang%25253Deng%252526guid%25253Dall%252523%2526ot%253DA
+DNT:1
+Host:www.lds.org
+Referer:https://www.lds.org/study-tools?lang=eng&guid=all
+User-Agent:Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/40.0.2214.111 Chrome/40.0.2214.111 Safari/537.36
+X-FirePHP-Version:0.0.6
+X-Requested-With:XMLHttpRequest
+Query String Parametersview sourceview URL encoded
+callback:jQuery17108889659009873867_1426058556933
+lang:eng
+clang:eng
+id:27199931541111904360
+_:1426058562024
+Response Headersview source
+Cache-Control:no-cache
+Connection:keep-alive
+Content-Length:132
+Content-Type:application/json
+Date:Wed, 11 Mar 2015 07:22:42 GMT
+Expires:0
+Pragma:no-cache

@@ -1,0 +1,22 @@
+{
+    "app_title": {
+      "message": "LDS Scriptures",
+      "description": "The official title of the app, displayed all over."
+    },
+    "app_description": {
+      "message": "A very lightweight, offline version of the scriptures of the Church of Jesus Christ of Latter Day Saints.",
+      "description": "The description in the app manifest that is shown in the extensions tab and in the webstore."
+    },
+    "previous": {
+        "message": "Previous",
+        "description": "May be displayed on the toolbar"
+    },
+    "next": {
+        "message": "Next",
+        "description": "May be displayed on the toolbar"
+    },
+    "up_level": {
+        "message": "Up",
+        "description": "May be displayed on the toolbar"
+    }
+}

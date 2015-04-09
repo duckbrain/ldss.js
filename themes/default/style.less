@@ -1,0 +1,208 @@
+/*
+ * Default Less theme for LDS Scriptures
+ *
+ * There are a number of variables that are injected into your scripts. You may use any of these
+ * to allow your theme to be customized by the user.
+ *
+ * @background
+ * @color
+ * @accent
+ * @highlight
+ * @margins
+ * @fontFamily
+ * @fontSize
+ */
+
+@toolbar-size: 2em;
+@refrences-size: 30%;
+
+.font-awesome() {
+  font: normal normal normal 14px/1 FontAwesome;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin-right: .4em;
+}
+
+html, body {
+  height: 100%;
+  background-color: @background;
+  color: @color;
+}
+
+.page-content {
+  overflow: auto;
+  margin-top: @toolbar-size * 2;
+  margin-bottom: 100%;
+  margin-left: @margins;
+  margin-right: @margins;
+}
+
+@-webkit-keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+.loading {
+  background: rgba(0,0,0,.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  &>div {
+    background: @background;
+    color: @color;
+    font-size: 1.5em;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: auto;
+    padding: 1em;
+    &:before {
+      // loading spinner
+      content: "\f110";
+      .font-awesome();
+      font-size: 1em;
+      -webkit-animation: fa-spin 2s infinite linear;
+      animation: fa-spin 2s infinite linear;
+    }
+  }
+}
+
+.children, .children ul, .children li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.children li {
+  display: block;
+  float: left;
+  margin: .5em;
+  background-color: @accent;
+  &:hover {
+    background-color: lighten(@accent, 10%);
+  }
+  &:active {
+    background-color: darken(@accent, 10%);
+  }
+  a[data-type=folder]:before {
+    content: "\f07b";
+  }
+  a[data-type=book]:before {
+    content: "\f02d";
+  }
+  a:before {
+    .font-awesome();
+  }
+  a {
+    color: @color;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    min-width: 9em;
+    padding: 1em;
+  }
+}
+
+.selected {
+  background-color: @highlight;
+}
+
+.refrences {
+  display: none;
+  background: @accent;
+  position: fixed;
+  height: @refrences-size;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+}
+
+.toolbar {
+  min-height: @toolbar-size;
+  background: @accent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding-top: .5em;
+
+  div {
+    display: inline-block;
+  }
+
+  .heiarchy ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+
+    li {
+      display: inline-block;
+      // Don't allow names that are too long.
+      text-overflow: ellipsis;
+      max-width: 12em;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    li:last-child {
+      // Don't limit the size of the last item
+      max-width: inherit;
+      max-width: initial;
+    }
+    li:first-child:before {
+      display: none;
+    }
+    li:first-child a {
+      display: inline-block;
+      overflow: hidden;
+      color: transparent;
+      background: url('img/icon_16.png');
+      vertical-align: middle;
+      width: 16px;
+      height: 16px;
+    }
+    li:before {
+      content: "»";
+      margin: 0 0 0 .4em;
+      text-decoration: none;
+    }
+  }
+
+  .languages {
+    select {
+      max-width: 10em;
+    }
+  }
+}
+
+.refrences-open {
+  .refrences {
+    display: block;
+  }
+  .page-content {
+  	padding-bottom: @refrences-size;
+  }
+}
