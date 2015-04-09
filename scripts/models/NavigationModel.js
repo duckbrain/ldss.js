@@ -48,7 +48,7 @@ function NavigationModel(database) {
     elements.content.innerHTML = template.render({
       page: {
         settings: that.settings
-        node: node
+        node: node,
         languages: that.languages,
         generator: new HtmlGenerator(that.settings, that.getI18nMessage),
         loading: getI18nMessage(node.status)
