@@ -1,4 +1,5 @@
 function DatabaseQuery() {
+	var that = this;
 	var messageProvider = new ChromeMessageProvider();
 	var request = messageProvider.send;
 
@@ -22,7 +23,12 @@ function DatabaseQuery() {
 	var id = ['id'];
 	var nodePath = ['languageId', 'path'];
 
+	function nothing() {
+		return Promise.resolve(that);
+	}
+
 	var that = {
+		open: nothing,
 		language: {
 			get: action('language-get', id),
 			getAll: action('language-get-all', id),
