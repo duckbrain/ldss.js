@@ -1,13 +1,24 @@
 function dQuery() {
   var that;
+  var document = window.document;
 
   function $(query) {
-    return window.document.querySelector(query);
+    return document.querySelector(query);
+  }
+
+  function $a(query, callback) {
+    var results = document.querySelectorAll(query);
+    if (callback) {
+      for (var i = 0; i < results.length; i++) {
+        callback(results[i], i);
+      }
+    }
+    return results;
   }
 
   function attachLinks(query, handler) {
-    $(query).forEach(function(link) {
-      links.addEventListener('click', function(e) {
+    $a(query, function(link) {
+      link.addEventListener('click', function(e) {
         e.preventDefault();
         handler(e);
         return false;
@@ -19,13 +30,23 @@ function dQuery() {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
   }
 
-  function removeClass(element, class) {
-    var regex = new RegExp('(?:^|\\s)' + escapeRegExp(class) + '(?!\\S)', 'g');
+  function addClass(element, className) {
+    var regex = new RegExp('(?:^|\\s)' + escapeRegExp(className) + '(?!\\S)', 'g');
+    if (!element.className.match(regex)) {
+      element.className += ' ' + className;
+    }
+  }
+
+  function removeClass(element, className) {
+    var regex = new RegExp('(?:^|\\s)' + escapeRegExp(className) + '(?!\\S)', 'g');
     element.className = element.className.replace(regex, '');
   }
 
   that = $;
   that.query = $;
+  that.queryAll = $a;
   that.attachLinks = attachLinks;
+  that.addClass = addClass;
   that.removeClass = removeClass;
+  return that;
 }

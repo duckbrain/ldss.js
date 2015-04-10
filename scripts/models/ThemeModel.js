@@ -21,13 +21,13 @@ function ThemeModel(database) {
 		return database.server.themes.add(theme);
 	}
 
-	function destoy(themeId) {
-		return database.server.themes['delete'](themeId);
+	function destoy(id) {
+		return database.server.themes['delete'](id);
 	}
 
-	function get(themeId) {
-		if (Number.isNaN(parseInt(themeId))) {
-			return getBuiltIn(themeId);
+	function get(id) {
+		if (Number.isNaN(parseInt(id))) {
+			return getBuiltIn(id);
 		} else {
 			return database.server.themes.get(themeId)
 		}

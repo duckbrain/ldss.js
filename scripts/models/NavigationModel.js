@@ -1,150 +1,199 @@
 function NavigationModel(database) {
-	var that, elements, $, db, template;
+  var that, render;
 
-	$ = new dQuery();
-	db = database.node;
-	that = {
-		file: 'index.html',
-		path: '/',
-		language: null,
-		verses: [],
-		node: null,
-		scrollTo: 0,
-		settings: null,
-		getI18nMessage: function(v) {
-			return v;
-		}
-	};
+  that = {
+    // set by load
+    file: 'index.html',
+    path: '/',
+    verses: null,
+    scrollTo: 0,
+    languageCode: null,
+    // set by navigate
+    node: null,
+    // set by initialize
+    language: null,
+    settings: null,
+    getI18nMessage: function(v) {
+      return v;
+    }
+  };
+  render = new RenderModel(that);
+  render.initialize();
+  that.render = render;
 
+  database.download.progress = function(message) {
+    render(statusNode(message)).then();
+  }
 
-	//
-	// Dealing with elements
-	//
+  function checkDownloads(node) {
+    if (!node) {
+      database.download.downloadCatalog(that.language.id).then(function() {
+        return database.node.getPath(that.language.id, '/').then(navigate);
+      });
+      return statusNode('downloading catalog');
+    } else if (node.type == 'book' && !node.details.downloadedVersion) {
+      database.download.downloadBook(node.id).then(function() {
+        return database.node.get(node.id).then(navigate);
+      });
+      return statusNode('downloading book');
+    }
+    return node;
+  }
 
-	function lookupElements() {
-		elements = {
-			document: window.document,
-			body: window.document.body,
-			customCSS: $('#custom-css'),
-			content: $('#content'),
-			refrences: $('.refrences')
-		}
-	}
+  /**
+   * Resets the verses and scroll position in preperation to load a new page.
+   */
+  function resetNavigation(node) {
+    that.node = node;
+    that.path = node.path;
+    that.verses = null;
+    that.scrollTo = 0;
+    return node;
+  }
 
-	function onLinkClicked(e) {
-		console.log(e);
-		//TODO Handle all different types of links for navigation and footnotes.
-	}
+  /**
+   * Loads an node by id and navigates to it
+   * @param {integer} id node.id
+   */
+  function navigateId(id) {
+    return database.node.get(id)
+      .then(function(node) {
+        if (!node) {
+          // Just go back to the catalog if the node is not found, instead of redownloading the catalog.
+          return database.node.getPath(that.language.id, '/');
+        } else {
+          return node;
+        }
+      })
+      .then(checkDownloads)
+      .then(resetNavigation)
+      .then(navigate);
+  }
 
-	function onRefrenceClosedClicked(e) {
-		$.removeClass(elements.body, 'refrences-open');
-	}
+  /**
+   * Parses the path and verse elements of the supplied path and navigates to that node.
+   * @param {string} path A path from a node's content. The path is not fully qualified.
+   */
+  function navigatePath(path) {
+    loadPathnameAndVerses(path);
+    return navigateLoaded()
+      .then(resetNavigation);
+  }
 
-	function onLanguageSelected(e) {
-		var id = parseInt(e.target.value);
-		return database.language.get(id)
-			.then(function(language) {
-				that.language = language;
-				return render(that.node);
-			});
-	}
+  /**
+   * Navigates to a path that has been loaded through loadPath()
+   */
+  function navigateLoaded() {
+    return database.node.getPath(that.language.id, that.path)
+      .then(function(node) {
+        if (!node && that.path.length > 1) {
+          // Traverse up the path if it does not exist.
+          var pathParts = that.path.split('/');
+          pathParts.pop();
+          that.path = pathParts.join('/');
+          return navigateLoaded();
+        } else {
+          return Promise.resolve(checkDownloads(node)).then(navigate);
+        }
+      });
+  }
 
-	function render(node) {
-		elements.document.title = getI18nMessage('app_title') + ' - ' + info.name;
-		elements.content.innerHTML = template.render({
-			page: {
-				settings: that.settings
-				node: node,
-				languages: that.languages,
-				generator: new HtmlGenerator(that.settings, that.getI18nMessage),
-				loading: getI18nMessage(node.status)
-			},
-			_: that.getI18nMessage
-		});
-		lookupElements();
-		$.attachLinks('.page-content a', onLinkClicked);
-		$.attachLinks('.refrences-close', onRefrenceClosedClicked);
+  function navigate(node) {
+    render.closeRefrencePanel();
+    return render(node).then(function() {
+      if (node.type != 'status') {
+        history.pushState(node, node.name, getFullPath());
+      }
+      return node;
+    });
+  }
 
-		//TODO: Check for verses and scroll to there instead
-		//TODO: Find the offset of what is visible and scroll there.
-		elements.body.scrollTop = 0;
+  function statusNode(status) {
+    return {
+      type: 'status',
+      status: status
+    };
+  }
 
-		return Promise.resolve(node);
-	}
+  function getFullPath() {
+    var fullPath = that.verses ? [that.path].concat(that.verses).join('.') : that.path;
+    var query = that.language ? '?lang=' + that.language.code_three : '';
+    return that.file + '?' + fullPath + query;
+  }
 
+  function getUrlParameter(name, search) {
+    search = (typeof search == 'string') ? search : location.search;
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' +
+          '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1]
+        .replace(/\+/g, '%20')) ||
+      null
+  }
 
-	//
-	// Dealing with navigation logic and downloading
-	//
+  function loadPathnameAndVerses(path) {
+    var parts = path.split('.');
+    that.path = parts[0];
+    that.verses = parts[1] || null;
+    //TODO Parse verses and store them in an array.
+  }
 
-	function navigatePath(path) {
-		// TODO: Traverse up the path if it does not exist.
-		db.getPath(that.language.id, path).then(navigate);
-	}
+  function loadPath(href) {
+    var path, query, hash, parts;
 
-	function navigate(node) {
-		if (!node) {
-			node = {
-				type: 'status',
-				status: 'downloading catalog'
-			}
-		}
-		switch (node.type) {
-			case 'book':
-				if (!node.details.downloadedVersion) {
-					return database.download.downloadBook(node.id).then(function() {
-						return db.get(node.id).then(navigate);
-					});
-				}
-				break;
-		}
+    parts = href.split('?');
 
-		that.node = node;
-		return render(node).then(function() {
-			if (node.type != 'status') {
-				history.pushState(node, node.name, getFullPath(node));
-			}
-			return node;
-		});
-	}
+    // Get file, path, and verses
+    that.file = parts[0];
+    loadPathnameAndVerses(parts[1] || '/');
 
-	function getFullPath(node, verses) {
-		var fullPath = verses ? [node.path].concat(verses).join('.') : node.path;
-		var query = this.language ? '?lang=' + this.language.code_three : '';
-		return this.file + '?' + fullPath + query;
-	}
+    // Get the language code
+    query = parts[2] || '';
+    that.languageCode = getUrlParameter('lang', query);
 
-	function load(href) {
-		var query, hash;
-		href = href.substring(href.indexOf('?') + 1);
-		query = href.substring(href.indexOf('?') + 1);
-		hash = query.substring(query.lastIndexOf('#') + 1);
+    // Get the scrolled to verse
+    hash = href.substring(href.lastIndexOf('#') + 1);
+    href = parseInt(href);
+    that.scrollTo = isNaN(href) ? null : href;
 
-	}
+    console.log(that);
+  }
 
-	function loadTheme(theme) {
-		console.log("Theme: ", theme)
-		template = new EJS({
-			text: theme.template
-		});
-		less.render(theme.style, {
-			globalVars: that.settings.themeOptions
-		}).then(function(output) {
-			elements.customCSS.innerHTML = output.css;
-		});
-	}
+  /**
+   * Initializes everything dependant on the settings. Can be called after page load to update changes to the settings.
+   * @return {Promise} A promise when the initialization is done. Just returns the NavigationModel.
+   */
+  function initialize() {
+    return database.settings.getAll().then(function(settings) {
+      var languageGetter;
+      that.settings = settings;
 
-	function initialize() {
+      return Promise.all([
+        (that.languageCode ? database.language.getByLdsCode(that.languageCode) : database.language.get(
+          settings.language))
+        .then(function(language) {
+          that.language = language;
+          that.languageCode = language.code_three;
+        }),
+        database.theme.get(settings.theme).then(function(theme) {
+          return render.loadTheme(theme);
+        })
+      ]).then(function() {
+        return that;
+      });
+    });
+  }
 
-	}
+  that.loadPath = loadPath;
+  that.render = render;
+  that.navigate = navigate;
+  that.navigateId = navigateId;
+  that.navigatePath = navigatePath;
+  that.navigateLoaded = navigateLoaded;
+  that.initialize = initialize;
 
-	that.load = load;
-	that.render = render;
-	that.navigate = navigate;
+  window.addEventListener('popstate', function() {
+    //TODO: Handle errors
+    render(history.state);
+  });
 
-	window.addEventListener('popstate', function() {
-		render(history.state);
-	});
-
-	return that;
+  return that;
 }
