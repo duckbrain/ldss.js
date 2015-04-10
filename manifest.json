@@ -1,58 +1,58 @@
 {
-  "name": "__MSG_app_title__ DEV",
-  "description": "__MSG_app_description__",
-  "options_page": "options.html",
-  "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
-  },
-  "version": "3.0.0",
-  "app": {
-    "launch": {
-      "local_path": "index.html"
-    }
-  },
-  "background": {
-    "scripts": [
-      "scripts/dependencies/db.js",
-      "scripts/dependencies/pako.js",
-      "scripts/dependencies/sql.js",
-      "scripts/dependencies/jquery.js",
-      "scripts/models/BrowserDownloader.js",
-      "scripts/google-chrome/ChromeMessageProvider.js",
-      "scripts/models/LDSContentProvider.js",
-      "scripts/models/LDSCatalogInstaller.js",
-      "scripts/models/LDSZBookInstaller.js",
-      "scripts/models/LDSInstallerHelpers.js",
-      "scripts/models/DatabaseModel.js",
-      "scripts/models/DownloadModel.js",
-      "scripts/models/SettingsModel.js",
-      "scripts/models/LanguageModel.js",
-      "scripts/models/NodeModel.js",
-      "scripts/google-chrome/background.js"
-    ]
-  },
-  "omnibox": {
-    "keyword": "ldsgl"
-  },
-  "icons": {
-    "16": "img/icon_16.png",
-    "128": "img/icon_128.png"
-  },
-  "content_scripts": [{
-    "matches": ["http://*.lds.org/*", "https://*.lds.org/*"],
-    "css": ["stylesheets/ldsorg.css"],
-    "js": [
-      "scripts/google-chrome/ChromeMessageProvider.js",
-      "scripts/google-chrome/DatabaseQuery.js",
-      "scripts/google-chrome/content-script.js"
-    ]
-  }],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';",
-  "web_accessible_resources": ["img/icon_16.png"],
-  "permissions": ["storage", "chrome://favicon/", "bookmarks",
-    "http://*.lds.org/", "https://*.lds.org/"
-  ],
-  "default_locale": "en",
-  "manifest_version": 2
+	"name": "__MSG_app_title__ DEV",
+	"description": "__MSG_app_description__",
+	"options_page": "options.html",
+	"options_ui": {
+		"page": "options.html",
+		"chrome_style": true
+	},
+	"version": "3.0.0",
+	"app": {
+		"launch": {
+			"local_path": "index.html"
+		}
+	},
+	"background": {
+		"scripts": [
+			"scripts/dependencies/db.js",
+			"scripts/dependencies/pako.js",
+			"scripts/dependencies/sql.js",
+			"scripts/dependencies/jquery.js",
+			"scripts/models/BrowserDownloader.js",
+			"scripts/google-chrome/ChromeMessageProvider.js",
+			"scripts/models/LDSContentProvider.js",
+			"scripts/models/LDSCatalogInstaller.js",
+			"scripts/models/LDSZBookInstaller.js",
+			"scripts/models/LDSInstallerHelpers.js",
+			"scripts/models/DatabaseModel.js",
+			"scripts/models/DownloadModel.js",
+			"scripts/models/SettingsModel.js",
+			"scripts/models/LanguageModel.js",
+			"scripts/models/NodeModel.js",
+			"scripts/google-chrome/background.js"
+		]
+	},
+	"omnibox": {
+		"keyword": "ldsgl"
+	},
+	"icons": {
+		"16": "img/icon_16.png",
+		"128": "img/icon_128.png"
+	},
+	"content_scripts": [{
+		"matches": ["http://*.lds.org/*", "https://*.lds.org/*"],
+		"css": ["stylesheets/ldsorg.css"],
+		"js": [
+			"scripts/google-chrome/ChromeMessageProvider.js",
+			"scripts/google-chrome/DatabaseQuery.js",
+			"scripts/google-chrome/content-script.js"
+		]
+	}],
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';",
+	"web_accessible_resources": ["img/icon_16.png"],
+	"permissions": ["storage", "chrome://favicon/", "bookmarks",
+		"http://*.lds.org/", "https://*.lds.org/"
+	],
+	"default_locale": "en",
+	"manifest_version": 2
 }
