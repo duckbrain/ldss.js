@@ -46,6 +46,7 @@ function NavigationModel(database) {
   function resetNavigation(node) {
     that.node = node;
     that.path = node.path;
+    console.log('Modified Path', 'resetNavigation', that.path);
     that.verses = null;
     that.scrollTo = 0;
     return node;
@@ -86,11 +87,17 @@ function NavigationModel(database) {
   function navigateLoaded() {
     return database.node.getPath(that.language.id, that.path)
       .then(function(node) {
-        if (!node && that.path.length > 1) {
+        if (!node && that.path != '/') {
           // Traverse up the path if it does not exist.
           var pathParts = that.path.split('/');
           pathParts.pop();
           that.path = pathParts.join('/');
+          console.log('Modified Path', 'navigateLoaded', that.path);
+
+          if (that.path.indexOf('/') != 0) {
+            that.path = '/';
+          }
+
           return navigateLoaded();
         } else {
           return Promise.resolve(checkDownloads(node)).then(navigate);
@@ -132,6 +139,7 @@ function NavigationModel(database) {
   function loadPathnameAndVerses(path) {
     var parts = path.split('.');
     that.path = parts[0];
+    console.log('Modified Path', 'loadPathnameAndVerses', that.path);
     that.verses = parts[1] || null;
     //TODO Parse verses and store them in an array.
   }
