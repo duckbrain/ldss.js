@@ -9,7 +9,7 @@
   }
 
   database = new DatabaseModel();
-  database.download = new DatabaseQuery(new ChromeMessageProvider()).download;
+  //database.download = new DatabaseQuery(new ChromeMessageProvider()).download;
   navigation = new NavigationModel(database);
 
   navigation.loadPath(location.href);
