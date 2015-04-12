@@ -22,18 +22,22 @@ function NavigationModel(database) {
   that.render = render;
 
   database.download.progress = function(message) {
-    render(statusNode(message)).then();
+    navigate(statusNode(message)).then();
   }
 
   function checkDownloads(node) {
     if (!node) {
       database.download.downloadCatalog(that.language.id).then(function() {
-        return database.node.getPath(that.language.id, '/').then(navigate);
+        return database.node.getPath(that.language.id, '/')
+          .then(resetNavigation)
+          .then(navigate);
       });
       return statusNode('downloading catalog');
     } else if (node.type == 'book' && !node.details.downloadedVersion) {
       database.download.downloadBook(node.id).then(function() {
-        return database.node.get(node.id).then(navigate);
+        return database.node.get(node.id)
+          .then(resetNavigation)
+          .then(navigate);
       });
       return statusNode('downloading book');
     }
@@ -44,7 +48,6 @@ function NavigationModel(database) {
    * Resets the verses and scroll position in preperation to load a new page.
    */
   function resetNavigation(node) {
-    that.node = node;
     that.path = node.path;
     console.log('Modified Path', 'resetNavigation', that.path);
     that.verses = null;
@@ -108,9 +111,15 @@ function NavigationModel(database) {
   function navigate(node) {
     render.closeRefrencePanel();
     return render(node).then(function() {
-      if (node.type != 'status') {
+      // TODO: If where you are going is in your history stack, go back up to it.
+      // That should probably be an option.
+      if (!that.node || that.node.type == 'status') {
+        history.replaceState(node, node.name, getFullPath());
+      } else {
         history.pushState(node, node.name, getFullPath());
       }
+      console.log("Prior node: ", that.node, 'New node: ', node);
+      that.node = node;
       return node;
     });
   }
