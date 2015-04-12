@@ -21,11 +21,10 @@ function RenderModel(navigation) {
 
 	function onContentLinkClicked(e) {
 		var path = e.target.pathname;
-		var hash = e.target.hash;
 
-		if (hash) {
-			console.log('ref', hash);
-			openRefrence(hash.substring(1));
+		if (path.indexOf('/f_') == 0) {
+			console.log('ref', path);
+			openRefrence(path.substring(1));
 		} else {
 			navigation.navigatePath(path);
 		}
@@ -78,7 +77,7 @@ function RenderModel(navigation) {
 		initialize();
 		$.attachLinks('.refrences-close', onRefrenceClosedClicked);
 		$.attachLinks('#main-content a[data-id]', onPageLinkClicked);
-		$.attachLinks('.content a[href], .refrences a[href]', onContentLinkClicked);
+		$.attachLinks('.content a[href], .refrences a[href]:not(.refrences-close)', onContentLinkClicked);
 
 		//TODO: Check for verses and scroll to there instead
 		//TODO: Find the offset of what is visible and scroll there.

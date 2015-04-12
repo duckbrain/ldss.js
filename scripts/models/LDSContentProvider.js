@@ -29,7 +29,7 @@ function LDSContentProvider(database) {
 	that.getCatalog = function(languageId) {
 		return that.getAction('catalog.query', {
 			languageid: languageId,
-			platformid: 1
+			platformid: 17
 		});
 	};
 
