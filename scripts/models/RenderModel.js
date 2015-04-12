@@ -23,6 +23,10 @@ function RenderModel(navigation) {
 	function onContentLinkClicked(e) {
 		var path = e.target.pathname;
 
+		if (e.target.tagName != 'A') {
+			return;
+		}
+
 		if (path.indexOf('/f_') == 0) {
 			console.log('ref', path);
 			openRefrence(path.substring(1));

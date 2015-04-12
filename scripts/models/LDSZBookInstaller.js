@@ -28,8 +28,12 @@ function LDSZBookInstaller(db, book) {
 			throw "Malformed database";
 		}
 
-		buildReferences(refs[0].values);
-		book.details.css = css[0].values[0][0];
+		if (refs.length) {
+			buildReferences(refs[0].values);
+		}
+		if (css.length) {
+			book.details.css = css[0].values[0][0];
+		}
 
 		return addAll(result[0].values)
 			.then(progress('ids assigned'))
