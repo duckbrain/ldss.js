@@ -10,6 +10,7 @@ function NavigationModel(database) {
     languageCode: null,
     // set by navigate
     node: null,
+    book: null,
     // set by initialize
     language: null,
     settings: null,
@@ -109,8 +110,25 @@ function NavigationModel(database) {
   }
 
   function navigate(node) {
+    var p;
     render.closeRefrencePanel();
-    return render(node).then(function() {
+
+    function pRender() {
+      return render(node);
+    }
+
+    if (node.type == 'node' && (!that.book || that.book.id != node.details.id)) {
+      p = database.node.get(node.details.bookId).then(function(book) {
+        that.book = book;
+      }).then(pRender);
+    } else if (node.type == 'book') {
+      that.book = node;
+      p = pRender();
+    } else {
+      p = pRender();
+    }
+
+    return p.then(function() {
       // TODO: If where you are going is in your history stack, go back up to it.
       // That should probably be an option.
       if (!that.node || that.node.type == 'status') {

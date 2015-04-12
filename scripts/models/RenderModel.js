@@ -8,8 +8,9 @@ function RenderModel(navigation) {
 			document: window.document,
 			body: window.document.body,
 			customCSS: $('#custom-css'),
+			bookCss: $('#book-css'),
 			content: $('#main-content'),
-			refrences: $('.refrences')
+			refrences: $('.refrences'),
 		}
 	}
 
@@ -45,15 +46,14 @@ function RenderModel(navigation) {
 			});
 	}
 
-	function openRefrence(refrence) {
-		var refrenceElement = elements.document.getElementById(refrence);
-
-		$.addClass(elements.body, 'refrences-open');
-		$.addClass(refrenceElement, 'selected');
+	function openRefrence(reference) {
+		var refrenceElement = elements.document.getElementById(reference);
 
 		$.queryAll('.refrences .selected', function(ele) {
 			$.removeClass(ele, 'selected');
 		});
+		$.addClass(elements.body, 'refrences-open');
+		$.addClass(refrenceElement, 'selected');
 
 		elements.refrences.scrollTop = refrenceElement.offsetTop;
 	}
@@ -63,6 +63,9 @@ function RenderModel(navigation) {
 	}
 
 	function render(node) {
+
+		elements.bookCss.innerHTML = navigation.book ? navigation.book.details.css : '';
+
 		elements.document.title = navigation.getI18nMessage('app_title') + ' - ' + node.name;
 		elements.content.innerHTML = template.render({
 			page: {

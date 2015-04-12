@@ -18,6 +18,14 @@
 @toolbar-size: 2em;
 @refrences-size: 30%;
 
+.chapter sup when (@hideFootnotes) {
+  display: none;
+}
+.chapter a when (@hideFootnotes) {
+  color: @color;
+  text-decoration: none;
+}
+
 .font-awesome() {
   font: normal normal normal 14px/1 FontAwesome;
   text-rendering: auto;
@@ -45,6 +53,10 @@ html, body {
   .studySummary {
     font-style: italic;
   }
+}
+
+video {
+  max-width: 100%;
 }
 
 .page-content {
@@ -157,6 +169,9 @@ html, body {
   left: 0;
   right: 0;
   overflow: auto;
+  div:last-child {
+    margin-bottom: 100%;
+  }
 }
 
 .toolbar {
