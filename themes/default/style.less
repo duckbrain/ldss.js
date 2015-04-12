@@ -11,6 +11,8 @@
  * @margins
  * @fontFamily
  * @fontSize
+ * @hideFootnotes
+ * @hideAnnotations
  */
 
 @toolbar-size: 2em;
@@ -30,8 +32,24 @@ html, body {
   color: @color;
 }
 
+.content {
+  .pageBreak {
+    position: absolute;
+    right: 1em;
+  }
+  .pageBreak:after {
+    content: attr(page-number);
+    float: right;
+    transform: rotate(-90deg);
+  }
+  .studySummary {
+    font-style: italic;
+  }
+}
+
 .page-content {
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: none;
   margin-top: @toolbar-size * 2;
   margin-bottom: 100%;
   margin-left: @margins;
@@ -84,8 +102,8 @@ html, body {
       content: "\f110";
       .font-awesome();
       font-size: 1em;
-      -webkit-animation: fa-spin 2s infinite linear;
-      animation: fa-spin 2s infinite linear;
+      -webkit-animation: fa-spin 1s infinite linear;
+      animation: fa-spin 1s infinite linear;
     }
   }
 }
@@ -142,6 +160,7 @@ html, body {
 }
 
 .toolbar {
+  z-index: 10000;
   min-height: @toolbar-size;
   background: @accent;
   position: fixed;
