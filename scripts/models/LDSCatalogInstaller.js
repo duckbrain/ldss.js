@@ -20,15 +20,14 @@ function LDSCatalogInstaller(db, languageId) {
 		//
 		// Add all of the items and have ID's assigned.
 		//
-		return db.clear(languageId).then(progress('cleared')).then(function() {
-			return add(root.catalog, formatCatalog, null)
-				.then(progress('added'))
-				//
-				// Then update those items to make refrence to those ID's for
-				// their family members.
-				//
-				.then(helpers.update).then('done');
-		});
+		return db.clear(languageId)
+			.then(progress('cleared'))
+			.then(function() {
+				return add(root.catalog, formatCatalog, null)
+					.then(progress('added'))
+					.then(helpers.update)
+					.then('done');
+			});
 	}
 
 	function add(glItem, format, parent) {
@@ -60,6 +59,9 @@ function LDSCatalogInstaller(db, languageId) {
 					//TODO: Sort by display order
 					item.next = helpers.findSibling(+1, item);
 					item.previous = helpers.findSibling(-1, item);
+					if (item.type == 'folder') {
+						item.path = createFolderPath(item);
+					}
 					return item;
 				});
 			} else { //It's a book!
@@ -70,6 +72,8 @@ function LDSCatalogInstaller(db, languageId) {
 	}
 
 	function createFolderPath(item) {
+		var pathElements, otherPath, path, newPath;
+		path = item.path;
 		if (item.children.length > 0) {
 			// Try making one from the children
 			pathElements = item.children[0].path.split('/');
@@ -96,6 +100,7 @@ function LDSCatalogInstaller(db, languageId) {
 				//else default to number
 			}
 		}
+		return path;
 	}
 
 	function formatBlank(item) {
@@ -113,6 +118,7 @@ function LDSCatalogInstaller(db, languageId) {
 			content: item.content || null,
 			details: item.type == 'book' ? {
 				url: item.url || null,
+				css: null,
 				downloadedVersion: null,
 				catalogVersion: item.version || null
 			} : null

@@ -1,28 +1,29 @@
 <%
-// Page will always contain all of the information needed to display the page
+// The page object will always contain all of the information needed to display the page
 
 // The generator contains usefull functions for generating HTML markup quickly
 var gen = page.generator;
-var path = page.path;
-var conf = page.configuration;
+// Node is an object that describes the scripture/book/folder content to display
+var node = page.node;
+var language = page.settings.language;
 %>
 <div class="toolbar">
-	<div class="previous"><%= gen.a(path && path.previous, "previous") %></div>
-	<div class="up-level"><%= gen.a(path && path.parent, "up_level") %></div>
+	<div class="previous"><%= gen.a(node && node.previous, "previous") %></div>
+	<div class="up-level"><%= gen.a(node && node.parent, "up_level") %></div>
 	<div class="heiarchy">
-		<%= gen.ul(path && path.heiarchy, gen.a) %>
+		<%= gen.ul(node && node.heiarchy, gen.a) %>
 	</div>
 	<div class="languages">
 		<%= gen.select(page.languages, function(lang) {
-			var displayName = (conf.language != 1 || lang.eng_name == lang.name || lang.name.endsWith("(" + lang.eng_name + ")"))
+			var displayName = (language != 1 || lang.eng_name == lang.name || lang.name.endsWith("(" + lang.eng_name + ")"))
 				? lang.name : lang.name + " - " + lang.eng_name;
 			return displayName;
 		}) %>
 	</div>
 	<div class="settings">
-		<a href="settings.html">Settings</a>
+		<a href="options.html">Settings</a>
 	</div>
-	<div class="next"><%= gen.a(path && path.next, "next") %></div>
+	<div class="next"><%= gen.a(node && node.next, "next") %></div>
 </div>
 <% if (page.loading) { %>
 <div class="loading">
@@ -33,15 +34,15 @@ var conf = page.configuration;
 <% } %>
 <div class="page-content">
 	<ul class="children">
-		<%= gen.li(path && path.children, gen.a) %>
+		<%= gen.li(node && node.children, gen.a) %>
 	</ul>
 	<div class="content">
-		<%= path && path.details ? path.details.content : '' %>
+		<%= node && node.details ? node.details.content : '' %>
 	</div>
 </div>
-<div id="refrences" class="refrences">
-	<div class="refrences-bar">
-		<a class="refrences-close" href>Close</a>
+<div id="references" class="references">
+	<div class="references-bar">
+		<a class="references-close" href>Close</a>
 	</div>
-	<%= path && path.details ? path.details.refrences : '' %>
+	<%= node && node.details ? node.details.references : '' %>
 </div>

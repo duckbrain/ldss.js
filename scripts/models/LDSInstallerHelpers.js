@@ -1,86 +1,98 @@
 function LDSInstallerHelpers(db) {
-  var that = {};
+	var that = {};
 
-  function findSibling(direction, item) {
-    var index, siblings;
+	function findSiblingLevel(direction, item, level) {
+		var index, siblings, result;
 
-    if (item.parent) {
-      siblings = item.parent.children
-      index = siblings.indexOf(item);
+		if (item.parent && item.parent.children) {
+			siblings = item.parent.children
+			index = siblings.indexOf(item);
 
-      if (siblings[index + direction]) {
-        return siblings[index + direction];
-      } else {
-        //TODO Traverse to find better sibling
-        return null;
-      }
-    } else {
-      return null;
-    }
-  }
+			if (siblings[index + direction]) {
+				return siblings[index + direction];
+			} else {
+				result = findSiblingLevel(direction, item.parent, level + 1);
+				while (level > 1) {
+					if (direction > 1) {
+						result = result.children[0]
+					} else {
+						result = result.children[result.children.length - 1];
+					}
+					level--;
+				}
+				return result;
+			}
+		} else {
+			return null;
+		}
+	}
 
-  function update(item) {
-    var children, parent, i;
+	function findSibling(direction, item) {
+		return findSiblingLevel(direction, item, 0);
+	}
 
-    children = item.children;
-    parent = item.parent;
+	function update(item) {
+		var children, parent, i;
 
-    item.heiarchy = summary(item.heiarchy);
-    item.next = summary(item.next);
-    item.previous = summary(item.previous);
-    item.children = summary(children);
-    item.parent = summary(parent);
+		children = item.children;
+		parent = item.parent;
 
-    for (i = 0; i < children.length; i++) {
-      if (children[i].children.length == 1) {
-        item.children[i].id = children[i].children[0].id;
-        item.children[i].path = children[i].children[0].path;
-      }
-    }
+		item.heiarchy = summary(item.heiarchy);
+		item.next = summary(item.next);
+		item.previous = summary(item.previous);
+		item.children = summary(children);
+		item.parent = summary(parent);
 
-    if (parent && parent.children && parent.children.length == 1) {
-      item.parent.id = parent.parent.id;
-      item.parent.path = parent.parent.path;
-    }
+		for (i = 0; i < children.length; i++) {
+			if (children[i].children.length == 1) {
+				item.children[i].id = children[i].children[0].id;
+				item.children[i].path = children[i].children[0].path;
+			}
+		}
 
-    for (i = 1; i < item.heiarchy.length; i++) {
-      fixName(item.heiarchy[i - 1], item.heiarchy[i]);
-    }
+		if (parent && parent.children && parent.children.length == 1) {
+			item.parent.id = parent.parent.id;
+			item.parent.path = parent.parent.path;
+		}
 
-    return Promise.all([
-      db.update(item),
-      children.map(update)
-    ]);
-  }
+		for (i = 1; i < item.heiarchy.length; i++) {
+			fixName(item.heiarchy[i - 1], item.heiarchy[i]);
+		}
 
-  function fixName(parent, item) {
-    var newName;
-    if (!parent || !item) {
-      return;
-    }
-    if (item.name != parent.name && item.name.indexOf(parent.name) == 0) {
-      newName = item.name.substring(parent.name.length).trim();
-      item.name = newName;
-    }
-  }
+		return Promise.all([
+			db.update(item),
+			children.map(update)
+		]);
+	}
 
-  function summary(item) {
-    if (!item) {
-      return null;
-    } else if (Array.isArray(item)) {
-      return item.map(summary);
-    } else {
-      return {
-        id: item.id,
-        name: item.name,
-        path: item.path,
-        type: item.type
-      };
-    }
-  }
+	function fixName(parent, item) {
+		var newName;
+		if (!parent || !item) {
+			return;
+		}
+		if (item.name != parent.name && item.name.indexOf(parent.name) == 0) {
+			newName = item.name.substring(parent.name.length).trim();
+			item.name = newName;
+		}
+	}
 
-  that.findSibling = findSibling;
-  that.update = update;
+	function summary(item) {
+		if (!item) {
+			return null;
+		} else if (Array.isArray(item)) {
+			return item.map(summary);
+		} else {
+			return {
+				id: item.id,
+				name: item.name,
+				path: item.path,
+				type: item.type
+			};
+		}
+	}
 
-  return that;
+	that.findSibling = findSibling;
+	that.update = update;
+
+	return that;
 }

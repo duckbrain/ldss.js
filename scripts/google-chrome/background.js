@@ -1,5 +1,6 @@
 var messageProvider = new ChromeMessageProvider();
 var database = new DatabaseModel(new LDSContentProvider(new BrowserDownloader()));
+var qDatabase = new DatabaseQuery(messageProvider);
 var languageId;
 
 function log(e) {
@@ -38,6 +39,11 @@ messageProvider.on('open', function(e, sender) {
 });
 
 messageProvider.on('miss', function(e, sender) {
+	var result = qDatabase.execute(database, e.action, e.params);
+	if (!qDatabase.isFailed(result)) {
+		return result;
+	}
+
 	console.error('missed event: ', e);
 	throw {
 		message: 'Missed event',

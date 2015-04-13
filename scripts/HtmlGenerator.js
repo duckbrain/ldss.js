@@ -1,4 +1,4 @@
-function HtmlGenerator(conf, i18n) {
+function HtmlGenerator(navigation, i18n) {
 	var that = {};
 
 	function href(target) {
@@ -10,9 +10,9 @@ function HtmlGenerator(conf, i18n) {
 				return target;
 			case 'object':
 				if ('path' in target) {
-					return 'index.html?' + target.path + '?lang=' + conf.language;
+					return 'index.html?' + target.path + '?lang=' + navigation.language.code_three;
 				} else if ('code_three' in target) {
-					return 'index.html?' + conf.path.path + '?lang=' + target.code_three;
+					return 'index.html?' + navigation.path + '?lang=' + target.code_three;
 				} else {
 					throw "Unknown object 'target'";
 				}

@@ -8,39 +8,39 @@
 // integration with the Church website scriptures.
 
 (function() {
-  console.log("Jonathan Duck's LDS Scriptures Content-Script started...");
+	console.log("Jonathan Duck's LDS Scriptures Content-Script started...");
 
-  var database = new DatabaseQuery();
-  var path = location.pathname;
-  var href = chrome.extension.getURL("index.html") + '?' + path;
-  var lang = null; //TODO: Get the lang from the get parameter
+	var database = new DatabaseQuery();
+	var path = location.pathname;
+	var href = chrome.extension.getURL("index.html") + '?' + path;
+	var lang = null; //TODO: Get the lang from the get parameter
 
-  function insertLink(allow) {
-    if (!allow) {
-      return;
-    }
+	function insertLink(allow) {
+		if (!allow) {
+			return;
+		}
 
-    var image = chrome.extension.getURL("img/icon_16.png");
-    var tools = document.getElementById('secondary');
-    if (tools == null)
-      return;
-    tools = tools.getElementsByClassName('tools')[0];
-    if (tools == null)
-      return;
-    var newItem = document.createElement('li');
-    var newLink = document.createElement('a');
-    newLink.innerText = "LDS Scriptures";
-    newLink.classList.add('gallery');
-    newLink.classList.add('chrome-app-icon');
-    newLink.href = href;
-    newLink.onclick = function() {
-      database.node.open(lang, href).then();
-      return false;
-    }
-    newItem.appendChild(newLink);
-    tools.appendChild(newItem);
-  }
+		var image = chrome.extension.getURL("img/icon_16.png");
+		var tools = document.getElementById('secondary');
+		if (tools == null)
+			return;
+		tools = tools.getElementsByClassName('tools')[0];
+		if (tools == null)
+			return;
+		var newItem = document.createElement('li');
+		var newLink = document.createElement('a');
+		newLink.innerText = "LDS Scriptures";
+		newLink.classList.add('gallery');
+		newLink.classList.add('chrome-app-icon');
+		newLink.href = href;
+		newLink.onclick = function() {
+			database.node.open(lang, href).then();
+			return false;
+		}
+		newItem.appendChild(newLink);
+		tools.appendChild(newItem);
+	}
 
-  database.node.exists(lang, path).then(insertLink);
+	database.node.exists(lang, path).then(insertLink);
 
 })();
