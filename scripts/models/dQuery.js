@@ -16,6 +16,10 @@ function dQuery() {
     return results;
   }
 
+  function id(id) {
+    return document.getElementById(id);
+  }
+
   function attachLinks(query, handler) {
     $a(query, function(link) {
       link.addEventListener('click', function(e) {
@@ -32,7 +36,7 @@ function dQuery() {
 
   function addClass(element, className) {
     var regex = new RegExp('(?:^|\\s)' + escapeRegExp(className) + '(?!\\S)', 'g');
-    if (!element.className.match(regex)) {
+    if (element && !element.className.match(regex)) {
       element.className += ' ' + className;
     }
   }
@@ -45,6 +49,7 @@ function dQuery() {
   that = $;
   that.query = $;
   that.queryAll = $a;
+  that.id = id;
   that.attachLinks = attachLinks;
   that.addClass = addClass;
   that.removeClass = removeClass;

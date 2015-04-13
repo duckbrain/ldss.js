@@ -1,17 +1,42 @@
 function RenderModel(navigation) {
-	var that, template, $, elements;
+	var that, template, $, elements, openedReference, onStateChanged;
 	$ = new dQuery();
 	elements = null;
+	openedReference = null;
+	onStateChanged = new EventHandler();
+	onStateChanged.getParam = getState;
 
 	function initialize() {
 		elements = {
+			window: window,
 			document: window.document,
 			body: window.document.body,
 			customCSS: $('#custom-css'),
 			bookCss: $('#book-css'),
-			content: $('#main-content'),
-			refrences: $('.refrences'),
+			content: $('#main-content')
 		}
+		elements.body.addEventListener('scroll', onStateChanged.fire);
+	}
+
+	function updateElements() {
+		elements.refrences = $('.refrences');
+	}
+
+
+	function getState() {
+		return {
+			openedReference: openedReference,
+			scrollPosition: elements.body.scrollTop
+		};
+	}
+
+	function restoreState(state) {
+		openRefrence(state.openedReference);
+		elements.body.scrollTop = state.scrollPosition;
+	}
+
+	function resetState() {
+		closeRefrencePanel();
 	}
 
 	function onPageLinkClicked(e) {
@@ -28,7 +53,6 @@ function RenderModel(navigation) {
 		}
 
 		if (path.indexOf('/f_') == 0) {
-			console.log('ref', path);
 			openRefrence(path.substring(1));
 		} else {
 			navigation.navigatePath(path);
@@ -51,19 +75,32 @@ function RenderModel(navigation) {
 	}
 
 	function openRefrence(reference) {
-		var refrenceElement = elements.document.getElementById(reference);
+		var refrenceElement;
 
-		$.queryAll('.refrences .selected', function(ele) {
-			$.removeClass(ele, 'selected');
-		});
-		$.addClass(elements.body, 'refrences-open');
-		$.addClass(refrenceElement, 'selected');
-
-		elements.refrences.scrollTop = refrenceElement.offsetTop;
+		if (!reference) {
+			openedReference = null;
+			$.removeClass(elements.body, 'refrences-open');
+		} else {
+			openedReference = reference;
+			refrenceElement = $.id(reference);
+			$.queryAll('.refrences .selected', function(ele) {
+				$.removeClass(ele, 'selected');
+			});
+			$.addClass(elements.body, 'refrences-open');
+			$.addClass(refrenceElement, 'selected');
+			elements.refrences.scrollTop = refrenceElement.offsetTop;
+		}
+		onStateChanged.fire();
 	}
 
 	function closeRefrencePanel() {
-		$.removeClass(elements.body, 'refrences-open');
+		openRefrence(null);
+	}
+
+	function highlightVerses(verses) {
+		for (var i = 0; i < verses.length; i++) {
+			$.addClass($.id(verses[i]), 'selected');
+		}
 	}
 
 	function render(node) {
@@ -81,20 +118,23 @@ function RenderModel(navigation) {
 			},
 			_: navigation.getI18nMessage
 		});
-		initialize();
+		updateElements();
 		$.attachLinks('.refrences-close', onRefrenceClosedClicked);
 		$.attachLinks('#main-content a[data-id]', onPageLinkClicked);
 		$.attachLinks('.content a[href], .refrences a[href]:not(.refrences-close)', onContentLinkClicked);
 
-		//TODO: Check for verses and scroll to there instead
-		//TODO: Find the offset of what is visible and scroll there.
-		elements.body.scrollTop = 0;
+		highlightVerses(navigation.versesParsed);
+		if (navigation.versesParsed[0]) {
+			var element = $.id(navigation.versesParsed[0]);
+			elements.body.scrollTop = element.offsetTop - elements.window.outerHeight / 2 + element.clientHeight;
+		} else {
+			elements.body.scrollTop = 0;
+		}
 
 		return Promise.resolve(node);
 	}
 
 	function loadTheme(theme) {
-		console.log("Theme: ", theme)
 		template = new EJS({
 			text: theme.template
 		});
@@ -108,7 +148,10 @@ function RenderModel(navigation) {
 	that = render;
 	that.loadTheme = loadTheme;
 	that.initialize = initialize;
-	that.closeRefrencePanel = closeRefrencePanel;
+	that.getState = getState;
+	that.restoreState = restoreState;
+	that.resetState = resetState;
+	that.onStateChanged = onStateChanged;
 
 	return that;
 }

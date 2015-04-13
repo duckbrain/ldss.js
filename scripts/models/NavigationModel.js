@@ -20,10 +20,46 @@ function NavigationModel(database) {
 	};
 	render = new RenderModel(that);
 	render.initialize();
+	render.onStateChanged.add(updateState);
 	that.render = render;
 
 	database.download.progress = function(message) {
 		navigate(statusNode(message)).then();
+	}
+
+	function updateState() {
+		if (that.node) {
+			history.replaceState(getState(), that.node.name, getFullPath());
+			console.log(history.state);
+		}
+	}
+
+	function getState() {
+		return {
+			path: that.path,
+			node: that.node,
+			verses: that.verses,
+			versesParsed: that.versesParsed,
+			scrollTo: that.scrollTo,
+			file: that.file,
+			book: that.book,
+			language: that.language,
+			renderState: render.getState()
+		};
+	}
+
+	function restoreState(state) {
+		for (var name in state) {
+			that[name] = state[name];
+		}
+
+		if (state.node) {
+			render(state.node).then(function() {
+				render.restoreState(state.renderState);
+			});
+		} else {
+			throw state;
+		}
 	}
 
 	function checkDownloads(node) {
@@ -50,8 +86,8 @@ function NavigationModel(database) {
 	 */
 	function resetNavigation(node) {
 		that.path = node.path;
-		console.log('Modified Path', 'resetNavigation', that.path);
 		that.verses = null;
+		that.versesParsed = [];
 		that.scrollTo = 0;
 		return node;
 	}
@@ -97,7 +133,6 @@ function NavigationModel(database) {
 					var pathParts = that.path.split('/');
 					pathParts.pop();
 					that.path = pathParts.join('/');
-					console.log('Modified Path', 'navigateLoaded', that.path);
 
 					if (that.path.indexOf('/') != 0) {
 						that.path = '/';
@@ -114,33 +149,29 @@ function NavigationModel(database) {
 
 	function navigate(node) {
 		var p;
-		render.closeRefrencePanel();
 
-		function pRender() {
-			return render(node);
-		}
+		// Update the current state, so it can be gone back to
+		updateState();
+		render.resetState();
 
-		if (node.type == 'node' && (!that.book || that.book.id != node.details.id)) {
+		// If it's a node and the current book does not have the same id as it's bookId
+		if (node.type == 'node' && (!that.book || that.book.id != node.details.bookId)) {
 			p = database.node.get(node.details.bookId).then(function(book) {
 				that.book = book;
-			}).then(pRender);
-		} else if (node.type == 'book') {
-			that.book = node;
-			p = pRender();
+				return node;
+			}).then(render);
 		} else {
-			p = pRender();
+			that.book = node.type == 'book' ? node : null;
+			p = render(node);
 		}
 
 		return p.then(function() {
-			// TODO: If where you are going is in your history stack, go back up to it.
-			// That should probably be an option.
-			if (!that.node || that.node.type == 'status') {
-				history.replaceState(node, node.name, getFullPath());
-			} else {
-				history.pushState(node, node.name, getFullPath());
-			}
-			console.log("Prior node: ", that.node, 'New node: ', node);
 			that.node = node;
+			if (!that.node || that.node.type == 'status') {
+				updateState();
+			} else {
+				history.pushState(getState(), node.name, getFullPath());
+			}
 			return node;
 		});
 	}
@@ -167,11 +198,36 @@ function NavigationModel(database) {
 	}
 
 	function loadPathnameAndVerses(path) {
-		var parts = path.split('.');
+		var parts, range, i, j, numbers;
+
+		parts = path.split('.');
 		that.path = parts[0];
-		console.log('Modified Path', 'loadPathnameAndVerses', that.path);
-		that.verses = parts[1] || null;
-		//TODO Parse verses and store them in an array.
+		if (parts[1]) {
+			parts.shift();
+			that.verses = parts.join('.');
+			parts = that.verses.replace(/\./g, ',').split(',');
+			for (i = 0; i < parts.length; i++) {
+				range = parts[i].split('-');
+				if (range.length > 1) {
+					numbers = [];
+					for (j = range[0]; j <= range[1]; j++) {
+						numbers.push(j);
+					}
+					range = [i, 1].concat(numbers);
+				} else {
+					range = [i, 1].concat(range);
+				}
+				j = range.length - 3;
+				Array.prototype.splice.apply(parts, range);
+				i += j;
+			}
+			that.versesParsed = parts;
+			that.scrollTo = parts[0]
+		} else {
+			that.verses = null;
+			that.versesParsed = [];
+			that.scrollTo = 0;
+		}
 	}
 
 	function loadPath(href) {
@@ -191,8 +247,6 @@ function NavigationModel(database) {
 		hash = href.substring(href.lastIndexOf('#') + 1);
 		href = parseInt(href);
 		that.scrollTo = isNaN(href) ? null : href;
-
-		console.log(that);
 	}
 
 	/**
@@ -229,8 +283,8 @@ function NavigationModel(database) {
 	that.initialize = initialize;
 
 	window.addEventListener('popstate', function() {
-		//TODO: Handle errors
-		render(history.state);
+		console.log(history.state);
+		restoreState(history.state);
 	});
 
 	return that;

@@ -1,22 +1,34 @@
 function LDSInstallerHelpers(db) {
 	var that = {};
 
-	function findSibling(direction, item) {
-		var index, siblings;
+	function findSiblingLevel(direction, item, level) {
+		var index, siblings, result;
 
-		if (item.parent) {
+		if (item.parent && item.parent.children) {
 			siblings = item.parent.children
 			index = siblings.indexOf(item);
 
 			if (siblings[index + direction]) {
 				return siblings[index + direction];
 			} else {
-				//TODO Traverse to find better sibling
-				return null;
+				result = findSiblingLevel(direction, item.parent, level + 1);
+				while (level > 1) {
+					if (direction > 1) {
+						result = result.children[0]
+					} else {
+						result = result.children[result.children.length - 1];
+					}
+					level--;
+				}
+				return result;
 			}
 		} else {
 			return null;
 		}
+	}
+
+	function findSibling(direction, item) {
+		return findSiblingLevel(direction, item, 0);
 	}
 
 	function update(item) {

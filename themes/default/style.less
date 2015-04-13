@@ -63,7 +63,6 @@ video {
   overflow-y: auto;
   overflow-x: none;
   margin-top: @toolbar-size * 2;
-  margin-bottom: 100%;
   margin-left: @margins;
   margin-right: @margins;
 }
@@ -109,6 +108,7 @@ video {
     transform: translate(-50%, -50%);
     margin: auto;
     padding: 1em;
+    text-align: center;
     &:before {
       // loading spinner
       content: "\f110";
@@ -169,9 +169,6 @@ video {
   left: 0;
   right: 0;
   overflow: auto;
-  div:last-child {
-    margin-bottom: 100%;
-  }
 }
 
 .toolbar {

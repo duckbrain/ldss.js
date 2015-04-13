@@ -1,7 +1,5 @@
-function BrowserDownloader() {}
-
-BrowserDownloader.prototype = {
-	download: function download(params) {
+function BrowserDownloader() {
+	function download(params) {
 		if (typeof params == 'string') {
 			params = {
 				url: params
@@ -44,9 +42,9 @@ BrowserDownloader.prototype = {
 			};
 			client.send(uri);
 		});
-	},
+	}
 
-	downloadBinary: function(url) {
+	function downloadBinary(url) {
 		return new Promise(function(fulfill, reject) {
 			var xhr = new XMLHttpRequest();
 			xhr.open('GET', url);
@@ -63,7 +61,24 @@ BrowserDownloader.prototype = {
 			xhr.send();
 		});
 	}
+
+	function require(url, name) {
+		return download(url).then(function(data) {
+			var module = {
+				exports: {}
+			};
+
+			eval(data);
+
+			return module.exports;
+		})
+	}
+
+	this.download = download;
+	this.downloadBinary = downloadBinary;
+	this.require = require;
 }
+
 
 if (typeof module != 'undefined') {
 	module.exports = BrowserDownloader;
