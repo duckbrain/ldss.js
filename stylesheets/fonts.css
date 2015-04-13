@@ -22,9 +22,9 @@
  * the front of the licence to let people know what font it is for.
  *
  *
- * Font refrences have the following syntax:
+ * Font references have the following syntax:
  * @font-face {
- * 	 font-family: ''; <-- This is the name that we refrence in other places
+ * 	 font-family: ''; <-- This is the name that we reference in other places
  *   font-style: normal; <-- The style is important if a font has explicit alternate
  * 							 styles, so they are used instead of one the computer
  * 							 generates mathematicly. Could be normal or italic

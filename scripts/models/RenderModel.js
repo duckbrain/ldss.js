@@ -19,7 +19,7 @@ function RenderModel(navigation) {
 	}
 
 	function updateElements() {
-		elements.refrences = $('.refrences');
+		elements.references = $('.references');
 	}
 
 
@@ -31,12 +31,12 @@ function RenderModel(navigation) {
 	}
 
 	function restoreState(state) {
-		openRefrence(state.openedReference);
+		openReference(state.openedReference);
 		elements.body.scrollTop = state.scrollPosition;
 	}
 
 	function resetState() {
-		closeRefrencePanel();
+		closeReferencePanel();
 	}
 
 	function onPageLinkClicked(e) {
@@ -53,16 +53,16 @@ function RenderModel(navigation) {
 		}
 
 		if (path.indexOf('/f_') == 0) {
-			openRefrence(path.substring(1));
+			openReference(path.substring(1));
 		} else {
 			navigation.navigatePath(path);
 		}
 	}
 
-	function onRefrenceClosedClicked(e) {
+	function onReferenceClosedClicked(e) {
 		e.stopPropagation();
 		e.cancelBubble = true
-		closeRefrencePanel();
+		closeReferencePanel();
 	}
 
 	function onLanguageSelected(e) {
@@ -74,27 +74,27 @@ function RenderModel(navigation) {
 			});
 	}
 
-	function openRefrence(reference) {
-		var refrenceElement;
+	function openReference(reference) {
+		var referenceElement;
 
 		if (!reference) {
 			openedReference = null;
-			$.removeClass(elements.body, 'refrences-open');
+			$.removeClass(elements.body, 'references-open');
 		} else {
 			openedReference = reference;
-			refrenceElement = $.id(reference);
-			$.queryAll('.refrences .selected', function(ele) {
+			referenceElement = $.id(reference);
+			$.queryAll('.references .selected', function(ele) {
 				$.removeClass(ele, 'selected');
 			});
-			$.addClass(elements.body, 'refrences-open');
-			$.addClass(refrenceElement, 'selected');
-			elements.refrences.scrollTop = refrenceElement.offsetTop;
+			$.addClass(elements.body, 'references-open');
+			$.addClass(referenceElement, 'selected');
+			elements.references.scrollTop = referenceElement.offsetTop;
 		}
 		onStateChanged.fire();
 	}
 
-	function closeRefrencePanel() {
-		openRefrence(null);
+	function closeReferencePanel() {
+		openReference(null);
 	}
 
 	function highlightVerses(verses) {
@@ -119,9 +119,9 @@ function RenderModel(navigation) {
 			_: navigation.getI18nMessage
 		});
 		updateElements();
-		$.attachLinks('.refrences-close', onRefrenceClosedClicked);
+		$.attachLinks('.references-close', onReferenceClosedClicked);
 		$.attachLinks('#main-content a[data-id]', onPageLinkClicked);
-		$.attachLinks('.content a[href], .refrences a[href]:not(.refrences-close)', onContentLinkClicked);
+		$.attachLinks('.content a[href], .references a[href]:not(.references-close)', onContentLinkClicked);
 
 		highlightVerses(navigation.versesParsed);
 		if (navigation.versesParsed[0]) {

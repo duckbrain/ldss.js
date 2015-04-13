@@ -44,7 +44,7 @@ function LDSZBookInstaller(db, book) {
 			.then(helpers.update)
 			.then(cleanup);
 		// TODO: After updated, it should look for the book or nodes that have 1 child and no content. Those items should
-		// be updated to have thier child's name and content, but the names on refrences should not be updated. The child
+		// be updated to have thier child's name and content, but the names on references should not be updated. The child
 		// can then be deleted.
 	}
 
@@ -91,7 +91,7 @@ function LDSZBookInstaller(db, book) {
 		var glId, item;
 		glId = glNode[0];
 		item = formatNode(glNode);
-		item.details.refrences = references[glId]
+		item.details.references = references[glId]
 
 		return db.add(item).then(function(item) {
 			item = item[0]; // Item comes back as an array with one item
@@ -146,7 +146,7 @@ function LDSZBookInstaller(db, book) {
 			details: {
 				bookId: book.id,
 				content: row[6],
-				refrences: row[7],
+				references: row[7],
 				shortTitle: row[4],
 				subtitle: row[3]
 			}

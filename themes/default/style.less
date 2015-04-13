@@ -16,7 +16,7 @@
  */
 
 @toolbar-size: 2em;
-@refrences-size: 30%;
+@references-size: 30%;
 
 .chapter sup when (@hideFootnotes) {
   display: none;
@@ -160,11 +160,11 @@ video {
   background-color: @highlight;
 }
 
-.refrences {
+.references {
   display: none;
   background: @accent;
   position: fixed;
-  height: @refrences-size;
+  height: @references-size;
   bottom: 0;
   left: 0;
   right: 0;
@@ -231,11 +231,11 @@ video {
   }
 }
 
-.refrences-open {
-  .refrences {
+.references-open {
+  .references {
     display: block;
   }
   .page-content {
-  	padding-bottom: @refrences-size;
+  	padding-bottom: @references-size;
   }
 }
