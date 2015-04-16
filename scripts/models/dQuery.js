@@ -2,10 +2,65 @@ function dQuery() {
   var that;
   var document = window.document;
 
+  /**
+   * Intended to get a list of elements from whatever it is passed.
+   * @param  {multiple} element An element, array, or string from which to get a list of elements.
+   * @return {DOMElement Array}         Warning: This is not a real array and does not have Array's prototype functions.
+   */
+  function omni(element) {
+    if (typeof element == 'string') {
+      return $a(element);
+    } else if ('length' in element) {
+      return element;
+    } else {
+      return [element]
+    }
+  }
+
+  /**
+   * Returns a function where the first parameters is run through the omni function, then the passed action is called for each element in the array.
+   * @param {function} action A function to be converted into an omni function.
+   */
+  function makeOmni(action) {
+    return function(elements) {
+      var e = omni(elements);
+      for (var i = 0; i < e.length; i++) {
+        arguments[0] = e[i];
+        action.apply(e[i], arguments);
+      }
+      return e;
+    }
+  }
+
+  function on(element, event, handler, allowDefault) {
+    element.addEventListener(event, function(e) {
+      if (!allowDefault) {
+        e.preventDefault();
+      }
+      handler(e);
+      return allowDefault;
+    });
+  }
+
+  function makeEvent(event) {
+    return function(element, handler, allowDefault) {
+      return on(element, event, handler, allowDefault);
+    }
+  }
+
+  /**
+   * Shorthand for document.querySelector(), but also the root element of the dQuery object.
+   */
   function $(query) {
     return document.querySelector(query);
   }
 
+  /**
+   * Shorthand for document.querySelectorAll(), optionally can be called with a callback to execute on each element.
+   * @param  {string}   query
+   * @param  {Function} callback If provided, called for each element: callback(element, index)
+   * @return {DOMElement Array}
+   */
   function $a(query, callback) {
     var results = document.querySelectorAll(query);
     if (callback) {
@@ -16,17 +71,17 @@ function dQuery() {
     return results;
   }
 
+  /**
+   * Shorthand for document.getElementById()
+   */
   function id(id) {
     return document.getElementById(id);
   }
 
-  function attachLinks(query, handler) {
+  function attachLinks(query, handler, allowDefault) {
+    allowDefault = !!allowDefault;
     $a(query, function(link) {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        handler(e);
-        return false;
-      });
+      on(link, 'click', handler, allowDefault);
     });
   }
 
@@ -51,7 +106,9 @@ function dQuery() {
   that.queryAll = $a;
   that.id = id;
   that.attachLinks = attachLinks;
-  that.addClass = addClass;
-  that.removeClass = removeClass;
+  that.addClass = makeOmni(addClass);
+  that.removeClass = makeOmni(removeClass);
+  that.on = makeOmni(on);
+  that.click = makeOmni(makeEvent('click'));
   return that;
 }

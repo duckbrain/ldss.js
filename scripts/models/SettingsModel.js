@@ -3,63 +3,26 @@
  * received updates on when those settings are updated.
  *
  * @param server
- *            An instance of the db.js server that the settings are to be stored
- *            in.
- * @param messageProvider
- *            An instance of an object that has two functions, listen(callback),
- *            and send(title, message). Listen should add a function to a list
- *            of callbacks that are fired when send is called. Send should
- *            simple pass its two parameters to each callback. This provider may
- *            be implemented to send the messages between the browser and the
- *            server or between open tabs. If not provided, a default one that
- *            passes the values straight through will be generated.
+ *            An instance of the db.js server where the settings will be stored.
  */
-function SettingsModel(database, messageProvider) {
+function SettingsModel(database) {
   var that = this;
   var callbacks = {};
   var defaults = {
     language: 1,
     theme: 'default',
     'themeOptions': {
-      background: '#fff',
-      color: '#000',
-      accent: '#ccc',
-      highlight: '#ff0',
-      margins: '3em',
+      background: '#ffffff',
+      color: '#000000',
+      accent: '#cccccc',
+      highlight: '#ffff00',
+      margins: '48',
       fontFamily: 'arial',
-      fontSize: '12pt',
+      fontSize: '12',
       hideFootnotes: false,
       hideAnnotations: false, //Anotations are not yet implemented
     },
   };
-
-  that.messagePrefix = "duck.jonathan.lds-scriptures.settings-";
-
-  //
-  // Simple default messageProvider that forwards off a single message back.
-  //
-  messageProvider = messageProvider || {
-    listen: function listen(callback) {
-      messageProvider.send = callback;
-    },
-    send: null
-  };
-
-  messageProvider.listen(function(title, message) {
-    for (var name in callbacks) {
-      if (that.messagePrefix + name == title) {
-        // Setting found loop through the callbacks.
-        var callbacks = callbacks[name];
-        for (var i = 0; i < callbacks.length; i++) {
-          callbacks[i](message.newValue, message.oldValue);
-        }
-      }
-    }
-  });
-
-  that.getLanguage = function getLanguage() {
-    return that.get('language');
-  }
 
   /**
    * Gets an object that contains all of the default settings. These settings
@@ -79,9 +42,8 @@ function SettingsModel(database, messageProvider) {
   that.getAll = function getAll() {
     return that.getDefaults().then(
       function(defaults) {
-        return database.server.settings.query('id').only(0)
-          .execute().then(function onSuccess(settings) {
-            settings = settings[0];
+        return database.server.settings.get(0)
+          .then(function onSuccess(settings) {
             // Find default settings, that are not yet
             // defined
             for (var name in settings) {
@@ -107,17 +69,17 @@ function SettingsModel(database, messageProvider) {
   that.update = function update(values) {
     return that.getAll().then(
       function(settings) {
-
-        // Trigger all of the changed values
-
-        for (var name in values) {
-          if (typeof values[name] != 'function') {
-            that.trigger(name, values[name], settings[name]);
-          }
+        if (!settings) {
+          settings = {};
         }
 
-        return database.server.settings.query().all()
-          .modify(values).execute();
+        for (var name in values) {
+          settings[name] = values[name];
+        }
+
+        settings.id = 0;
+
+        return database.server.settings.update(settings);
 
       });
   }
@@ -148,70 +110,6 @@ function SettingsModel(database, messageProvider) {
     var values = {};
     values[name] = value;
     return that.update(values);
-  }
-
-  /**
-   * Subscribes to changes made to an named setting
-   *
-   * @param name
-   *            The name of the setting
-   * @param callback
-   *            A function (newValue, oldValue) that will be called when the
-   *            value is updated
-   */
-  that.subscribe = function subscribe(name, callback) {
-    if (!callbacks[name]) {
-      callbacks[name] = [];
-    }
-    callbacks[name].push(callback);
-  }
-
-  /**
-   * Unsubscribes any functions that match. (Only those subscribed on this
-   * tab.)
-   *
-   * @param callback
-   *            Callback function to unregister
-   */
-  that.unsubscribe = function unsubscribe(callback) {
-    for (var name in callbacks) {
-      var callbacks = callbacks[name];
-      for (var i = 0; i < callbacks.length; i++) {
-        if (callbacks[i] == callback) {
-          delete callbacks[i];
-        }
-      }
-    }
-  }
-
-  /**
-   * Unsubscribes all callbacks for the setting with the given name
-   *
-   * @param name
-   *            Name of the setting
-   */
-  that.unsubscribeAll = function unsubscribeAll(name) {
-    delete callbacks[name];
-  }
-
-  /**
-   * Triggers the message to the messageProvider that should be handled as
-   * subscribed on construction. This function is automatically triggered
-   * whenever an setting value is updated.
-   *
-   * @param name
-   *            Name of the setting
-   * @param newValue
-   *            The new value of the setting. It is not verified, and the
-   *            event will use it.
-   * @param oldValue
-   *            The old value of the setting.
-   */
-  that.trigger = function trigger(name, newValue, oldValue) {
-    messageProvider.send(that.messagePrefix + name, {
-      newValue: newValue,
-      oldValue: oldValue
-    });
   }
 }
 

@@ -25,6 +25,7 @@ body>.settings>* {
 }
 body>.settings iframe {
   border: none;
+  background: white;
 }
 h1 {
   -webkit-padding-end: 24px;

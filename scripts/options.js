@@ -1,40 +1,93 @@
 (function() {
-  var database = new DatabaseModel();
-  var private = {
-    themes: null,
-    settings: null
-  };
+	var database = new DatabaseModel();
+	var $ = new dQuery();
 
-  function i18n(value) {
-    //TODO: Something that works
-    return value;
-  }
+	private = {
+		themes: null,
+		settings: null,
+		template: null
+	};
 
-  function load() {
-    new EJS({
-      url: 'themes/options/template.ejs'
-    }).update('content', {
-      page: {
-        themes: private.themes,
-        settings: private.settings,
-        generator: new HtmlGenerator(private.settings, i18n)
-      }
-    });
-  }
+	function getI18nMessage(name, params) {
+		if (typeof name != 'string') {
+			return name;
+		}
+		return chrome.i18n.getMessage(name, params) || name;
+	}
 
-  function setter(name) {
-    return function(value) {
-      private[name] = value;
-      return value;
-    };
-  }
+	function save() {
+		var settings = {
+			theme: $('#theme').value,
+			'themeOptions': {
+				background: $('#background-color').value,
+				color: $('#text-color').value,
+				accent: $('#accent-color').value,
+				highlight: $('#highlight-color').value,
+				margins: $('#margin-size').value,
+				fontFamily: $('#font-family').value,
+				fontSize: Math.pow(10, $('#font-size').value) * 12,
+				hideFootnotes: $('#hide-footnotes').checked
+			},
+		};
 
-  database.open().then(function() {
-    return Promise.all([
-      database.settings.getAll().then(setter('settings')),
-      database.theme.getAll().then(setter('themes'))
-    ]);
-  }).then(load);
+		database.settings.update(settings).then(function(e) {
+			load();
+			$('#save-message').innerText = getI18nMessage('saved');
+			setTimeout(function() {
+				$('#save-message').innerText = '';
+			}, 2000)
+		});
+	}
+
+	function close() {
+		window.close();
+	}
+
+	function load() {
+		private.template.update('content', {
+			page: {
+				themes: private.themes,
+				settings: private.settings,
+				generator: new HtmlGenerator(private.settings, getI18nMessage)
+			}
+		});
+
+		$.click('#content .contents li a', function(e) {
+			$.removeClass('#content .contents li', 'selected');
+			$.addClass(e.target.parentElement, 'selected');
+			$.removeClass('#content .main-content>*', 'selected');
+			$.addClass(e.target.hash, 'selected');
+		}, true);
+		$.click('#save-button', save);
+		$.click('#cancel-button', load);
+	}
+
+	function setter(name) {
+		return function(value) {
+			private[name] = value;
+			return value;
+		};
+	}
+
+	database.open().then(function() {
+		return Promise.all([
+			database.settings.getAll().then(setter('settings')),
+			database.theme.getAll().then(setter('themes')),
+			database.downloader.download('themes/options/style.less')
+		]);
+	}).then(function(results) {
+		private.template = new EJS({
+			url: 'themes/options/template.ejs'
+		});
+
+		less.render(results[2], {
+			globalVars: {}
+		}).then(function(output) {
+			$('#custom-css').innerHTML = output.css;
+		}, function(error) {
+			throw error;
+		});
+	}).then(load);
 })();
 
 

@@ -1,22 +1,64 @@
 {
-    "app_title": {
-      "message": "LDS Scriptures",
-      "description": "The official title of the app, displayed all over."
-    },
-    "app_description": {
-      "message": "A very lightweight, offline version of the scriptures of the Church of Jesus Christ of Latter Day Saints.",
-      "description": "The description in the app manifest that is shown in the extensions tab and in the webstore."
-    },
-    "previous": {
-        "message": "Previous",
-        "description": "May be displayed on the toolbar"
-    },
-    "next": {
-        "message": "Next",
-        "description": "May be displayed on the toolbar"
-    },
-    "up_level": {
-        "message": "Up",
-        "description": "May be displayed on the toolbar"
-    }
+	"app_title": {
+		"message": "LDS Scriptures",
+		"description": "The official title of the app, displayed all over."
+	},
+	"app_description": {
+		"message": "A very lightweight, offline version of the scriptures of the Church of Jesus Christ of Latter Day Saints.",
+		"description": "The description in the app manifest that is shown in the extensions tab and in the webstore."
+	},
+	"app_version": {
+		"message": "3.5 dev"
+	},
+	"previous": {
+		"message": "Previous",
+		"description": "May be displayed on the toolbar"
+	},
+	"next": {
+		"message": "Next",
+		"description": "May be displayed on the toolbar"
+	},
+	"up_level": {
+		"message": "Up",
+		"description": "May be displayed on the toolbar"
+	},
+	"general": {
+		"message": "General"
+	},
+	"display": {
+		"message": "Display"
+	},
+	"display_subtitle": {
+		"message": "These options only control the theme. If the theme decides to ignore these values, they will have no effect."
+	},
+	"about": {
+		"message": "About"
+	},
+	"theme": {
+		"message": "Theme"
+	},
+	"background_color": {
+		"message": "Background color"
+	},
+	"text_color": {
+		"message": "Text color"
+	},
+	"accent_color": {
+		"message": "Accent color"
+	},
+	"highlight_color": {
+		"message": "Highlight color"
+	},
+	"margin_size": {
+		"message": "Margin size"
+	},
+	"font_family": {
+		"message": "Font family"
+	},
+	"font_size": {
+		"message": "Font size"
+	},
+	"hide_footnotes": {
+		"message": "Hide footnotes"
+	}
 }

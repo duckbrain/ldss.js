@@ -1,0 +1,99 @@
+@bigScreen: ~"(min-width: 500px)";
+@sideBarWidth: 170px;
+
+@media @bigScreen {
+  .contents {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: @sideBarWidth;
+  }
+  body {
+    position: absolute;
+    margin-left: @sideBarWidth
+  }
+  .main-content {
+    max-width: 40em;
+    margin: auto;
+  }
+}
+
+.contents {
+  @left-indent: 15px;
+
+  h1, h2, h3 {
+    display: none;
+    -webkit-user-select: none;
+    font-weight: normal;
+    line-height: 1;
+    font-size: 1.2em;
+    -webkit-margin-start: 23px;
+    color: rgb(92, 97, 102);
+    margin: 21px @left-indent 1em @left-indent;
+    @media @bigScreen {
+      display: block;
+    }
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    -webkit-border-start: 6px solid transparent;
+    -webkit-padding-start: 18px;
+    -webkit-user-select: none;
+    cursor: pointer;  background-color: white;
+    border: 0;
+    color: #999;
+    cursor: pointer;
+    font: inherit;
+    line-height: 1.417em;
+    margin: 6px @left-indent;
+    padding: 0;
+    &.selected {
+      @bar-width: 5px;
+      border-left: @bar-width rgb(92, 97, 102) solid;
+      box-sizing: border-box;
+      padding-left: @left-indent - @bar-width;
+      margin-left: 0;
+    }
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.main-content>* {
+  padding: .5em;
+  border-radius: .5em;
+
+  &.selected {
+    background: #f1f1f1;
+  }
+}
+
+.controls {
+  margin: .5em 0;
+  label {
+    display: inline-block;
+    width: 10em;
+  }
+}
+
+.footer-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #f1f1f1;
+  text-align: right;
+  padding: .5em;
+  &>* {
+    margin-left: .3em;
+  }
+}

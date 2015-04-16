@@ -17,6 +17,7 @@
 
 @toolbar-size: 2em;
 @references-size: 30%;
+@highlight-fade: 20%;
 
 .chapter sup when (@hideFootnotes) {
   display: none;
@@ -36,6 +37,7 @@
 
 html, body {
   height: 100%;
+  font-size: @fontSize*1pt;
   background-color: @background;
   color: @color;
 }
@@ -63,8 +65,8 @@ video {
   overflow-y: auto;
   overflow-x: none;
   margin-top: @toolbar-size * 2;
-  margin-left: @margins;
-  margin-right: @margins;
+  margin-left: @margins * 1px;
+  margin-right: @margins * 1px;
 }
 
 @-webkit-keyframes fa-spin {
@@ -157,7 +159,7 @@ video {
 }
 
 .selected {
-  background-color: @highlight;
+  background-color: fade(@highlight, @highlight-fade);
 }
 
 .references {

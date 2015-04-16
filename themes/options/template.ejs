@@ -1,29 +1,91 @@
 <%
 var gen = page.generator;
-
+var s = page.settings;
+var t = page.settings.themeOptions;
+var _ = gen.i18n;
 %>
 
-<h3>Contents</h3>
-<ul class="navigator">
-  <li><a href="#display">Display</a></li>
-  <li><a href="#about">About</a></li>
-</ul>
-<section id="display">
-  <h2 i18n-content="display">Display</h2>
-  <h3 i18n-content="theme">Theme</h3>
-  <select id="theme">
-    <% gen.option(page.themes) %>
-  </select>
+<div class="contents">
+  <h3>
+    <a href="index.html">
+      <img alt="App logo" src="img/icon_16.png">
+      <%= _('app_title') %>
+    </a>
+  </h3>
+  <ul class="navigator">
+    <li><a href="#general"><%= _('general') %></a></li>
+    <li><a href="#display"><%= _('display') %></a></li>
+    <li><a href="#about"><%= _('about') %></a></li>
+  </ul>
+</div>
 
-  <label>
-    <input type="checkbox" id="like">
-    I like colors.
-  </label>
-</section>
-<div id="about">
-    <h2>LDS Scriptures 3.5</h2>
-    <h3>developer build</h3>
-    <p>LDS Scriptures was developed by <a href="http://duck-producktions.blogspot.com/">Jonathan Duck</a>.</p>
-    <h3>Disclaimer</h3>
-    <p>This Application was not developed by or in association with The Church of Jesus Christ of Latter-day Saints or any affiliate of the Church of Jesus Christ of Latter-day Saints. Accordingly, The Church of Jesus Christ of Latter-day Saints and its affiliates are not responsible for the content or the functioning of this Application. Rather, the developer of this Application is solely responsible for its content and functioning. Further, you should understand that this Application is neither owned by nor endorsed by The Church of Jesus Christ of Latter-day Saints. However, any trademarks or service marks associated with The Church of Jesus Christ of Latter-day Saints that may be displayed in this Application are owned by Intellectual Reserve, Inc. or other entity affiliated with The Church of Jesus Christ of Latter-day Saints.</p>
+<div class="main-content">
+  <div id="general">
+    <h2><%= _('general') %></h2>
+  </div>
+</div>
+<div class="main-content">
+  <div id="display">
+    <h2><%= _('display') %></h2>
+    <p><%= _('display_subtitle') %></p>
+    <h3>Appearance</h3>
+    <div class="controls">
+      <label>
+        <input type="checkbox" id="hide-footnotes" <%= t.hideFootnotes ? 'checked="checked"' : '' %>>
+        <%= _('hide_footnotes') %>
+      </label>
+    </div>
+    <h3><%= _('theme') %></h3>
+    <div class="controls">
+      <label><%= _('theme') %></label>
+      <select id="theme">
+        <%= gen.option(page.themes) %>
+      </select>
+    </div>
+    <div class="controls">
+      <label><%= _('background_color') %></label>
+      <input type="color" id="background-color" value="<%= t.background %>" />
+    </div>
+    <div class="controls">
+      <label><%= _('text_color') %></label>
+      <input type="color" id="text-color" value="<%= t.color %>" />
+    </div>
+    <div class="controls">
+      <label><%= _('accent_color') %></label>
+      <input type="color" id="accent-color" value="<%= t.accent %>" />
+    </div>
+    <div class="controls">
+      <label><%= _('highlight_color') %></label>
+      <input type="color" id="highlight-color" value="<%= t.highlight %>" />
+    </div>
+    <div class="controls">
+      <label><%= _('margin_size') %></label>
+      <input type="range" min="0" max="500" id="margin-size" value="<%= t.margins %>" />
+    </div>
+    <div class="controls">
+      <label><%= _('font_family') %></label>
+      <select id="font-family">
+          <%= gen.option(page.fonts) %>
+      </select>
+    </div>
+    <div class="controls">
+      <label><%= _('font_size') %></label>
+      <input type="range" id="font-size" min="-0.2" max="0.5" step="0.01" value="<%= Math.log10(t.fontSize / 12) %>" />
+    </div>
+    <p>
+      NOTE: Custom Themes comming soon.
+    </p>
+  </div>
+  <div id="about">
+      <h2><%= _('app_title') %> <%= _('app_version') %></h2>
+      <p>LDS Scriptures was developed by <a href="http://duck-producktions.blogspot.com/">Jonathan Duck</a>.</p>
+      <h3>Disclaimer</h3>
+      <p>This Application was not developed by or in association with The Church of Jesus Christ of Latter-day Saints or any affiliate of the Church of Jesus Christ of Latter-day Saints. Accordingly, The Church of Jesus Christ of Latter-day Saints and its affiliates are not responsible for the content or the functioning of this Application. Rather, the developer of this Application is solely responsible for its content and functioning. Further, you should understand that this Application is neither owned by nor endorsed by The Church of Jesus Christ of Latter-day Saints. However, any trademarks or service marks associated with The Church of Jesus Christ of Latter-day Saints that may be displayed in this Application are owned by Intellectual Reserve, Inc. or other entity affiliated with The Church of Jesus Christ of Latter-day Saints.</p>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <span id="save-message"></span>
+  <button id="save-button" type="button"><%= _('save') %></button>
+    <button id="cancel-button" type="button"><%= _('cancel') %></button>
 </div>
