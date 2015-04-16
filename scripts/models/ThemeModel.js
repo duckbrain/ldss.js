@@ -1,16 +1,31 @@
 function ThemeModel(database) {
 	var that = this;
+	var dl = database.downloader.download;
 	var builtIn = {
 		'default': {
 			template: 'themes/default/template.ejs',
 			stylesheet: 'themes/default/style.less',
 			script: null, //optional
+			includeDefault: false
+		},
+		'inverse': {
+			stylesheet: 'themes/inverse/style.less',
+			includeDefault: true
 		}
-		//TODO: Midnight
-		//TODO: Sepia
+		'sepia': {
+			stylesheet: 'themes/sepia/style.less',
+			includeDefault: true,
+			themeOptions: {
+				//TODO: Sepia
+			}
+		}
 		//TODO: Gold plates
 		//TODO: Bootstrap
 	};
+
+	that.getI18nMessage = function(name) { 
+		return name;
+  };
 
 	function reset() {
 		return database.server.themes.clear();
@@ -48,20 +63,34 @@ function ThemeModel(database) {
 
 	function getBuiltIn(name) {
 		var t = builtIn[name];
-		return Promise.all(
-			[database.downloader.download(t.stylesheet),
-				database.downloader.download(t.template), (t.script ? database.downloader.download(t.script) : Promise.resolve(
-					null))
-			]).then(function(e) {
+		var promises;
+
+		if (t.includeDefault) {
+			var d = builtIn.default;
+			promises = [
+				dl(t.stylesheet),
+				dl(d.template), 
+				Promise.resolve(null),
+				dl(d.stylesheet)
+			];
+		} else {
+			promises = [
+				dl(t.stylesheet),
+				dl(t.template), 
+				(t.script ? dl(t.script) : Promise.resolve(null)),
+				Promise.resolve('')
+			];
+		}
+
+		return Promise.all(promises).then(function(e) {
 			return {
 				id: name,
-				name: name, //TODO: Get i18n name with "name" as base
-				style: e[0],
+				name: that.getI18nMessage(name),
+				style: e[3] + '\n' + e[0],
 				template: e[1],
 				script: e[2]
 			};
-		})
-
+		});
 	}
 
 	function getAllBuiltIn() {

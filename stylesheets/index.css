@@ -27,7 +27,7 @@ body>.settings iframe {
   border: none;
   background: white;
 }
-h1 {
+body>.settings h1 {
   -webkit-padding-end: 24px;
   -webkit-user-select: none;
   color: #333;

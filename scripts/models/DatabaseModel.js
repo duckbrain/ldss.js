@@ -99,9 +99,9 @@ DatabaseModel.helpers = {
 		// TODO: Return a promise that returns true or false
 	},
 	single: function single(list) {
-		//if (list.length > 1) {
-		//	throw "single had more than one.";
-		//}
+		if (list.length > 1) {
+			throw "single had more than one.";
+		}
 		return list[0];
 	},
 	dataToIdArray: function dataToIdArray(array) {
@@ -112,6 +112,13 @@ DatabaseModel.helpers = {
 		return newArray;
 	}
 }
+
+function log(message) {
+	console.log(message);
+	return message;
+}
+DatabaseModel.log = log;
+
 
 if (typeof module != 'undefined') {
 	module.exports = DatabaseModel;
