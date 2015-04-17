@@ -1,9 +1,3 @@
-if (typeof require == 'function') {
-  var Downloader = require('./Downloader.js');
-  var pako = require('./../dependencies/pako.js');
-  var SQL = require('./../dependencies/sql.js');
-}
-
 function LDSContentProvider(database) {
   var that = this;
 
@@ -11,7 +5,7 @@ function LDSContentProvider(database) {
     return database.downloader.download(params);
   };
 
-  that.getAction = function(action, data) {
+  that.getAction = function (action, data) {
     data = data || {};
     data.action = action;
     data.format = 'json';
@@ -22,11 +16,11 @@ function LDSContentProvider(database) {
     }).then(JSON.parse);
   };
 
-  that.getLanguages = function() {
+  that.getLanguages = function () {
     return that.getAction('languages.query');
   };
 
-  that.getCatalog = function(languageId) {
+  that.getCatalog = function (languageId) {
     return that.getAction('catalog.query', {
       languageid: languageId,
       platformid: 17
