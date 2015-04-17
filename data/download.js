@@ -8,6 +8,11 @@ var languages = {};
 var queue = [];
 var downloadCount = 0;
 
+function usage() {
+	//TODO
+	console.log('Usage instructions go here');
+}
+
 function downloadQueue(filePath, url, callback) {
 	queue.push({
 		filePath: filePath,
@@ -25,37 +30,38 @@ function checkQueue() {
 	}
 
 	downloadCount++;
-	download(item.filePath, item.url, function() {
+	download(item.filePath, item.url, function () {
 		console.log(downloadCount, queue.length, item.filePath);
 		downloadCount--;
 		for (var i = 0; i < queue.length; i++) {
-			if (queue[i] == item) {
+			if (queue[i].filePath == item.filePath) {
 				queue.splice(i, 1);
-				item.callback();
 			}
+			i--;
 			checkQueue();
 		}
+		item.callback();
 	})
 }
 
 function mkdir(folderPath, callback) {
 	var parentPath = folderPath.substring(0, folderPath.lastIndexOf('/'));
 	if (parentPath.length) {
-		mkdir(parentPath, function() {
+		mkdir(parentPath, function () {
 			fs.mkdir(folderPath, callback);
 		})
 	} else {
-		callback();
+		fs.mkdir(folderPath, callback);
 	}
 }
 
 function download(filePath, url, callback) {
 	var folderPath = filePath.substring(0, filePath.lastIndexOf('/'));
-	mkdir(folderPath, function() {
+	mkdir(folderPath, function () {
 		var file = fs.createWriteStream(filePath);
-		var request = http.get(url, function(response) {
+		var request = http.get(url, function (response) {
 			response.pipe(file);
-			file.on('finish', function() {
+			file.on('finish', function () {
 				file.close(callback);
 			})
 		});
@@ -72,8 +78,8 @@ function downloadLanguages() {
 		languages[l.code_three] = l.id;
 	}
 
-	downloadQueue(filePath, url, function() {
-		process.argv.filter(function(param) {
+	downloadQueue(filePath, url, function () {
+		process.argv.filter(function (param) {
 			return param in languages;
 		}).forEach(downloadCatalog);
 	});
@@ -85,7 +91,7 @@ function downloadCatalog(code) {
 	var url = 'http://tech.lds.org/glweb/?action=catalog.query&languageid=' + id + '&platformid=17&format=json';
 
 	console.log('downloading', id, code, filePath, url);
-	downloadQueue(filePath, url, function() {
+	downloadQueue(filePath, url, function () {
 		loadCatalog(code);
 	});
 }
@@ -99,7 +105,7 @@ function loadCatalog(id) {
 	function downloadBook(book) {
 		var filePath = id + book.gl_uri + '.zbook';
 		var url = book.url;
-		downloadQueue(filePath, url, function() {});
+		downloadQueue(filePath, url, function () {});
 	}
 
 	var filePath = id + '/catalog.json';
