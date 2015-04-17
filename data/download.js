@@ -37,7 +37,6 @@ function checkQueue() {
 			if (queue[i].filePath == item.filePath) {
 				queue.splice(i, 1);
 			}
-			i--;
 			checkQueue();
 		}
 		item.callback();
@@ -46,7 +45,7 @@ function checkQueue() {
 
 function mkdir(folderPath, callback) {
 	var parentPath = folderPath.substring(0, folderPath.lastIndexOf('/'));
-	if (parentPath.length) {
+	if (folderPath.indexOf('/') != -1) {
 		mkdir(parentPath, function () {
 			fs.mkdir(folderPath, callback);
 		})
