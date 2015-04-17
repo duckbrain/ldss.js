@@ -1,4 +1,4 @@
-(function() {
+(function () {
 	var database = new DatabaseModel();
 	var $ = new dQuery();
 
@@ -13,6 +13,10 @@
 			return name;
 		}
 		return chrome.i18n.getMessage(name, params) || name;
+	}
+
+	function valueChanged(e) {
+
 	}
 
 	function save() {
@@ -30,10 +34,10 @@
 			},
 		};
 
-		database.settings.update(settings).then(function(e) {
+		database.settings.update(settings).then(function (e) {
 			load();
 			$('#save-message').innerText = getI18nMessage('saved');
-			setTimeout(function() {
+			setTimeout(function () {
 				$('#save-message').innerText = '';
 			}, 2000)
 		});
@@ -44,47 +48,53 @@
 	}
 
 	function load() {
-		private.template.update('content', {
-			page: {
-				themes: private.themes,
-				settings: private.settings,
-				generator: new HtmlGenerator(private.settings, getI18nMessage)
-			}
-		});
+		return Promise.all([
+			database.settings.getAll().then(setter('settings')),
+			database.settings.getRaw().then(setter('rawSettings'))
+		]).then(function () {
+			private.template.update('content', {
+				page: {
+					themes: private.themes,
+					settings: private.settings,
+					rawSettings: private.rawSettings,
+					generator: new HtmlGenerator(private.settings, getI18nMessage)
+				}
+			});
 
-		$.click('#content .contents li a', function(e) {
-			$.removeClass('#content .contents li', 'selected');
-			$.addClass(e.target.parentElement, 'selected');
-			$.removeClass('#content .main-content>*', 'selected');
-			$.addClass(e.target.hash, 'selected');
-		}, true);
-		$.click('#save-button', save);
-		$.click('#cancel-button', load);
+			$.click('#content .contents li a', function (e) {
+				$.removeClass('#content .contents li', 'selected');
+				$.addClass(e.target.parentElement, 'selected');
+				$.removeClass('#content .main-content>*', 'selected');
+				$.addClass(e.target.hash, 'selected');
+			}, true);
+			$.click('#save-button', save);
+			$.click('#cancel-button', load);
+
+		});
 	}
 
 	function setter(name) {
-		return function(value) {
+		return function (value) {
 			private[name] = value;
 			return value;
 		};
 	}
 
-	database.open().then(function() {
+	database.open().then(function () {
 		return Promise.all([
-			database.settings.getAll().then(setter('settings')),
-			database.theme.getAll().then(setter('themes')),
-			database.downloader.download('themes/options/style.less')
+			database.downloader.download('themes/default/options.less'),
+			database.theme.getAll().then(setter('themes'))
 		]);
-	}).then(function(results) {
+	}).then(function (results) {
 		private.template = new EJS({
-			url: 'themes/options/template.ejs'
+			url: 'themes/default/options.ejs'
 		});
 
-		less.render(results[2], {
+		less.render(results[0], {
 			globalVars: {}
-		}).then(function(output) {
+		}).then(function (output) {
 			$('#custom-css').innerHTML = output.css;
-		}, function(error) {
+		}, function (error) {
 			throw error;
 		});
 	}).then(load);

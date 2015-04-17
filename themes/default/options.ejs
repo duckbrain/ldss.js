@@ -43,6 +43,10 @@ var _ = gen.i18n;
       </select>
     </div>
     <div class="controls">
+        <%= gen.checkbox('highlight-color-enable', t.highlight) %>
+        <%= _('enable_overrides') %>
+    </div>
+    <div class="controls">
       <label><%= _('background_color') %></label>
       <input type="color" id="background-color" value="<%= t.background %>" />
     </div>
