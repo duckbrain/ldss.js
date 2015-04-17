@@ -13,6 +13,10 @@ function usage() {
 	console.log('Usage instructions go here');
 }
 
+function onerror(e) {
+	console.log(e);
+}
+
 function downloadQueue(filePath, url, callback) {
 	queue.push({
 		filePath: filePath,
@@ -62,8 +66,10 @@ function download(filePath, url, callback) {
 			response.pipe(file);
 			file.on('finish', function () {
 				file.close(callback);
-			})
+			});
+			file.on('error', onerror);
 		});
+		request.on('error', onerror);
 	});
 }
 
@@ -72,7 +78,7 @@ function downloadLanguages() {
 	var url = 'http://tech.lds.org/glweb/?action=languages.query&format=json'
 
 	downloadQueue(filePath, url, function () {
-		var langs = json('./' + filePath).languages;
+		var langs = json(filePath).languages;
 		for (var i = 0; i < langs.length; i++) {
 			var l = langs[i];
 			languages[l.code_three] = l.id;
