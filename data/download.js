@@ -70,14 +70,14 @@ function download(filePath, url, callback) {
 function downloadLanguages() {
 	var filePath = 'languages.json';
 	var url = 'http://tech.lds.org/glweb/?action=languages.query&format=json'
-	var langs = require('./' + filePath).languages;
-
-	for (var i = 0; i < langs.length; i++) {
-		var l = langs[i];
-		languages[l.code_three] = l.id;
-	}
 
 	downloadQueue(filePath, url, function () {
+		var langs = json('./' + filePath).languages;
+		for (var i = 0; i < langs.length; i++) {
+			var l = langs[i];
+			languages[l.code_three] = l.id;
+		}
+
 		process.argv.filter(function (param) {
 			return param in languages;
 		}).forEach(downloadCatalog);
@@ -95,6 +95,10 @@ function downloadCatalog(code) {
 	});
 }
 
+function json(file) {
+	return JSON.parse(fs.readFileSync(file, 'utf8'));
+}
+
 function loadCatalog(id) {
 	function loadBooks(folder) {
 		folder.books.forEach(downloadBook);
@@ -108,7 +112,7 @@ function loadCatalog(id) {
 	}
 
 	var filePath = id + '/catalog.json';
-	var catalog = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+	var catalog = json(filePath);
 	loadBooks(catalog.catalog);
 }
 
