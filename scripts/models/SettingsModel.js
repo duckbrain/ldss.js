@@ -6,113 +6,90 @@
  *            An instance of the db.js server where the settings will be stored.
  */
 function SettingsModel(database) {
-  var that = this;
-  var callbacks = {};
-  var defaults = {
-    language: 1,
-    theme: 'default',
-    'themeOptions': {
-      background: '#ffffff',
-      color: '#000000',
-      accent: '#cccccc',
-      highlight: '#ffff00',
-      margins: '48',
-      fontFamily: 'arial',
-      fontSize: '12',
-      hideFootnotes: false,
-      hideAnnotations: false, //Anotations are not yet implemented
-    },
-  };
+	var that = this;
+	var callbacks = {};
+	var defaults = {
+		language: 1,
+		theme: 'default',
+		'themeOptions': {
+			background: '#ffffff',
+			color: '#000000',
+			accent: '#cccccc',
+			highlight: '#ffff00',
+			margins: '48',
+			fontFamily: 'arial',
+			fontSize: '12',
+			hideFootnotes: false,
+			hideAnnotations: false, //Anotations are not yet implemented
+		},
+	};
 
-  /**
-   * Gets an object that contains all of the default settings. These settings
-   * will be automatically accessed if the settings don't contain a value.
-   *
-   * @returns Promise
-   */
-  that.getDefaults = function getDefaults() {
-    return Promise.resolve(defaults);
-  }
+	function getDefaults() {
+		return Promise.resolve(defaults);
+	}
 
-  /**
-   * Gets an object that contains all of the settings.
-   *
-   * @returns Promise
-   */
-  that.getAll = function getAll() {
-    return that.getDefaults().then(
-      function(defaults) {
-        return database.server.settings.get(0)
-          .then(function onSuccess(settings) {
-            // Find default settings, that are not yet
-            // defined
-            for (var name in settings) {
-              defaults[name] = settings[name];
-            }
-            delete defaults['id'];
-            return defaults;
-          }, function onError(ex) {
-            return database.server.settings.update({
-              id: 0
-            }).then(that.getDefaults);
-          });
-      });
-  }
+	function getAll() {
+		return getDefaults().then(function(defaults) {
+			return getRaw().then(function(settings) {
+				// Find default settings, that are not yet defined
+				for (var name in settings) {
+					defaults[name] = settings[name];
+				}
+				delete defaults['id'];
+				return defaults;
+			});
+		});
+	}
 
-  /**
-   * Updates any number of settings from the named values passed.
-   *
-   * @param values
-   *            An object of named values to update
-   * @returns Promise
-   */
-  that.update = function update(values) {
-    return that.getAll().then(
-      function(settings) {
-        if (!settings) {
-          settings = {};
-        }
+	function update(values) {
+		return getAll().then(function(settings) {
+			settings = settings || {};
 
-        for (var name in values) {
-          settings[name] = values[name];
-        }
+			for (var name in values) {
+				settings[name] = values[name];
+			}
 
-        settings.id = 0;
+			return setRaw(settings);
+		});
+	}
 
-        return database.server.settings.update(settings);
+	function get(name) {
+		return getAll().then(function(settings) {
+			return settings[name];
+		});
+	}
 
-      });
-  }
+	function set(name, value) {
+		var values = {};
+		values[name] = value;
+		return update(values);
+	}
 
-  /**
-   * Gets a single value
-   *
-   * @param name
-   *            The name of the value
-   * @returns Promise
-   */
-  that.get = function get(name) {
-    return that.getAll().then(function(settings) {
-      return settings[name];
-    });
-  }
+	function getRaw() {
+		return database.server.settings.get(0);
+	}
 
-  /**
-   * Updates a single value
-   *
-   * @param name
-   *            The name of the value
-   * @param value
-   *            The new value
-   * @returns Promise
-   */
-  that.set = function set(name, value) {
-    var values = {};
-    values[name] = value;
-    return that.update(values);
-  }
+	function setRaw(values) {
+		values.id = 0;
+		return database.server.settings.update(values);
+	}
+
+	function revert(name) {
+		return getRaw().then(function(values) {
+			delete values[name];
+			return values;
+		}).then(setRaw);
+	}
+
+	that.get = get;
+	that.set = set;
+	that.update = update;
+	that.revert = revert;
+	that.getAll = getAll;
+	that.getDefaults = getDefaults;
+	that.getRaw = getRaw;
 }
 
 if (typeof module != 'undefined') {
-  module.exports = SettingsModel;
+	module.exports = SettingsModel;
 }

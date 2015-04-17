@@ -76,18 +76,27 @@ function DatabaseModel(contentProvider) {
 	tryLoadModel('Node');
 	tryLoadModel('Theme');
 	tryLoadModel('Download');
+	tryLoadModel('Keyboard');
 	tryLoadModel('Downloader', 'BrowserDownloader');
 	tryLoadModel('ContentProvider', 'LDSContentProvider');
 
 	that.open = function open() {
-		return db.open(that.connection).then(function(server) {
+		return db.open(that.connection).then(function (server) {
 			that.server = server;
-			return that;
+
+			// Calls the initialize function on all models that have it.
+			return Promise.all(Object.getOwnPropertyNames(that).filter(function (model) {
+				return that[model] && 'initialize' in that[model];
+			}).map(function (model) {
+				return that[model].initialize();
+			})).then(function () {
+				return server;
+			});
 		});
 	};
 
 	that.close = function close() {
-		return that.server.close().then(function() {
+		return that.server.close().then(function () {
 			that.server = null;
 			return true;
 		});
