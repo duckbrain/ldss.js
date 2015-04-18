@@ -6,11 +6,11 @@ function LanguageModel(database) {
 	 *
 	 * @returns Promise
 	 */
-	that.download = function() {
-		that.getAll().then(function(languages) {
+	that.download = function () {
+		that.getAll().then(function (languages) {
 			if (!languages.length) {
 				return database.contentProvider.getLanguages().then(
-					function(response) {
+					function (response) {
 						return that.addAll(response.languages)
 					});
 			}
@@ -19,7 +19,7 @@ function LanguageModel(database) {
 
 	that.addAll = function addAll(languages) {
 		var server = database.server;
-		return Promise.all(languages.map(function(language) {
+		return Promise.all(languages.map(function (language) {
 			return server.languages.update(language);
 		}));
 	}

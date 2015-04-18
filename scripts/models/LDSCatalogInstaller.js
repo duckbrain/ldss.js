@@ -7,10 +7,10 @@ function LDSCatalogInstaller(db, languageId) {
 	var that = this;
 	var helpers = new LDSInstallerHelpers(db);
 	var paths = {};
-	that.progress = function() {};
+	that.progress = function () {};
 
 	function progress(message) {
-		return function(data) {
+		return function (data) {
 			that.progress(message);
 			return data;
 		}
@@ -22,7 +22,7 @@ function LDSCatalogInstaller(db, languageId) {
 		//
 		return db.clear(languageId)
 			.then(progress('cleared'))
-			.then(function() {
+			.then(function () {
 				return add(root.catalog, formatCatalog, null)
 					.then(progress('added'))
 					.then(helpers.update)
@@ -34,7 +34,7 @@ function LDSCatalogInstaller(db, languageId) {
 		var item = format(glItem);
 		paths[item.path] = item;
 
-		return db.add(item).then(function(item) {
+		return db.add(item).then(function (item) {
 			var folderAdds, bookAdds;
 
 			item = item[0]; // Item comes back as an array with one item
@@ -49,13 +49,13 @@ function LDSCatalogInstaller(db, languageId) {
 			}
 
 			if (item.type != 'book') { // Catalog or folder
-				folderAdds = glItem.folders.map(function(glFolder) {
+				folderAdds = glItem.folders.map(function (glFolder) {
 					return add(glFolder, formatFolder, item);
 				});
-				bookAdds = glItem.books.map(function(glBook) {
+				bookAdds = glItem.books.map(function (glBook) {
 					return add(glBook, formatBook, item);
 				});
-				return Promise.all(folderAdds.concat(bookAdds)).then(function() {
+				return Promise.all(folderAdds.concat(bookAdds)).then(function () {
 					//TODO: Sort by display order
 					item.next = helpers.findSibling(+1, item);
 					item.previous = helpers.findSibling(-1, item);

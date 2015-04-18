@@ -29,8 +29,8 @@ function SettingsModel(database) {
 	}
 
 	function getAll() {
-		return getDefaults().then(function(defaults) {
-			return getRaw().then(function(settings) {
+		return getDefaults().then(function (defaults) {
+			return getRaw().then(function (settings) {
 				// Find default settings, that are not yet defined
 				for (var name in settings) {
 					defaults[name] = settings[name];
@@ -42,7 +42,7 @@ function SettingsModel(database) {
 	}
 
 	function update(values) {
-		return getAll().then(function(settings) {
+		return getAll().then(function (settings) {
 			settings = settings || {};
 
 			for (var name in values) {
@@ -54,7 +54,7 @@ function SettingsModel(database) {
 	}
 
 	function get(name) {
-		return getAll().then(function(settings) {
+		return getAll().then(function (settings) {
 			return settings[name];
 		});
 	}
@@ -75,7 +75,7 @@ function SettingsModel(database) {
 	}
 
 	function revert(name) {
-		return getRaw().then(function(values) {
+		return getRaw().then(function (values) {
 			delete values[name];
 			return values;
 		}).then(setRaw);

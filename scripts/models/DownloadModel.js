@@ -7,7 +7,7 @@ function DownloadModel(database) {
 		if (name in libs) {
 			return Promise.resolve(libs[name]);
 		} else {
-			return database.downloader.require(url).then(function(lib) {
+			return database.downloader.require(url).then(function (lib) {
 				libs[name] = lib;
 				return lib;
 			})
@@ -17,10 +17,10 @@ function DownloadModel(database) {
 
 	that.CatalogInstaller = LDSCatalogInstaller;
 	that.BookInstaller = LDSZBookInstaller;
-	that.progress = function() {};
+	that.progress = function () {};
 
 	function progress(message) {
-		return function(data) {
+		return function (data) {
 			that.progress(message);
 			return data;
 		}
@@ -39,7 +39,7 @@ function DownloadModel(database) {
 		var book;
 
 		return Promise.all([
-				database.node.get(bookId).then(function(b) {
+				database.node.get(bookId).then(function (b) {
 					book = b;
 					return database.contentProvider.getBook(book)
 				}),
@@ -47,7 +47,7 @@ function DownloadModel(database) {
 				getLib('sql', 'scripts/dependencies/sql.js')
 			])
 			.then(progress('installing book'))
-			.then(function(blob) {
+			.then(function (blob) {
 				var sqlitedb, installer, p;
 				sqlitedb = new SQL.Database(pako.inflate(blob[0]));
 				delete blob;

@@ -11,7 +11,7 @@ function NodeModel(database) {
 	}
 
 	function exists(languageId, path) {
-		return getPath(languageId, path).then(function(item) {
+		return getPath(languageId, path).then(function (item) {
 			return !!item;
 		});
 	}

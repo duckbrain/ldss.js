@@ -1,4 +1,4 @@
-function NavigationModel(database) {
+function NavigationController(database) {
 	var that, render;
 
 	that = {
@@ -14,16 +14,16 @@ function NavigationModel(database) {
 		// set by initialize
 		language: null,
 		settings: null,
-		getI18nMessage: function(v) {
+		getI18nMessage: function (v) {
 			return v;
 		}
 	};
-	render = new RenderModel(that);
+	render = new RenderController(that);
 	render.initialize();
 	render.onStateChanged.add(updateState);
 	that.render = render;
 
-	database.download.progress = function(message) {
+	database.download.progress = function (message) {
 		navigate(statusNode(message)).then();
 	}
 
@@ -54,7 +54,7 @@ function NavigationModel(database) {
 		}
 
 		if (state.node) {
-			render(state.node).then(function() {
+			render(state.node).then(function () {
 				render.restoreState(state.renderState);
 			});
 		} else {
@@ -64,14 +64,14 @@ function NavigationModel(database) {
 
 	function checkDownloads(node) {
 		if (!node) {
-			database.download.downloadCatalog(that.language.id).then(function() {
+			database.download.downloadCatalog(that.language.id).then(function () {
 				return database.node.getPath(that.language.id, '/')
 					.then(resetNavigation)
 					.then(navigate);
 			});
 			return statusNode('downloading catalog');
 		} else if (node.type == 'book' && !node.details.downloadedVersion) {
-			database.download.downloadBook(node.id).then(function() {
+			database.download.downloadBook(node.id).then(function () {
 				return database.node.get(node.id)
 					.then(resetNavigation)
 					.then(navigate);
@@ -98,7 +98,7 @@ function NavigationModel(database) {
 	 */
 	function navigateId(id) {
 		return database.node.get(id)
-			.then(function(node) {
+			.then(function (node) {
 				if (!node) {
 					// Just go back to the catalog if the node is not found, instead of redownloading the catalog.
 					return database.node.getPath(that.language.id, '/');
@@ -126,7 +126,7 @@ function NavigationModel(database) {
 	 */
 	function navigateLoaded() {
 		return database.node.getPath(that.language.id, that.path)
-			.then(function(node) {
+			.then(function (node) {
 				if (!node && that.path != '/') {
 					var pathBackup = that.path;
 					// Traverse up the path if it does not exist.
@@ -156,7 +156,7 @@ function NavigationModel(database) {
 
 		// If it's a node and the current book does not have the same id as it's bookId
 		if (node.type == 'node' && (!that.book || that.book.id != node.details.bookId)) {
-			p = database.node.get(node.details.bookId).then(function(book) {
+			p = database.node.get(node.details.bookId).then(function (book) {
 				that.book = book;
 				return node;
 			}).then(render);
@@ -165,7 +165,7 @@ function NavigationModel(database) {
 			p = render(node);
 		}
 
-		return p.then(function() {
+		return p.then(function () {
 			that.node = node;
 			if (!that.node || that.node.type == 'status') {
 				updateState();
@@ -254,21 +254,21 @@ function NavigationModel(database) {
 	 * @return {Promise} A promise when the initialization is done. Just returns the NavigationModel.
 	 */
 	function initialize() {
-		return database.settings.getAll().then(function(settings) {
+		return database.settings.getAll().then(function (settings) {
 			var languageGetter;
 			that.settings = settings;
 
 			return Promise.all([
 				(that.languageCode ? database.language.getByLdsCode(that.languageCode) : database.language.get(
 					settings.language))
-				.then(function(language) {
+				.then(function (language) {
 					that.language = language;
 					that.languageCode = language.code_three;
 				}),
-				database.theme.get(settings.theme).then(function(theme) {
+				database.theme.get(settings.theme).then(function (theme) {
 					return render.loadTheme(theme);
 				})
-			]).then(function() {
+			]).then(function () {
 				return that;
 			});
 		});
@@ -282,7 +282,7 @@ function NavigationModel(database) {
 	that.navigateLoaded = navigateLoaded;
 	that.initialize = initialize;
 
-	window.addEventListener('popstate', function() {
+	window.addEventListener('popstate', function () {
 		console.log(history.state);
 		restoreState(history.state);
 	});

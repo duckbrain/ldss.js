@@ -5,11 +5,11 @@ function LDSContentProvider(database) {
 		return database.downloader.download(params);
 	};
 
-	that.getLanguages = function() {
+	that.getLanguages = function () {
 		return download('data/languages.json');
 	};
 
-	that.getCatalog = function(languageId) {
+	that.getCatalog = function (languageId) {
 		return download('data/' + languageId + '/catalog.json');
 	};
 

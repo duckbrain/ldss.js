@@ -19,7 +19,7 @@ function ThemeModel(database) {
 		//TODO: Bootstrap
 	};
 
-	that.getI18nMessage = function(name) {
+	that.getI18nMessage = function (name) {
 		return name;
 	};
 
@@ -48,7 +48,7 @@ function ThemeModel(database) {
 		return Promise.all(
 			[database.server.themes.query().all().execute(),
 				getAllBuiltIn()
-			]).then(function(e) {
+			]).then(function (e) {
 			return e[1].concat(e[0]);
 		});
 	}
@@ -82,7 +82,7 @@ function ThemeModel(database) {
 			];
 		}
 
-		return Promise.all(promises).then(function(e) {
+		return Promise.all(promises).then(function (e) {
 			return {
 				id: name,
 				name: that.getI18nMessage(name),

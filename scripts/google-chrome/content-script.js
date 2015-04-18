@@ -7,7 +7,7 @@
 // hiding toolbar to the chruch web site. This will allow tight
 // integration with the Church website scriptures.
 
-(function() {
+(function () {
 	console.log("Jonathan Duck's LDS Scriptures Content-Script started...");
 
 	var database = new DatabaseQuery();
@@ -33,7 +33,7 @@
 		newLink.classList.add('gallery');
 		newLink.classList.add('chrome-app-icon');
 		newLink.href = href;
-		newLink.onclick = function() {
+		newLink.onclick = function () {
 			database.node.open(lang, href).then();
 			return false;
 		}

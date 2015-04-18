@@ -12,7 +12,7 @@ function BrowserDownloader() {
 		var url = params.url
 		var args = params.data;
 
-		return new Promise(function(resolve, reject) {
+		return new Promise(function (resolve, reject) {
 
 			// Instantiates the XMLHttpRequest
 			var client = new XMLHttpRequest();
@@ -29,7 +29,7 @@ function BrowserDownloader() {
 			//client.setRequestHeader("Content-type",
 			//        "application/x-www-form-urlencoded");
 			//client.setRequestHeader("Cache-Control", "no-cache");
-			client.onreadystatechange = function() {
+			client.onreadystatechange = function () {
 				if (this.readyState == 4) {
 					if (this.status == 200) {
 						resolve(this.response);
@@ -45,16 +45,16 @@ function BrowserDownloader() {
 	}
 
 	function downloadBinary(url) {
-		return new Promise(function(fulfill, reject) {
+		return new Promise(function (fulfill, reject) {
 			var xhr = new XMLHttpRequest();
 			xhr.open('GET', url);
 			xhr.responseType = 'arraybuffer';
 
-			xhr.onload = function(e) {
+			xhr.onload = function (e) {
 				var data = new Uint8Array(this.response);
 				fulfill(data);
 			}
-			xhr.onerror = function(e) {
+			xhr.onerror = function (e) {
 				console.log("Error", e);
 				reject(e);
 			};
@@ -63,7 +63,7 @@ function BrowserDownloader() {
 	}
 
 	function require(url, name) {
-		return download(url).then(function(data) {
+		return download(url).then(function (data) {
 			var module = {
 				exports: {}
 			};

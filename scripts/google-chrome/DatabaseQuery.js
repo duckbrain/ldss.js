@@ -4,7 +4,7 @@ function DatabaseQuery(messageProvider) {
 	var failed = {};
 
 	function action(title, params) {
-		var result = function() {
+		var result = function () {
 			var data = {};
 			for (var i = 0; i < params.length; i++) {
 				data[params[i]] = arguments[i];
@@ -39,7 +39,7 @@ function DatabaseQuery(messageProvider) {
 			item = base[name];
 			if (typeof item == 'function' && item.title == action) {
 				dbBase = findSteps(database, steps);
-				args = item.params.map(function(param) {
+				args = item.params.map(function (param) {
 					return params[param];
 				})
 				return dbBase[name].apply(dbBase, args);

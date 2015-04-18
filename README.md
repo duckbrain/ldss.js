@@ -21,4 +21,3 @@ I am no longer able to develop the extension much anymore, so I also hope that i
 
 #Development
 This extension uses IndexedDB to store the data from JSON files it downloads. The API's are intended for [The Church of Jesus Christ of Latter-Day Saints apps](https://lds.org). Feel free to contact me with questions on how it works, etc.
-

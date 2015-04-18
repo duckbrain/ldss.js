@@ -4,7 +4,7 @@ function LDSZBookInstaller(db, book) {
 	var helpers = new LDSInstallerHelpers(db);
 
 	function progress(message) {
-		return function(data) {
+		return function (data) {
 			// Temporarily disabled, will probably remove.
 			//that.progress(message);
 			return data;
@@ -93,7 +93,7 @@ function LDSZBookInstaller(db, book) {
 		item = formatNode(glNode);
 		item.details.references = references[glId]
 
-		return db.add(item).then(function(item) {
+		return db.add(item).then(function (item) {
 			item = item[0]; // Item comes back as an array with one item
 			nodes[glId] = item;
 		});

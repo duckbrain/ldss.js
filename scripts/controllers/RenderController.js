@@ -1,4 +1,4 @@
-function RenderModel(navigation) {
+function RenderController(navigation) {
 	var that, template, $, elements, openedReference, onStateChanged;
 	$ = new dQuery();
 	elements = null;

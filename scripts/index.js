@@ -1,4 +1,4 @@
-(function() {
+(function () {
 	//var database, navigation;
 
 	function getI18nMessage(name, params) {
@@ -10,7 +10,8 @@
 
 	database = new DatabaseModel();
 	//database.download = new DatabaseQuery(new ChromeMessageProvider()).download;
-	navigation = new NavigationModel(database);
+	//database.contentProvider = new LocalContentProvider();
+	navigation = new NavigationController(database);
 
 	navigation.loadPath(location.href);
 	navigation.getI18nMessage = getI18nMessage;

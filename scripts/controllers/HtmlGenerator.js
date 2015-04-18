@@ -68,12 +68,12 @@ function HtmlGenerator(navigation, i18n) {
 
 		if (typeof before != 'function') {
 			var beforeVal = before;
-			before = function() {
+			before = function () {
 				return beforeVal;
 			}
 		}
 
-		var myList = function(item, template) {
+		var myList = function (item, template) {
 			if (!template) {
 				template = getName;
 			}
@@ -81,7 +81,7 @@ function HtmlGenerator(navigation, i18n) {
 			if (!item) {
 				return '';
 			} else if (Array.isArray(item)) {
-				return item.map(function(i) {
+				return item.map(function (i) {
 					return myList(i, template);
 				}).join('');
 			} else {
