@@ -27,20 +27,17 @@ function downloadQueue(filePath, url, callback) {
 }
 
 function checkQueue() {
-	var item = queue[0];
-
-	if (!item || downloadCount > 5) {
+	if (downloadCount >= 5 || !queue[0]) {
 		return;
 	}
+
+	var item = queue.shift();
 
 	downloadCount++;
 	download(item.filePath, item.url, function () {
 		console.log(downloadCount, queue.length, item.filePath);
 		downloadCount--;
-		for (var i = 0; i < queue.length; i++) {
-			if (queue[i].filePath == item.filePath) {
-				queue.splice(i, 1);
-			}
+		for (var i = 0; i < 5; i++) {
 			checkQueue();
 		}
 		item.callback();
@@ -75,7 +72,7 @@ function download(filePath, url, callback) {
 
 function downloadLanguages() {
 	var filePath = 'languages.json';
-	var url = 'http://tech.lds.org/glweb/?action=languages.query&format=json'
+	var url = 'http://tech.lds.org/glweb/?action=languages.query&format=json';
 
 	downloadQueue(filePath, url, function () {
 		var langs = json(filePath).languages;

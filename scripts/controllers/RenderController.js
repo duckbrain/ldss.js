@@ -1,10 +1,12 @@
 function RenderController(navigation) {
-	var that, template, $, elements, openedReference, onStateChanged;
+	var that, template, $, elements, openedReference, onStateChanged, keyboard;
 	$ = new dQuery();
 	elements = null;
 	openedReference = null;
 	onStateChanged = new EventHandler();
 	onStateChanged.getParam = getState;
+
+	var firstInit = false;
 
 	function initialize() {
 		elements = {
@@ -16,6 +18,7 @@ function RenderController(navigation) {
 			content: $('#main-content')
 		}
 		elements.body.addEventListener('scroll', onStateChanged.fire);
+		keyboard.listen(elements.document);
 	}
 
 	function updateElements() {
@@ -93,14 +96,21 @@ function RenderController(navigation) {
 		onStateChanged.fire();
 	}
 
+	function scrollTo(element) {
+		if (element) {
+			elements.body.scrollTop = element.offsetTop // - elements.window.outerHeight / 2 + element.clientHeight;
+		} else {
+			elements.body.scrollTop = 0;
+		}
+	}
+
 	function closeReferencePanel() {
 		openReference(null);
 	}
 
 	function highlightVerses(verses) {
-		for (var i = 0; i < verses.length; i++) {
-			$.addClass($.id(verses[i]), 'selected');
-		}
+		$.removeClass('.page-content .selected', 'selected');
+		$.addClass(verses.map($.id), 'selected');
 	}
 
 	function render(node) {
@@ -124,12 +134,12 @@ function RenderController(navigation) {
 		$.attachLinks('.content a[href], .references a[href]:not(.references-close)', onContentLinkClicked);
 
 		highlightVerses(navigation.versesParsed);
-		if (navigation.versesParsed[0]) {
-			var element = $.id(navigation.versesParsed[0]);
-			elements.body.scrollTop = element.offsetTop - elements.window.outerHeight / 2 + element.clientHeight;
-		} else {
-			elements.body.scrollTop = 0;
-		}
+
+		// Scroll to the appropriate position
+		scrollTo(navigation.versesParsed[0] ? $.id(navigation.versesParsed[0]) : null);
+
+		database.keyboard.selectedNumber = 0;
+		database.keyboard.maxNumber = $.queryAll('.verse, .children a').length;
 
 		return Promise.resolve(node);
 	}
@@ -146,12 +156,17 @@ function RenderController(navigation) {
 	}
 
 	that = render;
+	keyboard = new KeyboardController(database, that);
 	that.loadTheme = loadTheme;
 	that.initialize = initialize;
 	that.getState = getState;
 	that.restoreState = restoreState;
 	that.resetState = resetState;
 	that.onStateChanged = onStateChanged;
+	that.scrollTo = scrollTo;
+	that.highlightVerses = highlightVerses;
+	that.onPageLinkClicked = onPageLinkClicked;
+	that.onContentLinkClicked = onContentLinkClicked;
 
 	return that;
 }

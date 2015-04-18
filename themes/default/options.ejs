@@ -2,6 +2,7 @@
 var gen = page.generator;
 var s = page.settings;
 var t = page.settings.themeOptions;
+var rt = page.rawSettings.themeOptions;
 var _ = gen.i18n;
 %>
 
@@ -43,7 +44,7 @@ var _ = gen.i18n;
       </select>
     </div>
     <div class="controls">
-        <%= gen.checkbox('highlight-color-enable', t.highlight) %>
+        <%= gen.checkbox('enable-overrides', rt) %>
         <%= _('enable_overrides') %>
     </div>
     <div class="controls">

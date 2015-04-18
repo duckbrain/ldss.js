@@ -101,6 +101,19 @@ function dQuery() {
 		element.className = element.className.replace(regex, '');
 	}
 
+	function fireEvent(element, event) {
+		if (document.createEvent) {
+			// dispatch for firefox + others
+			var evt = document.createEvent("HTMLEvents");
+			evt.initEvent(event, true, true); // event type,bubbling,cancelable
+			return !element.dispatchEvent(evt);
+		} else {
+			// dispatch for IE
+			var evt = document.createEventObject();
+			return element.fireEvent('on' + event, evt)
+		}
+	}
+
 	that = $;
 	that.query = $;
 	that.queryAll = $a;
@@ -108,6 +121,8 @@ function dQuery() {
 	that.attachLinks = attachLinks;
 	that.addClass = makeOmni(addClass);
 	that.removeClass = makeOmni(removeClass);
+	that.fireEvent = makeOmni(fireEvent);
+
 	that.on = makeOmni(on);
 	that.click = makeOmni(makeEvent('click'));
 	return that;

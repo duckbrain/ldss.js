@@ -1,67 +1,41 @@
-function KeyboardController(database) {
-	var $ = new dQuery();
+function KeyboardController(database, render) {
 	var that = this;
+	var $ = new dQuery();
+	var model = database.keyboard;
 
-	var profiles = {
-		classic: {
-			nextVerse: 110,
-			previousVerse: 98,
-			nextChapter: 122,
-			previousChapter: 97,
-			upLevel: 113,
-			bookmark: 117,
-			search: 115,
-			autoscroll: 120
-		},
-		default: {
+	function listen(document) {
+		document.addEventListener('keydown', function (e) {
+			var code = e.keyCode;
+			model.onKeyPress(e.keyCode);
+		});
+	}
 
-		},
-		vim: {
-
+	function makeOnLinkClick(element) {
+		return function () {
+			$.fireEvent(element, 'click');
 		}
 	}
 
-	function initialize() {
-		return get().then(function (profile) {
-			that.profile = profile;
-		});
-	}
+	model.actions = {
+		nextVerse: function () {},
+		previousVerse: function () {},
+		nextChapter: makeOnLinkClick('.next'),
+		previousChapter: makeOnLinkClick('.previous'),
+		upLevel: makeOnLinkClick('.up-level'),
+		bookmark: function () {},
+		search: function () {},
+		autoscroll: function () {},
+		numberChanged: function (number) {
+			render.scrollTo($.id(number));
+			render.highlightVerses([number]);
+			$.addClass('.children>*:nth-child(' + number + ')', 'selected');
+		},
+		numberAccepted: function (number) {
+			render.onPageLinkClicked({
+				target: $('.children>*:nth-child(' + number + ') a')
+			});
+		}
+	};
 
-	function listen(document) {
-		$(document, 'keydown', function (e) {
-			for (var action in that.profile) {
-				if (that.profile[action] === e.keyCode) {
-					that.actions[action]();
-					return;
-				}
-			}
-		});
-	}
-
-
-	function get() {
-		return database.settings.get('keyboard');
-	}
-
-	function set(profile) {
-		that.profile = profile;
-		return database.settings.set('keyboard', profile);
-	}
-
-	function getProfiles() {
-		return Object.getOwnPropertyNames(profiles);
-	}
-
-	function setProfile(profile) {
-		set(profiles[profile]);
-	}
-
-
-	that.actions = {};
-	that.maxVerses;
-	that.verseString = '';
-}
-
-if (typeof module != 'undefined') {
-	module.exports = KeyboardModel;
+	that.listen = listen;
 }

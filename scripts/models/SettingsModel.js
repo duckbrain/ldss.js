@@ -22,6 +22,16 @@ function SettingsModel(database) {
 			hideFootnotes: false,
 			hideAnnotations: false, //Anotations are not yet implemented
 		},
+		keyboard: {
+			nextVerse: 74,
+			previousVerse: 75,
+			nextChapter: 122,
+			previousChapter: 97,
+			upLevel: 113,
+			bookmark: 117,
+			search: 115,
+			autoscroll: 120
+		}
 	};
 
 	function getDefaults() {
@@ -86,6 +96,7 @@ function SettingsModel(database) {
 	that.update = update;
 	that.revert = revert;
 	that.getAll = getAll;
+	that.revert = revert;
 	that.getDefaults = getDefaults;
 	that.getRaw = getRaw;
 }

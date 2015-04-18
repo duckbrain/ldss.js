@@ -1,6 +1,7 @@
 (function () {
-	var database = new DatabaseModel();
-	var $ = new dQuery();
+	//var database, $;
+	database = new DatabaseModel();
+	$ = new dQuery();
 
 	private = {
 		themes: null,
@@ -34,13 +35,19 @@
 			},
 		};
 
-		database.settings.update(settings).then(function (e) {
-			load();
-			$('#save-message').innerText = getI18nMessage('saved');
-			setTimeout(function () {
-				$('#save-message').innerText = '';
-			}, 2000)
-		});
+		database.settings.update(settings)
+			.then(function () {
+				if (!$('#enable-overrides').checked) {
+					return database.settings.revert('themeOptions');
+				}
+			})
+			.then(load)
+			.then(function () {
+				$('#save-message').innerText = getI18nMessage('saved');
+				setTimeout(function () {
+					$('#save-message').innerText = '';
+				}, 2000)
+			});
 	}
 
 	function close() {

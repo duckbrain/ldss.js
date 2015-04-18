@@ -18,6 +18,7 @@ function NavigationController(database) {
 			return v;
 		}
 	};
+
 	render = new RenderController(that);
 	render.initialize();
 	render.onStateChanged.add(updateState);
@@ -255,19 +256,18 @@ function NavigationController(database) {
 	 */
 	function initialize() {
 		return database.settings.getAll().then(function (settings) {
-			var languageGetter;
+			var lang = database.language;
 			that.settings = settings;
 
 			return Promise.all([
-				(that.languageCode ? database.language.getByLdsCode(that.languageCode) : database.language.get(
-					settings.language))
+				(that.languageCode ? lang.getByLdsCode(that.languageCode) : lang.get(settings.language))
 				.then(function (language) {
 					that.language = language;
 					that.languageCode = language.code_three;
 				}),
 				database.theme.get(settings.theme).then(function (theme) {
 					return render.loadTheme(theme);
-				})
+				}),
 			]).then(function () {
 				return that;
 			});
