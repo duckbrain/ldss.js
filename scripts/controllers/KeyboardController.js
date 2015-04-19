@@ -12,25 +12,32 @@ function KeyboardController(database, render) {
 
 	function makeOnLinkClick(element) {
 		return function () {
-			$.fireEvent(element, 'click');
+			render.onPageLinkClicked({
+				target: $(element)
+			});
 		}
 	}
 
 	model.actions = {
 		nextVerse: function () {},
 		previousVerse: function () {},
-		nextChapter: makeOnLinkClick('.next'),
-		previousChapter: makeOnLinkClick('.previous'),
-		upLevel: makeOnLinkClick('.up-level'),
+		nextChapter: makeOnLinkClick('.next a'),
+		previousChapter: makeOnLinkClick('.previous a'),
+		upLevel: makeOnLinkClick('.up-level a'),
 		bookmark: function () {},
 		search: function () {},
 		autoscroll: function () {},
 		numberChanged: function (number) {
-			render.scrollTo($.id(number));
+			number -= model.minNumber;
+
+			var element = $.id(number) || $('.children>*:nth-child(' + number + ')');
+
+			render.scrollTo(element);
 			render.highlightVerses([number]);
-			$.addClass('.children>*:nth-child(' + number + ')', 'selected');
+			$.addClass(element, 'selected');
 		},
 		numberAccepted: function (number) {
+			number -= model.minNumber;
 			render.onPageLinkClicked({
 				target: $('.children>*:nth-child(' + number + ') a')
 			});

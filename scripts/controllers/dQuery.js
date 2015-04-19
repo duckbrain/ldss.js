@@ -5,10 +5,12 @@ function dQuery() {
 	/**
 	 * Intended to get a list of elements from whatever it is passed.
 	 * @param  {multiple} element An element, array, or string from which to get a list of elements.
-	 * @return {DOMElement Array}         Warning: This is not a real array and does not have Array's prototype functions.
+	 * @return {DOMElement Array} Warning: This may not be a real array and may not have Array's prototype functions.
 	 */
 	function omni(element) {
-		if (typeof element == 'string') {
+		if (!element) {
+			return [];
+		} else if (typeof element == 'string') {
 			return $a(element);
 		} else if ('length' in element) {
 			return element;

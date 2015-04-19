@@ -25,7 +25,7 @@ function NavigationController(database) {
 	that.render = render;
 
 	database.download.progress = function (message) {
-		navigate(statusNode(message)).then();
+		navigate(statusNode(message, that.path)).then();
 	}
 
 	function updateState() {
@@ -70,14 +70,14 @@ function NavigationController(database) {
 					.then(resetNavigation)
 					.then(navigate);
 			});
-			return statusNode('downloading catalog');
+			return statusNode('downloading catalog', '/');
 		} else if (node.type == 'book' && !node.details.downloadedVersion) {
 			database.download.downloadBook(node.id).then(function () {
 				return database.node.get(node.id)
 					.then(resetNavigation)
 					.then(navigate);
 			});
-			return statusNode('downloading book');
+			return statusNode('downloading book', node.path);
 		}
 		return node;
 	}
@@ -156,11 +156,15 @@ function NavigationController(database) {
 		render.resetState();
 
 		// If it's a node and the current book does not have the same id as it's bookId
-		if (node.type == 'node' && (!that.book || that.book.id != node.details.bookId)) {
-			p = database.node.get(node.details.bookId).then(function (book) {
-				that.book = book;
-				return node;
-			}).then(render);
+		if (node.type == 'node') {
+			if (!that.book || that.book.id != node.details.bookId) {
+				p = database.node.get(node.details.bookId).then(function (book) {
+					that.book = book;
+					return node;
+				}).then(render);
+			} else {
+				p = render(node);
+			}
 		} else {
 			that.book = node.type == 'book' ? node : null;
 			p = render(node);
@@ -177,10 +181,13 @@ function NavigationController(database) {
 		});
 	}
 
-	function statusNode(status) {
+	function statusNode(status, target, loading) {
 		return {
 			type: 'status',
-			status: status
+			status: status,
+			name: status,
+			path: target || '/',
+			loading: !!loading
 		};
 	}
 

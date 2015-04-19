@@ -37,7 +37,7 @@ function KeyboardModel(database) {
 			that.actions.numberChanged(++that.selectedNumber);
 			return;
 		}
-		if (that.profile.previousVerse == code && that.selectedNumber > 0) {
+		if (that.profile.previousVerse == code && that.selectedNumber > that.minNumber) {
 			that.actions.numberChanged(--that.selectedNumber);
 			return;
 		}
@@ -54,7 +54,7 @@ function KeyboardModel(database) {
 			return;
 		}
 
-		if (code == 13 && that.selectedNumber > 0) {
+		if (code == 13 && that.selectedNumber > that.minNumber) {
 			that.actions.numberAccepted(that.selectedNumber);
 		}
 
@@ -101,6 +101,7 @@ function KeyboardModel(database) {
 		numberAccepted: function (number) {}
 	};
 	that.maxNumber = 0;
+	that.minNumber = 0;
 	that.getProfiles = getProfiles;
 	that.getProfileDescription = getProfileDescription;
 	that.onKeyPress = onKeyPress;

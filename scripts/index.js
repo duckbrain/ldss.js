@@ -10,7 +10,7 @@
 
 	database = new DatabaseModel();
 	//database.download = new DatabaseQuery(new ChromeMessageProvider()).download;
-	//database.contentProvider = new LocalContentProvider();
+	//database.contentProvider = new LocalContentProvider(database);
 	navigation = new NavigationController(database);
 
 	navigation.loadPath(location.href);

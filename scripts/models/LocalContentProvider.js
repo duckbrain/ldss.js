@@ -1,4 +1,4 @@
-function LDSContentProvider(database) {
+function LocalContentProvider(database) {
 	var that = this;
 
 	function download(url) {
@@ -14,14 +14,12 @@ function LDSContentProvider(database) {
 	};
 
 	that.getBook = function getBook(book) {
-		database.language.get(book.languageId).then(language) {
+		return database.language.get(book.languageId).then(function (language) {
 			return database.downloader.downloadBinary('data/' + language.code_three + book.path + '.zbook');
 		});
-};
+	}
 }
 
-LDSContentProvider.prototype = {};
-
 if (typeof module != 'undefined') {
-	module.exports = LDSContentProvider;
+	module.exports = LocalContentProvider;
 }

@@ -1,0 +1,6 @@
+{
+	"apps": [{
+		"pattern": "/manual/hymns",
+		"script": "scripts/apps/hymns/numberJump.js"
+	}]
+}

@@ -108,9 +108,12 @@ DatabaseModel.helpers = {
 		// TODO: Return a promise that returns true or false
 	},
 	single: function single(list) {
-		if (list.length > 1) {
-			throw "single had more than one.";
-		}
+		// It is possible to have duplicates because installing is
+		// not one IndexDBTransaction. When the installers are
+		// rewritten, then this check can be re-enabled.
+		//if (list.length > 1) {
+		//	throw "single had more than one.";
+		//}
 		return list[0];
 	},
 	dataToIdArray: function dataToIdArray(array) {

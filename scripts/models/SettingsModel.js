@@ -25,12 +25,12 @@ function SettingsModel(database) {
 		keyboard: {
 			nextVerse: 74,
 			previousVerse: 75,
-			nextChapter: 122,
-			previousChapter: 97,
-			upLevel: 113,
-			bookmark: 117,
-			search: 115,
-			autoscroll: 120
+			nextChapter: 76,
+			previousChapter: 72,
+			upLevel: 85,
+			bookmark: 81,
+			search: 191,
+			autoscroll: 88
 		}
 	};
 

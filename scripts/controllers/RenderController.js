@@ -43,6 +43,11 @@ function RenderController(navigation) {
 	}
 
 	function onPageLinkClicked(e) {
+		if (!e.target) {
+			return;
+		}
+
+		e.target.disabled = true;
 		var id = e.target.dataset.id;
 		navigation.navigateId(parseInt(id));
 		//TODO Handle all different types of links for navigation and footnotes.
@@ -98,7 +103,7 @@ function RenderController(navigation) {
 
 	function scrollTo(element) {
 		if (element) {
-			elements.body.scrollTop = element.offsetTop // - elements.window.outerHeight / 2 + element.clientHeight;
+			elements.body.scrollTop = element.offsetTop - element.clientHeight / 2 // - elements.window.outerHeight / 2 + element.clientHeight;
 		} else {
 			elements.body.scrollTop = 0;
 		}
@@ -139,6 +144,7 @@ function RenderController(navigation) {
 		scrollTo(navigation.versesParsed[0] ? $.id(navigation.versesParsed[0]) : null);
 
 		database.keyboard.selectedNumber = 0;
+		database.keyboard.minNumber = 0;
 		database.keyboard.maxNumber = $.queryAll('.verse, .children a').length;
 
 		return Promise.resolve(node);
