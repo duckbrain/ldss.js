@@ -6,15 +6,16 @@ function ThemeModel(database) {
 			stylesheet: 'themes/default/theme.less',
 			script: null, //optional
 			includeDefault: false
-		},
-		'inverse': {
-			stylesheet: 'themes/inverse/theme.less',
-			includeDefault: true
-		},
-		'sepia': {
-			stylesheet: 'themes/sepia/theme.less',
-			includeDefault: true
 		}
+		/*,
+				'inverse': {
+					stylesheet: 'themes/inverse/theme.less',
+					includeDefault: true
+				},
+				'sepia': {
+					stylesheet: 'themes/sepia/theme.less',
+					includeDefault: true
+				}*/
 		//TODO: Gold plates
 		//TODO: Bootstrap
 	};

@@ -12,8 +12,8 @@ function LDSInstallerHelpers(db) {
 				return siblings[index + direction];
 			} else {
 				result = findSiblingLevel(direction, item.parent, level + 1);
-				while (level > 1) {
-					if (direction > 1) {
+				while (result && level >= 0) {
+					if (direction > 0) {
 						result = result.children[0]
 					} else {
 						result = result.children[result.children.length - 1];

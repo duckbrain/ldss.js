@@ -23,6 +23,36 @@ var _ = gen.i18n;
 <div class="main-content">
   <div id="general">
     <h2><%= _('general') %></h2>
+    <p>
+      <strong>Warning: The settings on this page are expiremental. Please know that this page may become unstable and
+        no longer be accessable. There will be more features and settings showing up in here, but they are not my
+        priority. I am more worried about getting things working first.</strong>
+    </p>
+    <h3>Database</h3>
+    <div>
+      <p>
+        If you are having issues, especially after an update, try clearing the database before submitting a bug report.
+        This will clear all of the offline content. You will need to download it again to continue.
+      </p>
+      <button id="clear-button" type="button">Clear Database</button>
+    </div>
+    <h3>Keyboard Shortcuts</h3>
+    <p>Keyboard shortcuts are enabled by default. There is currently no way to disable them or change them. The
+      following shortcuts currently work. You only need to press the lowercase letter on your keyboard. You don't need
+      shift, control, command, or anything else.</p>
+    <ul>
+      <li>J - Down one verse or next child</li>
+      <li>K - Up one verse or previous child</li>
+      <li>L - Next chapter</li>
+      <li>H - Previous chapter</li>
+      <li>U - Up to parent</li>
+      <li>0-9 - Type a number to skip to that verse or child. This does not yet take into account of what chapter is
+        what. For example: on the Doctrine and Covenants, if you type "45", it will take you to D&amp;C 42. This will
+        be fixed in a later version.</li>
+        <li>
+          Enter/Return - Accept the selected child and navigate to it.
+        </li>
+    </ul>
   </div>
 </div>
 <div class="main-content">
@@ -44,8 +74,10 @@ var _ = gen.i18n;
       </select>
     </div>
     <div class="controls">
+      <label>
         <%= gen.checkbox('enable-overrides', rt) %>
         <%= _('enable_overrides') %>
+      </label>
     </div>
     <div class="controls">
       <label><%= _('background_color') %></label>
@@ -77,13 +109,12 @@ var _ = gen.i18n;
       <label><%= _('font_size') %></label>
       <input type="range" id="font-size" min="-0.2" max="0.5" step="0.01" value="<%= Math.log10(t.fontSize / 12) %>" />
     </div>
-    <p>
-      NOTE: Custom Themes comming soon.
-    </p>
   </div>
   <div id="about">
       <h2><%= _('app_title') %> <%= _('app_version') %></h2>
       <p>LDS Scriptures was developed by <a href="http://duck-producktions.blogspot.com/">Jonathan Duck</a>.</p>
+      <h3>Contribute</h3>
+        <a href="https://github.com/Duckbrain/lds-scriptures">Stay up to date with all of the latest developments on our GitHub.</a>
       <h3>Disclaimer</h3>
       <p>This Application was not developed by or in association with The Church of Jesus Christ of Latter-day Saints or any affiliate of the Church of Jesus Christ of Latter-day Saints. Accordingly, The Church of Jesus Christ of Latter-day Saints and its affiliates are not responsible for the content or the functioning of this Application. Rather, the developer of this Application is solely responsible for its content and functioning. Further, you should understand that this Application is neither owned by nor endorsed by The Church of Jesus Christ of Latter-day Saints. However, any trademarks or service marks associated with The Church of Jesus Christ of Latter-day Saints that may be displayed in this Application are owned by Intellectual Reserve, Inc. or other entity affiliated with The Church of Jesus Christ of Latter-day Saints.</p>
   </div>

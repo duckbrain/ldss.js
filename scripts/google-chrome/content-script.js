@@ -10,7 +10,7 @@
 (function () {
 	console.log("Jonathan Duck's LDS Scriptures Content-Script started...");
 
-	var database = new DatabaseQuery();
+	var database = new DatabaseQuery(new ChromeMessageProvider());
 	var path = location.pathname;
 	var href = chrome.extension.getURL("index.html") + '?' + path;
 	var lang = null; //TODO: Get the lang from the get parameter

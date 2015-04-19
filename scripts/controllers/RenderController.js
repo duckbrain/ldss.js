@@ -122,7 +122,7 @@ function RenderController(navigation) {
 
 		elements.bookCss.innerHTML = navigation.book ? navigation.book.details.css : '';
 
-		elements.document.title = navigation.getI18nMessage('app_title') + ' - ' + node.name;
+		elements.document.title = node.name + ' - ' + navigation.getI18nMessage('app_title');
 		elements.content.innerHTML = template.render({
 			page: {
 				settings: navigation.settings,

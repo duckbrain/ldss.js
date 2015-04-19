@@ -7,26 +7,15 @@ function LDSCatalogInstaller(db, languageId) {
 	var that = this;
 	var helpers = new LDSInstallerHelpers(db);
 	var paths = {};
-	that.progress = function () {};
-
-	function progress(message) {
-		return function (data) {
-			that.progress(message);
-			return data;
-		}
-	}
 
 	function install(root) {
 		//
 		// Add all of the items and have ID's assigned.
 		//
 		return db.clear(languageId)
-			.then(progress('cleared'))
 			.then(function () {
 				return add(root.catalog, formatCatalog, null)
-					.then(progress('added'))
 					.then(helpers.update)
-					.then('done');
 			});
 	}
 
@@ -86,20 +75,20 @@ function LDSCatalogInstaller(db, languageId) {
 				}
 			}
 			newPath = pathElements.join('/');
-			if (!newPath in paths) {
-				path = newPath;
-			} else {
-				// Try making one from the parent and name
-				otherPath = item.name.replace(/\W+/g, '-').toLowerCase();
-				pathElements = item.parent.path.split('/');
-				pathElements.push(otherPath);
-				newPath = pathElements.join('/');
-				if (!newPath in paths) {
-					path = newPath;
-				}
-				//else default to number
-			}
+		} else {
+			// Try making one from the parent and name
+			otherPath = item.name.replace(/\W+/g, '-').toLowerCase();
+			pathElements = item.parent.path.split('/');
+			pathElements.push(otherPath);
+			newPath = pathElements.join('/');
+			//else default to number
 		}
+
+		if (newPath && !(newPath in paths)) {
+			path = newPath;
+			paths[newPath] = item;
+		}
+
 		return path;
 	}
 

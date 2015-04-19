@@ -76,7 +76,9 @@ function SettingsModel(database) {
 	}
 
 	function getRaw() {
-		return database.server.settings.get(0);
+		return database.server.settings.get(0).then(function (s) {
+			return s || {};
+		});
 	}
 
 	function setRaw(values) {

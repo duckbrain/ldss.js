@@ -42,12 +42,16 @@
 				}
 			})
 			.then(load)
-			.then(function () {
-				$('#save-message').innerText = getI18nMessage('saved');
-				setTimeout(function () {
-					$('#save-message').innerText = '';
-				}, 2000)
-			});
+			.then(makeMessage('saved'));
+	}
+
+	function makeMessage(message) {
+		return function () {
+			$('#save-message').innerText = getI18nMessage(message);
+			setTimeout(function () {
+				$('#save-message').innerText = '';
+			}, 2000);
+		}
 	}
 
 	function close() {
@@ -76,6 +80,9 @@
 			}, true);
 			$.click('#save-button', save);
 			$.click('#cancel-button', load);
+			$.click('#clear-database', function () {
+				database.server.nodes.clear().then(makeMessage('cleared'))
+			})
 
 		});
 	}

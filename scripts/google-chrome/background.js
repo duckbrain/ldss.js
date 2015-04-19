@@ -1,15 +1,16 @@
 var messageProvider = new ChromeMessageProvider();
 var database = new DatabaseModel(new LDSContentProvider(new BrowserDownloader()));
 var qDatabase = new DatabaseQuery(messageProvider);
-var languageId;
+var settings, languageId;
 
 function log(e) {
 	console.log(e);
 	return e;
 }
 
-database.open().then(database.language.download).then(database.settings.getLanguage).then(function (id) {
-	languageId = id;
+database.open().then(database.settings.getAll).then(function (s) {
+	settings = s;
+	languageId = s.language;
 }).then(log);
 
 messageProvider.on('download-catalog', function (e, sender) {

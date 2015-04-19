@@ -1,66 +1,53 @@
 function LanguageModel(database) {
 	var that = this;
 
-	/**
-	 * Downloads and installs the language list if not already installed..
-	 *
-	 * @returns Promise
-	 */
-	that.download = function () {
-		that.getAll().then(function (languages) {
+	function initialize() {
+		getAll().then(function (languages) {
 			if (!languages.length) {
-				return database.contentProvider.getLanguages().then(
-					function (response) {
-						return that.addAll(response.languages)
-					});
+				return download();
 			}
+			return languages;
 		});
 	}
 
-	that.addAll = function addAll(languages) {
+	function download() {
+		return database.contentProvider.getLanguages().then(
+			function (response) {
+				return addAll(response.languages)
+			});
+	}
+
+	function addAll(languages) {
 		var server = database.server;
 		return Promise.all(languages.map(function (language) {
 			return server.languages.update(language);
 		}));
 	}
 
-	/**
-	 * Gets the list of languages
-	 *
-	 * @returns Promise
-	 */
-	that.getAll = function getAll() {
+	function getAll() {
 		return database.server.languages.query().all().execute();
 	}
 
-	/**
-	 * Gets the language with the given id
-	 *
-	 * @returns Promise
-	 */
-	that.get = function get(id) {
+	function get(id) {
 		return database.server.languages.get(id);
 	}
 
-	/**
-	 * Gets the language with the given language code (eg: 'en' for English)
-	 *
-	 * @returns Promise
-	 */
-	that.getByCode = function getByCode(code) {
+	function getByCode(code) {
 		return database.server.languages.query('code').only(code)
 			.execute().then(database.helpers.single);
 	}
 
-	/**
-	 * Gets the language with the given LDS language code (eg: 'eng' for English)
-	 *
-	 * @returns Promise
-	 */
-	that.getByLdsCode = function getByLdsCode(code) {
+	function getByLdsCode(code) {
 		return database.server.languages.query('code_three').only(code)
 			.execute().then(database.helpers.single);
 	}
+
+	that.initialize = initialize;
+	that.download = download;
+	that.getAll = getAll;
+	that.get = get;
+	that.getByCode = getByCode;
+	that.getByLdsCode = getByLdsCode;
 };
 
 if (typeof module != 'undefined') {
