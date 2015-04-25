@@ -1,7 +1,7 @@
 var messageProvider = new ChromeMessageProvider();
 var database = new DatabaseModel(new LDSContentProvider(new BrowserDownloader()));
 var qDatabase = new DatabaseQuery(messageProvider);
-var settings, languageId;
+var settings, languageId, omnibox;
 
 function log(e) {
 	console.log(e);
@@ -11,7 +11,9 @@ function log(e) {
 database.open().then(database.settings.getAll).then(function (s) {
 	settings = s;
 	languageId = s.language;
-}).then(log);
+	omnibox = new OmniBoxSearchController(database);
+	omnibox.init(languageId)
+});
 
 messageProvider.on('download-catalog', function (e, sender) {
 	e.languageId = e.languageId || languageId;

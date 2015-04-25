@@ -8,7 +8,7 @@ function RenderController(navigation) {
 
 	var firstInit = false;
 
-	function initialize() {
+	function init() {
 		elements = {
 			window: window,
 			document: window.document,
@@ -164,7 +164,7 @@ function RenderController(navigation) {
 	that = render;
 	keyboard = new KeyboardController(database, that);
 	that.loadTheme = loadTheme;
-	that.initialize = initialize;
+	that.init = init;
 	that.getState = getState;
 	that.restoreState = restoreState;
 	that.resetState = resetState;

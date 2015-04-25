@@ -25,8 +25,21 @@ function NodeModel(database) {
 	}
 
 	function clear(languageId) {
-		//TODO: Limit to languageId
-		return database.server.nodes.clear();
+		return new Promise(function (fullfil, reject) {
+			var transaction = database.db.transaction(['nodes'], 'readwrite');
+			var nodeOS = transaction.objectStore('nodes');
+			var index = nodeOS.index('languageId');
+			index.openCursor().onsuccess = function (event) {
+				var cursor = event.target.result;
+				if (cursor && cursor.key == languageId) {
+					nodeOS.delete(cursor.value.id)
+					cursor.continue();
+				}
+			}
+
+			transaction.oncomplete = fullfil;
+			transaction.onerror = reject;
+		});
 	}
 
 	that.add = add;

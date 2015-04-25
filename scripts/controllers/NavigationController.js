@@ -1,5 +1,5 @@
 function NavigationController(database) {
-	var that, render;
+	var that, render, initializing = true;
 
 	that = {
 		// set by load
@@ -11,7 +11,7 @@ function NavigationController(database) {
 		// set by navigate
 		node: null,
 		book: null,
-		// set by initialize
+		// set by init
 		language: null,
 		settings: null,
 		getI18nMessage: function (v) {
@@ -20,8 +20,8 @@ function NavigationController(database) {
 	};
 
 	render = new RenderController(that);
-	render.initialize();
-	render.onStateChanged.add(updateState);
+	render.init();
+	//render.onStateChanged.add(updateState);
 	that.render = render;
 
 	database.download.progress = function (message) {
@@ -29,15 +29,14 @@ function NavigationController(database) {
 	}
 
 	function updateState() {
-		if (that.node) {
+		if (that.node && that.node.type != 'status') {
 			history.replaceState(getState(), that.node.name, getFullPath());
-			console.log(history.state);
+			console.log("State Replaced", getState());
 		}
 	}
 
 	function getState() {
 		return {
-			path: that.path,
 			node: that.node,
 			verses: that.verses,
 			versesParsed: that.versesParsed,
@@ -50,9 +49,14 @@ function NavigationController(database) {
 	}
 
 	function restoreState(state) {
-		for (var name in state) {
-			that[name] = state[name];
-		}
+		that.node = state.node;
+		that.path = state.node.path;
+		that.verses = state.verses;
+		that.versesParsed = state.versesParsed;
+		that.scrollTo = state.scrollTo;
+		that.file = state.file;
+		that.book = state.book;
+		that.language = state.language;
 
 		if (state.node) {
 			render(state.node).then(function () {
@@ -172,10 +176,12 @@ function NavigationController(database) {
 
 		return p.then(function () {
 			that.node = node;
-			if (!that.node || that.node.type == 'status') {
+			if (that.node.type == 'status' || !history.state || initializing) {
 				updateState();
+				initializing = false;
 			} else {
 				history.pushState(getState(), node.name, getFullPath());
+				console.log("State Pushed", getState());
 			}
 			return node;
 		});
@@ -261,7 +267,7 @@ function NavigationController(database) {
 	 * Initializes everything dependant on the settings. Can be called after page load to update changes to the settings.
 	 * @return {Promise} A promise when the initialization is done. Just returns the NavigationModel.
 	 */
-	function initialize() {
+	function init() {
 		return database.settings.getAll().then(function (settings) {
 			var lang = database.language;
 			that.settings = settings;
@@ -287,7 +293,7 @@ function NavigationController(database) {
 	that.navigateId = navigateId;
 	that.navigatePath = navigatePath;
 	that.navigateLoaded = navigateLoaded;
-	that.initialize = initialize;
+	that.init = init;
 
 	window.addEventListener('popstate', function () {
 		console.log(history.state);

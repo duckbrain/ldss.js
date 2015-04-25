@@ -25,7 +25,7 @@ function KeyboardModel(database) {
 		},
 	}
 
-	function initialize() {
+	function init() {
 		return database.settings.get('keyboard').then(function (profile) {
 			that.profile = profile;
 		});
@@ -105,8 +105,8 @@ function KeyboardModel(database) {
 	that.getProfiles = getProfiles;
 	that.getProfileDescription = getProfileDescription;
 	that.onKeyPress = onKeyPress;
-	that.initialize = initialize;
-	that.load = initialize;
+	that.init = init;
+	that.load = init;
 }
 
 if (typeof module != 'undefined') {

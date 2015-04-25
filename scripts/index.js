@@ -16,7 +16,7 @@
 	navigation.loadPath(location.href);
 	navigation.getI18nMessage = getI18nMessage;
 
-	database.open().then(navigation.initialize).then(navigation.navigateLoaded);
+	database.open().then(navigation.init).then(navigation.navigateLoaded);
 })();
 
 function log(debug) {

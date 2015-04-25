@@ -15,10 +15,9 @@
 	"background": {
 		"scripts": [
 			"scripts/dependencies/db.js",
-			"scripts/dependencies/pako.js",
-			"scripts/dependencies/sql.js",
 			"scripts/google-chrome/ChromeMessageProvider.js",
 			"scripts/google-chrome/DatabaseQuery.js",
+			"scripts/google-chrome/OmniBoxSearchController.js",
 			"scripts/models/BrowserDownloader.js",
 			"scripts/models/DatabaseModel.js",
 			"scripts/models/DownloadModel.js",
@@ -26,6 +25,7 @@
 			"scripts/models/LDSCatalogInstaller.js",
 			"scripts/models/LDSZBookInstaller.js",
 			"scripts/models/LDSInstallerHelpers.js",
+			"scripts/models/SearchModel.js",
 			"scripts/models/SettingsModel.js",
 			"scripts/models/LanguageModel.js",
 			"scripts/models/NodeModel.js",
@@ -51,9 +51,7 @@
 	}],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';",
 	"web_accessible_resources": ["img/icon_16.png"],
-	"permissions": ["storage", "chrome://favicon/", "bookmarks",
-		"http://*.lds.org/", "https://*.lds.org/"
-	],
+	"permissions": ["storage", "bookmarks", "http://*.lds.org/", "https://*.lds.org/"],
 	"default_locale": "en",
 	"manifest_version": 2
 }

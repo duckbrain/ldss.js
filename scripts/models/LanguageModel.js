@@ -1,7 +1,7 @@
 function LanguageModel(database) {
 	var that = this;
 
-	function initialize() {
+	function init() {
 		getAll().then(function (languages) {
 			if (!languages.length) {
 				return download();
@@ -42,7 +42,7 @@ function LanguageModel(database) {
 			.execute().then(database.helpers.single);
 	}
 
-	that.initialize = initialize;
+	that.init = init;
 	that.download = download;
 	that.getAll = getAll;
 	that.get = get;

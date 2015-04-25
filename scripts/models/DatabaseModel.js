@@ -83,12 +83,13 @@ function DatabaseModel(contentProvider) {
 	that.open = function open() {
 		return db.open(that.connection).then(function (server) {
 			that.server = server;
+			that.db = server.getIndexedDB();
 
-			// Calls the initialize function on all models that have it.
+			// Calls the init function on all models that have it.
 			return Promise.all(Object.getOwnPropertyNames(that).filter(function (model) {
-				return that[model] && 'initialize' in that[model];
+				return that[model] && 'init' in that[model];
 			}).map(function (model) {
-				return that[model].initialize();
+				return that[model].init();
 			})).then(function () {
 				return server;
 			});
@@ -98,6 +99,7 @@ function DatabaseModel(contentProvider) {
 	that.close = function close() {
 		return that.server.close().then(function () {
 			that.server = null;
+			that.db = null;
 			return true;
 		});
 	};
