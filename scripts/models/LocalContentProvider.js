@@ -2,7 +2,9 @@ function LocalContentProvider(database) {
 	var that = this;
 
 	function download(url) {
-		return database.downloader.download(params);
+		return database.downloader.download(url, {
+			params: {}
+		}).then(JSON.parse);
 	};
 
 	that.getLanguages = function () {
@@ -10,7 +12,9 @@ function LocalContentProvider(database) {
 	};
 
 	that.getCatalog = function (languageId) {
-		return download('data/' + languageId + '/catalog.json');
+		return database.language.get(languageId).then(function (language) {
+			return download('data/' + language.id + '/catalog.json');
+		});
 	};
 
 	that.getBook = function getBook(book) {

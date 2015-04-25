@@ -11,7 +11,7 @@ function LDSContentProvider(database) {
 		data.format = 'json';
 
 		return that.download({
-			url: 'http://tech.lds.org/glweb',
+			url: 'https://tech.lds.org/glweb',
 			data: data
 		}).then(JSON.parse);
 	};
