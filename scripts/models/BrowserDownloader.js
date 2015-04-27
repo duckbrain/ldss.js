@@ -17,7 +17,7 @@ function BrowserDownloader() {
 			// Instantiates the XMLHttpRequest
 			var client = new XMLHttpRequest();
 			var uri = '';
-			if (args != undefined) {
+			if (typeof args != 'undefined') {
 				for (key in args) {
 					uri += encodeURIComponent(key) + '=' +
 						encodeURIComponent(escape(args[key])) + '&';
