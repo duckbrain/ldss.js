@@ -5,21 +5,92 @@
  */
 function LDSCatalogInstaller(db, languageId) {
 	var that = this;
-	var helpers = new LDSInstallerHelpers(db);
+	var helpers;
 	var paths = {};
+	var transaction, nodesOS;
 
 	function install(root) {
-		//
-		// Add all of the items and have ID's assigned.
-		//
-		return db.clear(languageId)
-			.then(function () {
-				return add(root.catalog, formatCatalog, null)
-					.then(helpers.update)
+		return new Promise(function (fulfill, reject) {
+			transaction = db.transaction(['nodes'], 'readwrite');
+			nodesOS = transaction.objectStore('nodes');
+			helpers = new LDSInstallerHelpers(nodesOS);
+
+			clear(function () {
+				add(root.catalog, formatCatalog, null, function (item) {
+					helpers.update(item, function () {
+						fulfill();
+					})
+				})
 			});
+
+			transaction.onsuccess = fulfill;
+			transaction.onerror = reject;
+		});
 	}
 
-	function add(glItem, format, parent) {
+	function clear(callback) {
+		var index = nodesOS.index('languageId');
+		index.openCursor().onsuccess = function (event) {
+			var cursor = event.target.result;
+			if (cursor) {
+				if (cursor.key == languageId) {
+					nodesOS.delete(cursor.value.id)
+				}
+				cursor.continue();
+			} else {
+				callback();
+			}
+		}
+	}
+
+	function add(glItem, format, parent, callback) {
+		var item = format(glItem);
+		paths[item.path] = item;
+
+		var request = nodesOS.add(item);
+		request.onsuccess = function (event) {
+			item.id = glItem.id = event.target.result;
+
+			if (parent) {
+				item.parent = parent;
+				item.heiarchy = parent.heiarchy.concat([item]);
+				parent.children.push(item);
+			} else {
+				item.parent = null;
+				item.heiarchy = [item];
+			}
+
+			if (item.type != 'book') { // catalog or folder
+				var requestCount;
+
+				function checkDone() {
+					requestCount--;
+					if (requestCount == 0) {
+						item.next = helpers.findSibling(+1, item);
+						item.previous = helpers.findSibling(-1, item);
+						if (item.type == 'folder') {
+							item.path = createFolderPath(item);
+						}
+						callback(item);
+					}
+				}
+
+				requestCount = glItem.folders.length + glItem.books.length;
+
+				glItem.folders.forEach(function (glFolder) {
+					add(glFolder, formatFolder, item, checkDone);
+				});
+				glItem.books.forEach(function (glBook) {
+					add(glBook, formatBook, item, checkDone);
+				});
+			} else { //It's a book!
+				item.children = [];
+				callback();
+			}
+		};
+	}
+
+	function addOld(glItem, format, parent) {
 		var item = format(glItem);
 		paths[item.path] = item;
 

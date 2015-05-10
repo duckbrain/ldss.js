@@ -1,15 +1,6 @@
 function LDSZBookInstaller(db, book) {
 	var that = this;
-	var nodes, references;
-	var helpers = new LDSInstallerHelpers(db);
-
-	function progress(message) {
-		return function (data) {
-			// Temporarily disabled, will probably remove.
-			//that.progress(message);
-			return data;
-		}
-	}
+	var nodes, references, transaction, nodesOS, helpers;
 
 	function install(sqlitedb) {
 		var result, css, refs;
@@ -25,7 +16,7 @@ function LDSZBookInstaller(db, book) {
 			css = sqlitedb.exec('SELECT css, _file FROM css');
 			refs = sqlitedb.exec('SELECT node_id, ref_name, ref, link_name FROM ref');
 		} catch (ex) {
-			throw "Malformed database";
+			throw "Malformed database from the zbook";
 		}
 
 		if (refs.length) {
@@ -35,24 +26,21 @@ function LDSZBookInstaller(db, book) {
 			book.details.css = css[0].values[0][0];
 		}
 
-		return addAll(result[0].values)
-			.then(progress('ids assigned'))
-			.then(findTree)
-			.then(findRelations)
-			.then(progress('relations determined'))
-			.then(updateVersion)
-			.then(helpers.update)
-			.then(cleanup);
-		// TODO: After updated, it should look for the book or nodes that have 1 child and no content. Those items should
-		// be updated to have thier child's name and content, but the names on references should not be updated. The child
-		// can then be deleted.
-	}
+		return new Promise(function (fulfill, reject) {
+			transaction = db.transaction(['nodes'], 'readwrite');
+			nodesOS = transaction.objectStore('nodes');
+			helpers = new LDSInstallerHelpers(nodesOS);
 
-	function cleanup() {
-		result = null;
-		css = null;
-		refs = null;
-		nodes = null;
+			addAll(result[0].values, function () {
+				findTree();
+				findRelations(book);
+				updateVersion();
+				helpers.update(book, fulfill);
+			})
+
+			transaction.onsuccess = fulfill;
+			transaction.onerror = reject;
+		});
 	}
 
 	function buildReferences(refs) {
@@ -76,27 +64,25 @@ function LDSZBookInstaller(db, book) {
 
 	function updateVersion() {
 		book.details.downloadedVersion = book.details.catalogVersion;
-		return book;
 	}
 
 	function uninstall() {
 		//TODO
 	}
 
-	function addAll(rows) {
-		return Promise.all(rows.map(add));
-	}
-
-	function add(glNode) {
-		var glId, item;
-		glId = glNode[0];
-		item = formatNode(glNode);
-		item.details.references = references[glId]
-
-		return db.add(item).then(function (item) {
-			item = item[0]; // Item comes back as an array with one item
-			nodes[glId] = item;
-		});
+	function addAll(rows, callback) {
+		helpers.all(rows.map(function (glNode) {
+			var glId, item;
+			glId = glNode[0];
+			item = formatNode(glNode);
+			item.details.references = references[glId]
+			var request = nodesOS.add(item);
+			request.onsuccess = function (e) {
+				item.id = e.target.result
+				nodes[glId] = item;
+			};
+			return request;
+		}), callback);
 	}
 
 	function findTree() {
@@ -115,8 +101,6 @@ function LDSZBookInstaller(db, book) {
 				book.children.push(node);
 			}
 		}
-
-		return book;
 	}
 
 	function findRelations(node) {
@@ -128,7 +112,6 @@ function LDSZBookInstaller(db, book) {
 		for (var i = 0; i < node.children.length; i++) {
 			findRelations(node.children[i]);
 		}
-		return node;
 	}
 
 	function formatNode(row) {

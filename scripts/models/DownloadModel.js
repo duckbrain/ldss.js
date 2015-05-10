@@ -27,7 +27,7 @@ function DownloadModel(database) {
 	}
 
 	function downloadCatalog(languageId) {
-		var installer = new that.CatalogInstaller(database.node, languageId);
+		var installer = new that.CatalogInstaller(database.db, languageId);
 		installer.progress = that.progress;
 		return database.contentProvider.getCatalog(languageId)
 			.then(progress('installing catalog'))
@@ -51,7 +51,7 @@ function DownloadModel(database) {
 				var sqlitedb, installer, p;
 				sqlitedb = new SQL.Database(pako.inflate(blob[0]));
 				delete blob;
-				installer = new that.BookInstaller(database.node, book);
+				installer = new that.BookInstaller(database.db, book);
 				installer.progress = that.progress;
 				p = installer.install(sqlitedb);
 				sqlitedb.close();
