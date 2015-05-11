@@ -7,6 +7,10 @@ function LDSCatalogInstaller(db, languageId) {
 	var that = this;
 	var helpers = new LDSInstallerHelpers(db);
 	var paths = {};
+	var namedPaths = {
+		"/45756": "/jesus-christ",
+		"/42677": "/general-conference"
+	}
 
 	function install(root) {
 		//
