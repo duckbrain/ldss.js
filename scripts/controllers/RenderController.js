@@ -43,20 +43,22 @@ function RenderController(navigation) {
 	}
 
 	function onPageLinkClicked(e) {
-		if (!e.target) {
+		if (!e.currentTarget) {
 			return;
 		}
 
-		e.target.disabled = true;
-		var id = e.target.dataset.id;
-		navigation.navigateId(parseInt(id));
+		e.currentTarget.disabled = true;
+		var id = e.currentTarget.dataset.id;
+		if (!isNaN(id)) {
+			navigation.navigateId(parseInt(id));
+		}
 		//TODO Handle all different types of links for navigation and footnotes.
 	}
 
 	function onContentLinkClicked(e) {
-		var path = e.target.pathname;
+		var path = e.currentTarget.pathname;
 
-		if (e.target.tagName != 'A') {
+		if (e.currentTarget.tagName != 'A') {
 			return;
 		}
 
@@ -74,7 +76,7 @@ function RenderController(navigation) {
 	}
 
 	function onLanguageSelected(e) {
-		var id = parseInt(e.target.value);
+		var id = parseInt(e.currentTarget.value);
 		return database.language.get(id)
 			.then(function (language) {
 				navigation.language = language;

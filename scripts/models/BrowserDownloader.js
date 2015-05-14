@@ -63,15 +63,17 @@ function BrowserDownloader() {
 	}
 
 	function require(url, name) {
-		return download(url).then(function (data) {
-			var module = {
-				exports: {}
-			};
+		module = {
+			exports: {}
+		};
+		var fileref = document.createElement('script')
+    fileref.setAttribute("src", url);
+		document.getElementsByTagName("head")[0].appendChild(fileref)
 
-			eval(data);
+		var exports = module.exports;
+		delete module;
 
-			return module.exports;
-		})
+		return exports;
 	}
 
 	this.download = download;

@@ -12,7 +12,7 @@ function LDSInstallerHelpers(db) {
 				return siblings[index + direction];
 			} else {
 				result = findSiblingLevel(direction, item.parent, level + 1);
-				while (result && level >= 0) {
+				while (result && isNaN(result) && level >= 0) {
 					if (direction > 0) {
 						result = result.children[0]
 					} else {
@@ -37,10 +37,10 @@ function LDSInstallerHelpers(db) {
 		children = item.children;
 		parent = item.parent;
 
-		item.heiarchy = summary(item.heiarchy);
+		item.heiarchy = item.heiarchy.map(summary);
 		item.next = summary(item.next);
 		item.previous = summary(item.previous);
-		item.children = summary(children);
+		item.children = item.children.map(summary);
 		item.parent = summary(parent);
 
 		for (i = 0; i < children.length; i++) {
@@ -76,19 +76,8 @@ function LDSInstallerHelpers(db) {
 		}
 	}
 
-	function summary(item) {
-		if (!item) {
-			return null;
-		} else if (Array.isArray(item)) {
-			return item.map(summary);
-		} else {
-			return {
-				id: item.id,
-				name: item.name,
-				path: item.path,
-				type: item.type
-			};
-		}
+	function summary (item) {
+		return item ? item.id : null;
 	}
 
 	that.findSibling = findSibling;

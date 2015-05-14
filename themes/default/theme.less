@@ -31,13 +31,17 @@
 	-moz-osx-font-smoothing: grayscale;
 	margin-right: 0.4em;
 }
+* {
+	margin: 0;
+	padding: 0;
+}
 body {
 	height: 100%;
 	font-size: @fontSize*1pt;
 	background-color: @background;
 	color: @color;
 	position: absolute;
-	top: @toolbar-size;
+	top: @toolbar-size + 1em;
 }
 .content {
 	.pageBreak {
@@ -113,26 +117,13 @@ video {
 		}
 	}
 }
-.children,
-.children ul,
-.children li {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
 .children li {
 	display: block;
 	float: left;
-	margin: 0.5em;
-	background-color: @accent;
-	&:hover {
-		background-color: lighten(@accent, 10%);
-	}
-	&:active {
-		background-color: darken(@accent, 10%);
-	}
-	&.selected {
-		background-color: mix(@accent, @highlight, 70%);
+	h3 {
+		margin: 0;
+		padding: 0;
+		display: inline;
 	}
 	a[data-type=folder]:before {
 		content: "\f07b";
@@ -140,16 +131,37 @@ video {
 	a[data-type=book]:before {
 		content: "\f02d";
 	}
+	a[data-downloaded=false]:before {
+		content: "\f019";
+	}
 	a:before {
 		.font-awesome();
 	}
 	a {
+		margin: 0.5em;
+		width: 12em;
+		height: 15em;
+		background-color: @accent;
 		color: @color;
 		text-decoration: none;
 		text-align: center;
 		display: block;
 		min-width: 9em;
 		padding: 1em;
+		overflow: hidden;
+
+		&:hover {
+			background-color: lighten(@accent, 10%);
+		}
+		&:active {
+			background-color: darken(@accent, 10%);
+		}
+		&.selected {
+			background-color: mix(@accent, @highlight, 70%);
+		}
+		&[data-downloaded=false] {
+			background-color: mix(@accent, @background, 50%);
+		}
 	}
 }
 .selected {

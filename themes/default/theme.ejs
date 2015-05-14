@@ -34,7 +34,26 @@ var language = page.settings.language;
 <% } %>
 <div class="page-content">
 	<ul class="children">
-		<%= gen.li(node && node.children, gen.a) %>
+		<%= gen.li(node && node.children, function(node) {
+			var content = '', downloaded = true;
+			if (node.type == 'node' && node.details.content) {
+				var length = 400;
+				content = node.details.content;
+				content = content.replace(/\<h1.+\<\/h1\>/ig, ''); // Remove h1
+				content = content.replace(/class="titleNumber"\>.*[0-9]+\<\/p\>/ig, '></p>'); // Remove Chapter number
+				content = content.replace(/(<([^>]+)>)/ig, ''); // Remove all HTML tags
+				content = content.length > length ? content.substring(0, length) : content;
+
+			}
+			if (node.type == 'book') {
+				downloaded = !!node.details.downloadedVersion;
+			}
+
+			return '<a data-type="' + node.type + '" data-id="' + node.id + '" data-downloaded="' + downloaded + '" href="' + gen.href(node) + '">'
+				+ '<h3>' + node.name + '</h3>'
+				+ '<p>' + content + '</p>'
+				+ '</a>'
+		}) %>
 	</ul>
 	<div class="content">
 		<%= node && node.details ? node.details.content : '' %>

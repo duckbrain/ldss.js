@@ -5,12 +5,11 @@ function DownloadModel(database) {
 
 	function getLib(name, url) {
 		if (name in libs) {
-			return Promise.resolve(libs[name]);
+			return libs[name];
 		} else {
-			return database.downloader.require(url).then(function (lib) {
-				libs[name] = lib;
-				return lib;
-			})
+			var lib = database.downloader.require(url);
+			libs[name] = lib;
+			return lib;
 		}
 	}
 
@@ -38,18 +37,17 @@ function DownloadModel(database) {
 	function downloadBook(bookId) {
 		var book;
 
-		return Promise.all([
-				database.node.get(bookId).then(function (b) {
+		getLib('pako', 'scripts/dependencies/pako.js');
+		getLib('sql', 'scripts/dependencies/sql.js');
+
+		return database.node.get(bookId).then(function (b) {
 					book = b;
 					return database.contentProvider.getBook(book)
-				}),
-				getLib('pako', 'scripts/dependencies/pako.js'),
-				getLib('sql', 'scripts/dependencies/sql.js')
-			])
+				})
 			.then(progress('installing book'))
 			.then(function (blob) {
 				var sqlitedb, installer, p;
-				sqlitedb = new SQL.Database(pako.inflate(blob[0]));
+				sqlitedb = new SQL.Database(pako.inflate(blob));
 				delete blob;
 				installer = new that.BookInstaller(database.node, book);
 				installer.progress = that.progress;

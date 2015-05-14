@@ -2,12 +2,44 @@ function NodeModel(database) {
 	var that = this;
 
 	function get(id) {
-		return database.server.nodes.get(id);
+		return database.server.nodes.get(id).then(getDetails);
 	}
 
 	function getPath(languageId, path) {
 		return database.server.nodes.query('path')
-			.only([languageId, path]).execute().then(database.helpers.single);
+			.only([languageId, path]).execute().then(database.helpers.single).then(getDetails);
+	}
+
+	function getDetails(node) {
+
+		if (!node) {
+			return null;
+		}
+
+		function getId(id) {
+			if (!id) {
+				return null;
+			} else if (Array.isArray(id)) {
+				return Promise.all(id.map(getId));
+			} else {
+				return database.server.nodes.get(id);
+			}
+		}
+
+		return Promise.all([
+			getId(node.parent),
+			getId(node.next),
+			getId(node.previous),
+			getId(node.heiarchy),
+			getId(node.children)
+		]).then(function(a) {
+			node.parent = a[0];
+			node.next = a[1];
+			node.previous = a[2];
+			node.heiarchy = a[3];
+			node.children = a[4];
+			return node;
+		});
 	}
 
 	function exists(languageId, path) {

@@ -40,6 +40,7 @@ function dQuery() {
 				e.preventDefault();
 			}
 			handler(e);
+			e.stopPropagation();
 			return allowDefault;
 		});
 	}
