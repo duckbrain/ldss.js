@@ -6,16 +6,33 @@
 function LDSCatalogInstaller(db, languageId) {
 	var that = this;
 	var helpers = new LDSInstallerHelpers(db);
+	var baseImageUrl;
 	var paths = {};
 	var namedPaths = {
-		"/45756": "/jesus-christ",
-		"/42677": "/general-conference"
+		"1": "/scriptures",
+		"45756": "/topics/jesus-christ",
+		"574": "/manual/teachings-of-presidents",
+		"1205": "/media-library/video",
+		"45347": "/church/share",
+		"15": "/topics/family",
+		"45648": "/broadcasts/worldwide-devotional-for-young-adults",
+		"6": "/callings/melchizedek-priesthood",
+		"42683": "/topics/family-history",
+		"8": "/topics/aaronic-priesthood",
+		"19": "/callings/leadership-and-teaching",
+		"11": "/callings/sunday-school",
+		"45453": "/topics/pef-self-reliance",
+		"510": "/manual/seminary",
+		"511": "/manual/institute"
 	}
 
 	function install(root) {
 		//
 		// Add all of the items and have ID's assigned.
 		//
+
+		baseImageUrl = root.cover_art_base_url + '/';
+
 		return db.clear(languageId)
 			.then(function () {
 				return add(root.catalog, formatCatalog, null)
@@ -49,12 +66,8 @@ function LDSCatalogInstaller(db, languageId) {
 					return add(glBook, formatBook, item);
 				});
 				return Promise.all(folderAdds.concat(bookAdds)).then(function () {
-					//TODO: Sort by display order
 					item.next = helpers.findSibling(+1, item);
 					item.previous = helpers.findSibling(-1, item);
-					if (item.type == 'folder') {
-						item.path = createFolderPath(item);
-					}
 					return item;
 				});
 			} else { //It's a book!
@@ -62,38 +75,6 @@ function LDSCatalogInstaller(db, languageId) {
 				return item;
 			}
 		});
-	}
-
-	function createFolderPath(item) {
-		var pathElements, otherPath, path, newPath;
-		path = item.path;
-		if (item.children.length > 0) {
-			// Try making one from the children
-			pathElements = item.children[0].path.split('/');
-			for (i = 1; i < item.children.length; i++) {
-				otherPath = item.children[i].path.split('/');
-				for (j = 0; j < pathElements.length; j++) {
-					if (pathElements[j] != otherPath[j]) {
-						pathElements = pathElements.slice(0, j);
-					}
-				}
-			}
-			newPath = pathElements.join('/');
-		} else {
-			// Try making one from the parent and name
-			otherPath = item.name.replace(/\W+/g, '-').toLowerCase();
-			pathElements = item.parent.path.split('/');
-			pathElements.push(otherPath);
-			newPath = pathElements.join('/');
-			//else default to number
-		}
-
-		if (newPath && !(newPath in paths)) {
-			path = newPath;
-			paths[newPath] = item;
-		}
-
-		return path;
 	}
 
 	function formatBlank(item) {
@@ -113,7 +94,8 @@ function LDSCatalogInstaller(db, languageId) {
 				url: item.url || null,
 				css: null,
 				downloadedVersion: null,
-				catalogVersion: item.version || null
+				catalogVersion: item.version || null,
+				image: item.image || null,
 			} : null
 		};
 	}
@@ -129,8 +111,11 @@ function LDSCatalogInstaller(db, languageId) {
 	function formatFolder(item) {
 		//TODO: Make a path name by looking at what the children have in common or the name. Ensure that the same path name
 		//is not used more than once. If the generated name matches an existing one, fall back to the id number
-		var path = '/' + item.id;
-		var i, j, pathElements, otherPath, newPath;
+		var path = namedPaths[item.legacyid];
+
+		if (!path) {
+			path = '/' + item.eng_name.toLowerCase().replace(/ /g, "-");
+		}
 
 		return formatBlank({
 			path: path,
@@ -146,7 +131,8 @@ function LDSCatalogInstaller(db, languageId) {
 			type: 'book',
 			content: item.description,
 			url: item.url,
-			version: item.datemodified
+			version: item.datemodified,
+			image: baseImageUrl + item.cover_art.replace("{0}", "")
 		})
 	}
 

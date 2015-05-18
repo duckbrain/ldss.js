@@ -1,5 +1,38 @@
 function NodeModel(database) {
 	var that = this;
+	var decorations;
+
+	function init() {
+		//TOOD Load decorations from JSON.
+		decorations = {
+			"/scriptures": {
+				"image": "img/icon_128.png"
+			},
+			"/missionary": {
+				"image": "http://media.ldscdn.org/images/media-library/missionary/badge-315547-mobile.jpg"
+			},
+			"/general-conference": {
+				"image": "http://media.ldscdn.org/images/media-library/conference-events/general-conference/general-conference-2011-april-826117-mobile.jpg"
+			},
+			"/church/share": {
+				"image": "http://media.ldscdn.org/images/media-library/member-missionary/member-missionary-work-576148-mobile.jpg"
+			},
+			"/liahona": {
+				"image": "http://media.ldscdn.org/images/media-library/scriptures/liahona-760495-mobile.jpg"
+			},
+			"/topics/jesus-christ": {
+				"image": "http://media.ldscdn.org/images/media-library/gospel-art/new-testament/christus-statue-1025369-mobile.jpg"
+			},
+			"/music": {
+				"icon": "music"
+			},
+			"/videos": {
+				"icon": "video"
+			}
+		};
+
+		return Promise.resolve(null);
+	}
 
 	function get(id) {
 		return database.server.nodes.get(id).then(getDetails);
@@ -11,35 +44,44 @@ function NodeModel(database) {
 	}
 
 	function getDetails(node) {
-
 		if (!node) {
 			return null;
 		}
 
 		function getId(id) {
-			if (!id) {
-				return null;
-			} else if (Array.isArray(id)) {
-				return Promise.all(id.map(getId));
-			} else {
-				return database.server.nodes.get(id);
-			}
+			return id ? database.server.nodes.get(id).then(decorate) : null;
 		}
 
 		return Promise.all([
 			getId(node.parent),
 			getId(node.next),
 			getId(node.previous),
-			getId(node.heiarchy),
-			getId(node.children)
+			Promise.all(node.heiarchy.map(getId)),
+			Promise.all(node.children.map(getId)),
 		]).then(function(a) {
 			node.parent = a[0];
 			node.next = a[1];
 			node.previous = a[2];
 			node.heiarchy = a[3];
 			node.children = a[4];
-			return node;
+			return decorate(node);
 		});
+	}
+
+	function decorate(node) {
+		if (!node) {
+			return null;
+		}
+
+		var d = decorations[node.path];
+		if (d) {
+			if (!node.details) {
+				node.details = {};
+			}
+			node.details.image = d.image || node.details.image;
+			node.details.icon = d.icon || node.details.icon;
+		}
+		return node;
 	}
 
 	function exists(languageId, path) {
@@ -74,6 +116,7 @@ function NodeModel(database) {
 		});
 	}
 
+	that.init = init;
 	that.add = add;
 	that.clear = clear;
 	that.get = get;

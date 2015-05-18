@@ -34,6 +34,10 @@ function LDSInstallerHelpers(db) {
 	function update(item) {
 		var children, parent, i;
 
+		if (typeof item != 'object') {
+			return;
+		}
+
 		children = item.children;
 		parent = item.parent;
 
@@ -54,6 +58,12 @@ function LDSInstallerHelpers(db) {
 			item.parent.id = parent.parent.id;
 			item.parent.path = parent.parent.path;
 		}
+
+		if (!item.details) {
+			item.details = {};
+		}
+
+		item.details.image = item.details.image || children[0] && children[0].details && children[0].details.image;
 
 		for (i = 1; i < item.heiarchy.length; i++) {
 			fixName(item.heiarchy[i - 1], item.heiarchy[i]);

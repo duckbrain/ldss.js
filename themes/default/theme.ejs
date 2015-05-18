@@ -20,6 +20,9 @@ var language = page.settings.language;
 			return displayName;
 		}) %>
 	</div>
+	<div class="lds-org">
+		<a href="https://lds.org<%= node && node.path %>">LDS.org</a>
+	</div>
 	<div class="settings">
 		<a href="options.html">Settings</a>
 	</div>
@@ -43,7 +46,11 @@ var language = page.settings.language;
 				content = content.replace(/class="titleNumber"\>.*[0-9]+\<\/p\>/ig, '></p>'); // Remove Chapter number
 				content = content.replace(/(<([^>]+)>)/ig, ''); // Remove all HTML tags
 				content = content.length > length ? content.substring(0, length) : content;
-
+				content = '<p>' + content + '</p>';
+			} else if (node.details && node.details.icon) {
+				content = '<div><i data-icon="' + node.details.icon + '"></i></div>'
+			} else if (node.details && node.details.image) {
+				content = '<img src="'+ node.details.image + '" />';
 			}
 			if (node.type == 'book') {
 				downloaded = !!node.details.downloadedVersion;
@@ -51,7 +58,7 @@ var language = page.settings.language;
 
 			return '<a data-type="' + node.type + '" data-id="' + node.id + '" data-downloaded="' + downloaded + '" href="' + gen.href(node) + '">'
 				+ '<h3>' + node.name + '</h3>'
-				+ '<p>' + content + '</p>'
+				+ content
 				+ '</a>'
 		}) %>
 	</ul>

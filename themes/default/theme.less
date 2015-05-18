@@ -31,6 +31,20 @@
 	-moz-osx-font-smoothing: grayscale;
 	margin-right: 0.4em;
 }
+
+[data-icon]:before {
+	.font-awesome();
+	font-size: 100pt;
+}
+
+[data-icon=music]:before {
+	content: "\f001";
+}
+
+[data-icon=video]:before {
+	content: "\f03d";
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -121,6 +135,7 @@ video {
 	display: block;
 	float: left;
 	h3 {
+		font-size: medium;
 		margin: 0;
 		padding: 0;
 		display: inline;
@@ -139,8 +154,8 @@ video {
 	}
 	a {
 		margin: 0.5em;
-		width: 12em;
-		height: 15em;
+		width: 10em;
+		height: 12em;
 		background-color: @accent;
 		color: @color;
 		text-decoration: none;
@@ -162,6 +177,12 @@ video {
 		&[data-downloaded=false] {
 			background-color: mix(@accent, @background, 50%);
 		}
+	}
+
+	img {
+		max-width: 10em;
+		display: block;
+  	margin: 1em auto;
 	}
 }
 .selected {
