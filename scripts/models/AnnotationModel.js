@@ -1,23 +1,27 @@
-function BookmarkModel() {
+function AnnotationModel(database) {
 	var that = this;
 
 	function getAll() {
 
 	}
 
+	function getAllForNode(nodeId) {
+		
+	}
+
 	function get(id) {
 
 	}
 
-	function add(bookmark) {
+	function add(annotation) {
 
 	}
 
-	function update(bookmark) {
+	function update(annotation) {
 
 	}
 
-	function delete(bookmark) {
+	function delete(annotation) {
 
 	}
 
@@ -29,5 +33,5 @@ function BookmarkModel() {
 }
 
 if (typeof module != 'undefined') {
-	module.exports = BookmarkModel;
+	module.exports = AnnotationModel;
 }
