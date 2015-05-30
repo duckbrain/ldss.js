@@ -21,7 +21,7 @@ function NavigationController(database) {
 
 	render = new RenderController(that);
 	render.init();
-	//render.onStateChanged.add(updateState);
+	render.onStateChanged.add(updateState);
 	that.render = render;
 
 	database.download.progress = function (message) {
