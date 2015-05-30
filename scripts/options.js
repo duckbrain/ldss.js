@@ -35,6 +35,8 @@
 			},
 		};
 
+		makeMessage('saving')();
+
 		database.settings.update(settings)
 			.then(function () {
 				if (!$('#enable-overrides').checked) {
@@ -80,9 +82,10 @@
 			}, true);
 			$.click('#save-button', save);
 			$.click('#cancel-button', load);
-			$.click('#clear-database', function () {
+			$.click('#clear-button', function () {
+				makeMessage('clearing')();
 				database.server.nodes.clear().then(makeMessage('cleared'))
-			})
+			});
 
 		});
 	}
