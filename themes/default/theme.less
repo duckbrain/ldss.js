@@ -3,7 +3,7 @@
  *
  * There are a number of variables that are injected into your scripts. You may use any of these
  * to allow your theme to be customized by the user.
- *
+ *?
  * @background
  * @color
  * @accent
@@ -14,9 +14,14 @@
  * @hideFootnotes
  * @hideAnnotations
  */
+
+//@background: #fff - @background;
+
+
 @toolbar-size: 2em;
 @references-size: 30%;
 @highlight-fade: 20%;
+
 .chapter sup when (@hideFootnotes) {
 	display: none;
 }
@@ -203,49 +208,13 @@ video {
 	min-height: @toolbar-size;
 	background: @accent;
 	position: fixed;
+	display: flex;
 	top: 0;
 	left: 0;
 	right: 0;
 	margin: 0;
-	padding-top: 0.5em;
 	div {
 		display: inline-block;
-	}
-	.heiarchy ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		vertical-align: middle;
-		li {
-			display: inline-block;
-			// Don't allow names that are too long.
-			text-overflow: ellipsis;
-			max-width: 12em;
-			overflow: hidden;
-			white-space: nowrap;
-		}
-		li:last-child {
-			// Don't limit the size of the last item
-			max-width: inherit;
-			max-width: initial;
-		}
-		li:first-child:before {
-			display: none;
-		}
-		li:first-child a {
-			display: inline-block;
-			overflow: hidden;
-			color: transparent;
-			background: url("img/icon_16.png");
-			vertical-align: middle;
-			width: 16px;
-			height: 16px;
-		}
-		li:before {
-			content: "»";
-			margin: 0 0 0 0.4em;
-			text-decoration: none;
-		}
 	}
 	.languages {
 		select {
@@ -253,6 +222,111 @@ video {
 		}
 	}
 }
+
+@toolbar-button-radius: .5em;
+
+.toolbar-button {
+	border-radius: 0 0 @toolbar-button-radius @toolbar-button-radius;
+	min-width: 1em;
+	padding: 1em .4em .4em .4em;
+	background: lighten(@accent, 15%);
+	border: 1px darken(@accent, 15%) solid;
+	margin: -.6em 0 .2em 0;
+	color: @color;
+	overflow: hidden;
+
+	a {
+		color: @color;
+			text-indent: 100%;
+			text-align: center;
+			text-decoration: none;
+		}
+}
+
+.toolbar-button-left() {
+		border-radius: 0 0 @toolbar-button-radius 0;
+		border-left: none;
+}
+
+.toolbar-button-right() {
+		border-radius: 0 0 0 @toolbar-button-radius;
+		border-right: none;
+}
+
+.toolbar-button-icon(@char) {
+	a:before {
+		text-indent: 0;
+		content: @char;
+		.font-awesome();
+	}
+}
+
+.toolbar-button-previous {
+	.toolbar-button-left();
+	.toolbar-button-icon("\f053")
+}
+
+.toolbar-button-up {
+	.toolbar-button-icon("\f148")
+}
+
+.toolbar-button-next {
+	.toolbar-button-right();
+	.toolbar-button-icon("\f054");
+}
+
+.toolbar-button-lds-org {
+	.toolbar-button-icon("\f0ac");
+	margin-left: auto;
+}
+
+.toolbar-button-settings {
+	.toolbar-button-icon("\f013");
+}
+
+.toolbar-heiarchy {
+	margin-left: 1.5em;
+}
+
+.toolbar-heiarchy ul {
+	list-style: none;
+	display: flex;
+	flex-shrink: 100;
+}
+
+.toolbar-heiarchy li  {
+	.toolbar-button();
+	padding-right: 1.2em;
+	margin-left: -1em;
+	flex-shrink: 100;
+
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.toolbar-heiarchy li:last-child {
+	margin-left: -1em;
+	padding-right: .4em;
+	flex-shrink: 1;
+}
+
+.toolbar-heiarchy li:first-child a {
+	display: inline-block;
+	overflow: hidden;
+	color: transparent;
+	background: url("img/icon_16.png");
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+}
+
+div.toolbar-languages {
+	/*Hidden until it works.*/
+	display: none;
+}
+
+
 .references-open {
 	.references {
 		display: block;

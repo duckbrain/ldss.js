@@ -8,29 +8,30 @@ var node = page.node;
 var language = page.settings.language;
 %>
 <div class="toolbar">
-	<div class="previous"><%= gen.a(node && node.previous, "previous") %></div>
-	<div class="up-level"><%= gen.a(node && node.parent, "up_level") %></div>
-	<div class="heiarchy">
+	<div class="toolbar-button toolbar-button-previous"><%= gen.a(node && node.previous, "previous") %></div>
+	<div class="toolbar-button toolbar-button-up"><%= gen.a(node && node.parent, "up_level") %></div>
+	<div class="toolbar-heiarchy">
 		<%= gen.ul(node && node.heiarchy, gen.a) %>
 	</div>
-	<div class="languages">
+	<div class="toolbar-languages">
 		<%= gen.select(page.languages, function(lang) {
 			var displayName = (language != 1 || lang.eng_name == lang.name || lang.name.endsWith("(" + lang.eng_name + ")"))
 				? lang.name : lang.name + " - " + lang.eng_name;
 			return displayName;
 		}) %>
 	</div>
-	<div class="lds-org">
+	<div class="toolbar-button toolbar-button-lds-org">
 		<a href="https://lds.org<%= node && node.path %>">LDS.org</a>
 	</div>
-	<div class="settings">
+	<div class="toolbar-button toolbar-button-settings">
 		<a href="options.html">Settings</a>
 	</div>
-	<div class="next"><%= gen.a(node && node.next, "next") %></div>
+	<div class="toolbar-button toolbar-button-next"><%= gen.a(node && node.next, "next") %></div>
 </div>
 <% if (page.loading) { %>
 <div class="loading">
 	<div>
+		<!--Need to do check if spinner.-->
 		<%= page.loading %>
 	</div>
 </div>
