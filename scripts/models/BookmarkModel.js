@@ -17,7 +17,7 @@ function BookmarkModel() {
 
 	}
 
-	function delete(bookmark) {
+	function destroy(bookmark) {
 
 	}
 
@@ -25,7 +25,7 @@ function BookmarkModel() {
 	that.get = get;
 	that.add = add;
 	that.update = update;
-	that.delete = delete;
+	that.destroy = destroy;
 }
 
 if (typeof module != 'undefined') {
