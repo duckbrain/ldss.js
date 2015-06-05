@@ -8,30 +8,27 @@
 	},
 	"version": "4.5.0",
 	"app": {
-		"launch": {
-			"local_path": "chrome.html"
+		"background": {
+			"scripts": [
+				"scripts/dependencies/db.js",
+				"scripts/google-chrome/ChromeMessageProvider.js",
+				"scripts/google-chrome/DatabaseQuery.js",
+				"scripts/google-chrome/OmniBoxSearchController.js",
+				"scripts/models/BrowserDownloader.js",
+				"scripts/models/DatabaseModel.js",
+				"scripts/models/DownloadModel.js",
+				"scripts/models/LDSContentProvider.js",
+				"scripts/models/LDSCatalogInstaller.js",
+				"scripts/models/LDSZBookInstaller.js",
+				"scripts/models/LDSInstallerHelpers.js",
+				"scripts/models/SearchModel.js",
+				"scripts/models/SettingsModel.js",
+				"scripts/models/LanguageModel.js",
+				"scripts/models/NodeModel.js",
+				"scripts/models/ThemeModel.js",
+				"scripts/google-chrome/background.js"
+			]
 		}
-	},
-	"background": {
-		"scripts": [
-			"scripts/dependencies/db.js",
-			"scripts/google-chrome/ChromeMessageProvider.js",
-			"scripts/google-chrome/DatabaseQuery.js",
-			"scripts/google-chrome/OmniBoxSearchController.js",
-			"scripts/models/BrowserDownloader.js",
-			"scripts/models/DatabaseModel.js",
-			"scripts/models/DownloadModel.js",
-			"scripts/models/LDSContentProvider.js",
-			"scripts/models/LDSCatalogInstaller.js",
-			"scripts/models/LDSZBookInstaller.js",
-			"scripts/models/LDSInstallerHelpers.js",
-			"scripts/models/SearchModel.js",
-			"scripts/models/SettingsModel.js",
-			"scripts/models/LanguageModel.js",
-			"scripts/models/NodeModel.js",
-			"scripts/models/ThemeModel.js",
-			"scripts/google-chrome/background.js"
-		]
 	},
 	"omnibox": {
 		"keyword": "ldsgl"
@@ -50,8 +47,15 @@
 		]
 	}],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';",
-	"web_accessible_resources": ["img/icon_16.png"],
+	"web_accessible_resources": [
+		"img/icon_16.png", 
+		"index.html", 
+		"options.html"
+	],
 	"permissions": ["storage", "bookmarks", "http://*.lds.org/", "https://*.lds.org/"],
+	"sandbox": {
+		"pages": ["index.html"]
+	},
 	"default_locale": "en",
 	"manifest_version": 2
 }
