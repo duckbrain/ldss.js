@@ -159,8 +159,8 @@ video {
 	}
 	a {
 		margin: 0.5em;
-		width: 10em;
-		height: 12em;
+		width: 70px;
+		height: 160px;
 		background-color: @accent;
 		color: @color;
 		text-decoration: none;
@@ -180,6 +180,7 @@ video {
 			background-color: mix(@accent, @highlight, 70%);
 		}
 		&[data-downloaded=false] {
+			opacity: .4;
 			background-color: mix(@accent, @background, 50%);
 		}
 	}
