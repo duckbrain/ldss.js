@@ -33,7 +33,7 @@ function ThemeModel(database) {
 		return database.server.themes.add(theme);
 	}
 
-	function destoy(id) {
+	function destroy(id) {
 		return database.server.themes['delete'](id);
 	}
 
@@ -99,10 +99,11 @@ function ThemeModel(database) {
 	}
 
 	that.add = add;
-	that['delete'] = destoy;
+	that.destroy = destroy;
 	that.get = get;
 	that.reset = reset;
 	that.getAll = getAll;
+	that.getBuiltIn = getBuiltIn;
 }
 
 if (typeof module != 'undefined') {

@@ -10,7 +10,7 @@ function DatabaseModel(contentProvider) {
 	that.server = null;
 	that.connection = {
 		server: 'duck.jonathan.lds-scriptures',
-		version: 16,
+		version: 18,
 		schema: {
 			languages: {
 				key: {
