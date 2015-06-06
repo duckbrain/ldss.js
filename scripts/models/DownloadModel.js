@@ -2,21 +2,15 @@ function DownloadModel(database) {
 	var that = this;
 	var downloads = [];
 	var libs = {};
+	var queue = [];
 
 	function getLib(name, url) {
-		if (name in libs) {
-			return libs[name];
-		} else {
-			var lib = database.downloader.require(url);
+		if (!(name in window)) {
+			database.downloader.require(url);
 			libs[name] = lib;
 			return lib;
 		}
 	}
-
-
-	that.CatalogInstaller = LDSCatalogInstaller;
-	that.BookInstaller = LDSZBookInstaller;
-	that.progress = function () {};
 
 	function progress(message) {
 		return function (data) {
@@ -25,8 +19,12 @@ function DownloadModel(database) {
 		}
 	}
 
+	function getQueue() {
+		return Promise.resolve(queue);
+	}
+
 	function downloadCatalog(languageId) {
-		var installer = new that.CatalogInstaller(database.node, languageId);
+		var installer = new that.CatalogInstaller(database, languageId);
 		installer.progress = that.progress;
 		return database.contentProvider.getCatalog(languageId)
 			.then(progress('installing catalog'))
@@ -58,6 +56,34 @@ function DownloadModel(database) {
 			}).then(progress('loading page'));
 	}
 
-	that.downloadCatalog = downloadCatalog;
-	that.downloadBook = downloadBook;
+	function makeDownload(download) {
+		return function(id) {
+			return new Promise(function(fulfill, reject) {
+				queue.push({
+					method: download,
+					id: id,
+					fulfill: fulfill,
+					reject: reject
+				});
+				if (queue.length == 1) {
+					stepQueue();
+				}
+			});
+		}
+	}
+
+	function stepQueue() {
+		var action = queue.shift();
+		action.method(action.id).then(function(result) {
+			action.fulfill(result);
+			stepQueue();
+		}, function(result) {
+			action.reject(result);
+			stepQueue();
+		});
+	}
+
+	that.progress = function () {};
+	that.downloadCatalog = makeDownload(downloadCatalog);
+	that.downloadBook = makeDownload(downloadBook);
 }
