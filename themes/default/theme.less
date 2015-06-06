@@ -203,7 +203,7 @@ video {
 	right: 0;
 	overflow: auto;
 }
-.toolbar {
+.toolbar-container {
 	z-index: 10000;
 	min-height: @toolbar-size;
 	background: @accent;
@@ -234,13 +234,7 @@ video {
 	margin: -.6em 0 .2em 0;
 	color: @color;
 	overflow: hidden;
-
-	a {
-		color: @color;
-			text-indent: 100%;
-			text-align: center;
-			text-decoration: none;
-		}
+	text-decoration: none;
 }
 
 .toolbar-button-left() {
@@ -254,7 +248,7 @@ video {
 }
 
 .toolbar-button-icon(@char) {
-	a:before {
+	&:before {
 		text-indent: 0;
 		content: @char;
 		.font-awesome();
