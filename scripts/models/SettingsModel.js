@@ -10,6 +10,8 @@ function SettingsModel(database) {
 	var callbacks = {};
 	var defaults = {
 		language: 1,
+
+		// TODO: Move theme defaults to ThemeModel, so they can be different for each theme. Use these for user theme defaults.
 		theme: 'default',
 		'themeOptions': {
 			background: '#ffffff',

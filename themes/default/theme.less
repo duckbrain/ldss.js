@@ -105,37 +105,47 @@ video {
 		transform: rotate(359deg);
 	}
 }
-.loading {
+.message-container {
 	-webkit-perspective: 1000;
 	background: rgba(0,0,0,.4);
 	position: fixed;
+	z-index: 1000;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	&>div {
-		-webkit-perspective: 1000;
-		background: @background;
-		color: @color;
-		font-size: 1.5em;
-		display: block;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		margin: auto;
-		padding: 1em;
-		text-align: center;
-		&:before {
-			// loading spinner
-			content: "\f110";
-			.font-awesome();
-			font-size: 1em;
-			-webkit-animation: fa-spin 1s infinite linear;
-			animation: fa-spin 1s infinite linear;
-		}
-	}
+	display: none;
 }
+
+.message-box {
+	-webkit-perspective: 1000;
+	background: @background;
+	color: @color;
+	font-size: 1.5em;
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	margin: auto;
+	padding: 1em;
+	text-align: center;
+}
+
+.show-message .message-container {
+	display: block;
+}
+
+.show-message-spinner .message-spinner:before {
+	// loading spinner
+	content: "\f110";
+	.font-awesome();
+	font-size: 1em;
+	-webkit-animation: fa-spin 1s infinite linear;
+	animation: fa-spin 1s infinite linear;
+}
+
+
 .children li {
 	display: block;
 	float: left;
@@ -204,7 +214,7 @@ video {
 	overflow: auto;
 }
 .toolbar-container {
-	z-index: 10000;
+	z-index: 100;
 	min-height: @toolbar-size;
 	background: @accent;
 	position: fixed;
