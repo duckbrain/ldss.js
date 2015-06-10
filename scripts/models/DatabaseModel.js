@@ -23,7 +23,7 @@ function DatabaseModel(contentProvider) {
 					code_three: {}
 				}
 			},
-			settings: {
+			options: {
 				key: {
 					keyPath: 'id'
 				},
@@ -71,7 +71,7 @@ function DatabaseModel(contentProvider) {
 		}
 	}
 
-	tryLoadModel('Settings');
+	tryLoadModel('Options');
 	tryLoadModel('Language');
 	tryLoadModel('Node');
 	tryLoadModel('Theme');

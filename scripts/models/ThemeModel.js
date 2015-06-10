@@ -2,10 +2,19 @@ function ThemeModel(database) {
 	var that = this;
 	var builtIn = {
 		'default': {
-			template: 'themes/default/theme.ejs',
 			stylesheet: 'themes/default/theme.less',
-			script: null, //optional
-			includeDefault: false
+			includeDefault: false,
+			defaultOptions: {
+				background: '#ffffff',
+				color: '#000000',
+				accent: '#cccccc',
+				highlight: '#ffff00',
+				margins: '48',
+				fontFamily: 'arial',
+				fontSize: '12',
+				hideFootnotes: false,
+				hideAnnotations: false
+			}
 		}
 		/*,
 				'inverse': {
@@ -70,15 +79,11 @@ function ThemeModel(database) {
 			var d = builtIn.default;
 			promises = [
 				dl(t.stylesheet),
-				dl(d.template),
-				dl(null),
 				dl(d.stylesheet)
 			];
 		} else {
 			promises = [
 				dl(t.stylesheet),
-				dl(t.template),
-				dl(t.script),
 				Promise.resolve('')
 			];
 		}
@@ -87,9 +92,7 @@ function ThemeModel(database) {
 			return {
 				id: name,
 				name: that.getI18nMessage(name),
-				style: e[3] + '\n' + e[0],
-				template: e[1],
-				script: e[2]
+				style: e[1] + '\n' + e[0]
 			};
 		});
 	}

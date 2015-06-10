@@ -1,11 +1,11 @@
 /**
- * Provides a way to access settings and provides a wrapper on various ways to
- * received updates on when those settings are updated.
+ * Provides a way to access Options and provides a wrapper on various ways to
+ * received updates on when those Options are updated.
  *
  * @param server
- *            An instance of the db.js server where the settings will be stored.
+ *            An instance of the db.js server where the Options will be stored.
  */
-function SettingsModel(database) {
+function OptionsModel(database) {
 	var that = this;
 	var callbacks = {};
 	var defaults = {
@@ -22,7 +22,7 @@ function SettingsModel(database) {
 			fontFamily: 'arial',
 			fontSize: '12',
 			hideFootnotes: false,
-			hideAnnotations: false, //Anotations are not yet implemented
+			hideAnnotations: false //Anotations are not yet implemented
 		},
 		keyboard: {
 			nextVerse: 74,
@@ -42,10 +42,10 @@ function SettingsModel(database) {
 
 	function getAll() {
 		return getDefaults().then(function (defaults) {
-			return getRaw().then(function (settings) {
-				// Find default settings, that are not yet defined
-				for (var name in settings) {
-					defaults[name] = settings[name];
+			return getRaw().then(function (options) {
+				// Find default options, that are not yet defined
+				for (var name in options) {
+					defaults[name] = options[name];
 				}
 				delete defaults['id'];
 				return defaults;
@@ -54,20 +54,20 @@ function SettingsModel(database) {
 	}
 
 	function update(values) {
-		return getAll().then(function (settings) {
-			settings = settings || {};
+		return getAll().then(function (options) {
+			options = options || {};
 
 			for (var name in values) {
-				settings[name] = values[name];
+				options[name] = values[name];
 			}
 
-			return setRaw(settings);
+			return setRaw(options);
 		});
 	}
 
 	function get(name) {
-		return getAll().then(function (settings) {
-			return settings[name];
+		return getAll().then(function (options) {
+			return options[name];
 		});
 	}
 
@@ -78,14 +78,14 @@ function SettingsModel(database) {
 	}
 
 	function getRaw() {
-		return database.server.settings.get(0).then(function (s) {
+		return database.server.options.get(0).then(function (s) {
 			return s || {};
 		});
 	}
 
 	function setRaw(values) {
 		values.id = 0;
-		return database.server.settings.update(values);
+		return database.server.options.update(values);
 	}
 
 	function revert(name) {
@@ -106,5 +106,5 @@ function SettingsModel(database) {
 }
 
 if (typeof module != 'undefined') {
-	module.exports = SettingsModel;
+	module.exports = OptionsModel;
 }
