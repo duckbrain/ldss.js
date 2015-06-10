@@ -18,7 +18,7 @@
 //@background: #fff - @background;
 
 
-@toolbar-size: 2em;
+@toolbar-size: 2.2em;
 @references-size: 30%;
 @highlight-fade: 20%;
 
@@ -203,7 +203,8 @@ video {
 .selected {
 	background-color: fade(@highlight, @highlight-fade);
 }
-.references {
+
+.references-container {
 	display: none;
 	background: @accent;
 	position: fixed;
@@ -213,24 +214,28 @@ video {
 	right: 0;
 	overflow: auto;
 }
+
+.show-references {
+	.references-container {
+		display: block;
+	}
+	.page-content {
+		padding-bottom: @references-size;
+	}
+}
+
 .toolbar-container {
 	z-index: 100;
-	min-height: @toolbar-size;
+	height: @toolbar-size;
 	background: @accent;
+	border: 1px darken(@accent, 15%) solid;
+	box-shadow: 1px 1px 3px rgba(0,0,0,.3);
 	position: fixed;
 	display: flex;
 	top: 0;
 	left: 0;
 	right: 0;
 	margin: 0;
-	div {
-		display: inline-block;
-	}
-	.languages {
-		select {
-			max-width: 10em;
-		}
-	}
 }
 
 @toolbar-button-radius: .5em;
@@ -239,12 +244,16 @@ video {
 	border-radius: 0 0 @toolbar-button-radius @toolbar-button-radius;
 	min-width: 1em;
 	padding: 1em .4em .4em .4em;
-	background: lighten(@accent, 15%);
+	background-color: lighten(@accent, 5%);
 	border: 1px darken(@accent, 15%) solid;
 	margin: -.6em 0 .2em 0;
 	color: @color;
 	overflow: hidden;
 	text-decoration: none;
+}
+
+.toolbar-button[href] {
+	background-color: lighten(@accent, 15%);
 }
 
 .toolbar-button-left() {
@@ -279,27 +288,27 @@ video {
 	.toolbar-button-icon("\f054");
 }
 
-.toolbar-button-lds-org {
+.toolbar-button-languages {
 	.toolbar-button-icon("\f0ac");
+}
+
+.toolbar-button-lds-org {
+	.toolbar-button-icon("\f14c");
 	margin-left: auto;
 }
 
-.toolbar-button-settings {
+.toolbar-button-options {
 	.toolbar-button-icon("\f013");
 }
 
 .toolbar-heiarchy {
-	margin-left: 1.5em;
-}
-
-.toolbar-heiarchy ul {
 	list-style: none;
 	display: flex;
 	flex-shrink: 100;
+	margin-left: 1.1em;
 }
 
-.toolbar-heiarchy li  {
-	.toolbar-button();
+.toolbar-button-heiarchy   {
 	padding-right: 1.2em;
 	margin-left: -1em;
 	flex-shrink: 100;
@@ -309,33 +318,74 @@ video {
 	white-space: nowrap;
 }
 
-.toolbar-heiarchy li:last-child {
+.toolbar-button-heiarchy:first-child {
 	margin-left: -1em;
-	padding-right: .4em;
+	margin-right: .7em;
 	flex-shrink: 1;
-}
-
-.toolbar-heiarchy li:first-child a {
 	display: inline-block;
 	overflow: hidden;
 	color: transparent;
-	background: url("img/icon_16.png");
+	background-image: url("img/icon_16.png");
+	background-position: center;
+	background-position-y: 1em;
+	background-repeat:  no-repeat;
 	vertical-align: middle;
 	width: 16px;
 	height: 16px;
 }
 
-div.toolbar-languages {
-	/*Hidden until it works.*/
-	display: none;
+.toolbar-button-heiarchy:last-child {
+	padding-right: .4em;
 }
 
+.toolbar-panel {
+	border-radius: 0 0 @toolbar-button-radius @toolbar-button-radius;
+	background-color: @accent;
+	border: 1px darken(@accent, 15%) solid;
+	box-shadow: 1px 1px 3px rgba(0,0,0,.3);
+	border-top: none;
+	padding: .5em;
+	z-index: -100;
+	list-style: none;
+	position: absolute;
+	top: @toolbar-size;
+	overflow-y: auto;
+  transition: margin-top .5s ease;
+}
 
-.references-open {
-	.references {
-		display: block;
-	}
-	.page-content {
-		padding-bottom: @references-size;
-	}
+.toolbar-panel.toolbar-panel-open {
+	margin-top: 0;
+}
+
+.toolbar-panel-languages {
+	height: 14em;
+	margin-top: -14em - @toolbar-size - 3em;
+	width: 10em;
+}
+
+.toolbar-panel-options {
+	right: .5em;
+	width: 20em;
+	height: 13.7em;
+	margin-top: -15em - @toolbar-size - 3em;
+}
+
+.options-field-group {
+	margin: 0 .3em .7em 0;
+}
+.options-field-group:last-child {
+	margin: 0 .3em .3em 0;
+}
+
+.options-field-group-range input[type=range] {
+	margin-top: .3em;
+}
+
+.options-field-group-range button {
+	width: 1.5em;
+}
+
+.options-field-name {
+	font-weight: bold;
+	display: block;
 }
