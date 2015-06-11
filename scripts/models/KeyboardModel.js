@@ -26,7 +26,7 @@ function KeyboardModel(database) {
 	}
 
 	function init() {
-		return database.settings.get('keyboard').then(function (profile) {
+		return database.options.get('keyboard').then(function (profile) {
 			that.profile = profile;
 		});
 	}

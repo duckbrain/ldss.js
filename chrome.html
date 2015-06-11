@@ -1,51 +1,107 @@
 <!DOCTYPE html>
 <html>
-<!-- Google Chrome Extension Specific Version of the Index Page -->
+
 <head>
 	<title id="title">LDS Scriptures</title>
 	<link rel="stylesheet" type="text/css" href="stylesheets/fonts.css">
 	<link rel="stylesheet" type="text/css" href="stylesheets/index.css">
 	<style id="custom-css"></style>
 	<style id="book-css"></style>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="apple-touch-icon" href="img/icon_128.png">
+	<link rel="icon" type="image/png" href="img/icon_16.png">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width, user-scalable=no">
 </head>
 
-<body>
-
-	<div class="settings">
-		<iframe src="options.html"></iframe>
+<body class="--show-message --show-message-spinner --show-references">
+	<div class="toolbar-container">
+		<a class="toolbar-button toolbar-button-previous">Previous</a>
+		<a class="toolbar-button toolbar-button-up">Up</a>
+		<div class="toolbar-heiarchy">
+			<a class="toolbar-button toolbar-button-heiarchy">All English Content</a>
+			<a class="toolbar-button toolbar-button-heiarchy">Scriptures</a>
+			<a class="toolbar-button toolbar-button-heiarchy">Book of Mormon</a>
+		</div>
+		<a href="https://lds.org" class="toolbar-button toolbar-button-lds-org">lds.org</a>
+		<div class="toolbar-panel toolbar-panel-languages --toolbar-panel-open">
+			<a class="language-item" data-code="eng">English</a>
+			<a class="language-item" data-code="spa">Spanish</a>
+		</div>
+		<a class="toolbar-button toolbar-panel-button toolbar-button-languages" href="#">Languages</a>
+		<div class="toolbar-panel toolbar-panel-options --toolbar-panel-open">
+			<div class="options-field-group options-field-group-range options-field-group-font-size">
+				<label class="options-field-name">Font Size:</label>
+				<button>-</button>
+				<input type="range"/>
+				<button>+</button>
+				<label class="options-font-size-label">12pt</label>
+			</div>
+			<div class="options-field-group options-field-group-range options-field-group-margin-size">
+				<label class="options-field-name">Margin Size:</label>
+				<button>-</button>
+				<input type="range"/>
+				<button>+</button>
+				<label class="options-margin-size-label">30px</label>
+			</div>
+			<div class="options-field-group options-field-group-theme">
+				<label class="options-field-name">Theme:</label>
+				<select>
+					<option>Default</option>
+					<option>Sepia</option>
+					<option>Night</option>
+				</select>
+			</div>
+			<div class="options-field-group options-field-group-hide-footnotes">
+				<label>
+					<input type="checkbox"/>
+					Hide Footnotes
+				</label>
+			</div>
+			<div class="options-field-group options-field-group-hide-footnotes">
+				<label>
+					<input type="checkbox"/>
+					Hide Annotations
+				</label>
+			</div>
+		</div>
+		<a href="options.html" class="toolbar-button toolbar-panel-button toolbar-button-options">Options</a>
+		<a class="toolbar-button toolbar-button-next">Next</a>
 	</div>
-	<div id="main-content"></div>
+	<div class="message-container">
+		<div class="message-box">
+			<span class="message-spinner"></span>
+			<span class="message-text">Loading</span>
+		</div>
+	</div>
+	<div class="content-container">
+		<ul class="content-children">
+		</ul>
+		<div class="content-body">
+			<div class="initial-message">
+				If you are seeing this message, LDS Scriptures is not loading properly. This usually means that it is unable to download the list of languages available. You are most likely unable to download any content with your current configuration.
+			</div>
+		</div>
+	</div>
+	<div class="references-container">
+		<div class="references-bar">
+			<a class="references-close" href>Close</a>
+		</div>
+		<div class="refrences-content">
 
-	<script type="text/javascript" src="scripts/dependencies/db.js"></script>
-	<script type="text/javascript" src="scripts/dependencies/ejs.js"></script>
+		</div>
+	</div>
+
+	<!-- Scripts-->
+	<script type="text/javascript" src="scripts/controllers/ReadController.js"></script>
 	<script type="text/javascript" src="scripts/dependencies/less.min.js"></script>
+	<script type="text/javascript" src="scripts/dependencies/jquery.js"></script>
+	<script type="text/javascript" src="scripts/models/ChromeI18nModel.js"></script>
+	<script type="text/javascript" src="scripts/models/ChromeMessageProvider.js"></script>
+	<script type="text/javascript" src="scripts/models/DatabaseQuery.js"></script>
+	<script type="text/javascript" src="scripts/views/DomView.js"></script>
 
-	<script type="text/javascript" src="scripts/google-chrome/ChromeMessageProvider.js"></script>
-	<script type="text/javascript" src="scripts/google-chrome/DatabaseQuery.js"></script>
-
-	<script type="text/javascript" src="scripts/models/BookmarkModel.js"></script>
-	<script type="text/javascript" src="scripts/models/BrowserDownloader.js"></script>
-	<script type="text/javascript" src="scripts/models/DatabaseModel.js"></script>
-	<script type="text/javascript" src="scripts/models/DownloadModel.js"></script>
-	<script type="text/javascript" src="scripts/models/KeyboardModel.js"></script>
-	<script type="text/javascript" src="scripts/models/LanguageModel.js"></script>
-	<script type="text/javascript" src="scripts/models/LDSContentProvider.js"></script>
-	<script type="text/javascript" src="scripts/models/LDSCatalogInstaller.js"></script>
-	<script type="text/javascript" src="scripts/models/LDSZBookInstaller.js"></script>
-	<script type="text/javascript" src="scripts/models/LDSInstallerHelpers.js"></script>
-	<script type="text/javascript" src="scripts/models/LDSContentProvider.js"></script>
-	<script type="text/javascript" src="scripts/models/NodeModel.js"></script>
-	<script type="text/javascript" src="scripts/models/SettingsModel.js"></script>
-	<script type="text/javascript" src="scripts/models/ThemeModel.js"></script>
-
-	<script type="text/javascript" src="scripts/controllers/dQuery.js"></script>
-	<script type="text/javascript" src="scripts/controllers/EventHandler.js"></script>
-	<script type="text/javascript" src="scripts/controllers/HtmlGenerator.js"></script>
-	<script type="text/javascript" src="scripts/controllers/KeyboardController.js"></script>
-	<script type="text/javascript" src="scripts/controllers/NavigationController.js"></script>
-	<script type="text/javascript" src="scripts/controllers/RenderController.js"></script>
-
-	<script type="text/javascript" src="scripts/google-chrome/index.js"></script>
+	<script type="text/javascript" src="scripts/chrome-index.js"></script>
 </body>
 
 </html>

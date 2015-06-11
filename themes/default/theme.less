@@ -250,10 +250,15 @@ video {
 	color: @color;
 	overflow: hidden;
 	text-decoration: none;
+	transition: background-color .2s ease;
 }
 
 .toolbar-button[href] {
 	background-color: lighten(@accent, 15%);
+}
+
+.toolbar-button.toolbar-button-pressed {
+	background-color: mix(@accent, @highlight);
 }
 
 .toolbar-button-left() {
@@ -350,7 +355,7 @@ video {
 	position: absolute;
 	top: @toolbar-size;
 	overflow-y: auto;
-  transition: margin-top .5s ease;
+  transition: margin-top .2s ease;
 }
 
 .toolbar-panel.toolbar-panel-open {
@@ -361,6 +366,14 @@ video {
 	height: 14em;
 	margin-top: -14em - @toolbar-size - 3em;
 	width: 10em;
+}
+
+.language-item {
+	display: block;
+	background-color: lighten(@accent, 15%);
+	border-radius: 1em;
+	padding: .2em .6em;
+	margin: .2em 0;
 }
 
 .toolbar-panel-options {

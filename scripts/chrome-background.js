@@ -1,15 +1,15 @@
 var messageProvider = new ChromeMessageProvider();
 var database = new DatabaseModel(new LDSContentProvider(new BrowserDownloader()));
 var qDatabase = new DatabaseQuery(messageProvider);
-var settings, languageId, omnibox;
+var options, languageId, omnibox;
 
 function log(e) {
 	console.log(e);
 	return e;
 }
 
-database.open().then(database.settings.getAll).then(function (s) {
-	settings = s;
+database.open().then(database.options.getAll).then(function (s) {
+	options = s;
 	languageId = s.language;
 	omnibox = new OmniBoxSearchController(database);
 	omnibox.init(languageId)
@@ -56,9 +56,9 @@ messageProvider.on('miss', function (e, sender) {
 });
 
 chrome.app.runtime.onLaunched.addListener(function() {
-	chrome.app.window.create('index.html', {
+	chrome.app.window.create('chrome.html', {
 		bounds: {
-			width: 400,
+			width: 970,
 			height: 500
 		}
 	});

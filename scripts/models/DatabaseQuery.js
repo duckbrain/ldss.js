@@ -77,7 +77,7 @@ function DatabaseQuery(messageProvider) {
 			exists: action('node-exists', nodePath),
 			open: action('open', nodePath)
 		},
-		settings: {
+		options: {
 			get: action('setting-get', ['name']),
 			getAll: action('setting-get-all', []),
 			getDefaults: action('setting-get-defaults', []),

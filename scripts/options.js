@@ -63,13 +63,13 @@
 	function load() {
 		return Promise.all([
 			database.settings.getAll().then(setter('settings')),
-			database.settings.getRaw().then(setter('rawSettings'))
+			database.settings.getRaw().then(setter('rawOptions'))
 		]).then(function () {
 			private.template.update('content', {
 				page: {
 					themes: private.themes,
 					settings: private.settings,
-					rawSettings: private.rawSettings,
+					rawOptions: private.rawOptions,
 					generator: new HtmlGenerator(private.settings, getI18nMessage)
 				}
 			});

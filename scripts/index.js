@@ -1,23 +1,29 @@
 (function () {
-	//var database, navigation;
+	//var database, view;
 
 	function getI18nMessage(name, params) {
 		return name;
-		if (typeof name != 'string') {
-			return name;
-		}
-		return chrome.i18n.getMessage(name, params) || name;
 	}
 
 	database = new DatabaseModel();
-	//database.download = new DatabaseQuery(new ChromeMessageProvider()).download;
-	database.contentProvider = new LocalContentProvider(database);
-	navigation = new NavigationController(database);
+	view = new DomView();
+	view.getI18nMessage = getI18nMessage;
 
-	navigation.loadPath(location.href);
-	navigation.getI18nMessage = getI18nMessage;
+	var state = view.parsePath(location.href);
+	view.subscribeNodeChangeWithPath(function(path) {
+		database.node.getByPath(path).then()
+	});
+	view.parsePath(location.href);
 
-	database.open().then(navigation.init).then(navigation.navigateLoaded);
+	database.open().then(function() {
+		Promise.all([
+			database.languages.getAll(),
+			database.options.getAll()
+		]).then(function(e) {
+			view.setLanguages(e[0]);
+			view.setOptions(e[1]);
+		});
+	});
 })();
 
 function log(debug) {
