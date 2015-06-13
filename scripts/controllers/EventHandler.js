@@ -6,7 +6,7 @@ function EventHandler() {
 	}
 
 	function remove(callback) {
-		//TODO
+
 	}
 
 	function fire() {
@@ -22,4 +22,8 @@ function EventHandler() {
 	that.fire = fire;
 	that.getParam = null;
 	return that;
+}
+
+if (typeof module != 'undefined') {
+	module.exports = DatabaseModel;
 }

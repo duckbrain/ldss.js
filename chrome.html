@@ -14,22 +14,30 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no">
 </head>
 
-<body class="--show-message --show-message-spinner --show-references">
-	<div class="toolbar-container">
-		<a class="toolbar-button toolbar-button-previous">Previous</a>
-		<a class="toolbar-button toolbar-button-up">Up</a>
+<body class="--show-message --show-message-spinner --show-references --show-tab-bar">
+	<div class="tab-bar-container panel">
+		<a class="button button-back" disabled>Back</a>
+		<a class="button button-forward" disabled>Forward</a>
+		<div class='tab-bar'>
+			<a class="tab-bar-tab">Book of Mormon</a>
+		</div>
+		<a class="button button-new-tab">+</a>
+	</div>
+	<div class="toolbar-container panel">
+		<a class="button toolbar-button button-previous" disabled>Previous</a>
+		<a class="button toolbar-button button-up" disabled>Up</a>
 		<div class="toolbar-heiarchy">
-			<a class="toolbar-button toolbar-button-heiarchy">All English Content</a>
-			<a class="toolbar-button toolbar-button-heiarchy">Scriptures</a>
-			<a class="toolbar-button toolbar-button-heiarchy">Book of Mormon</a>
+			<a class="button toolbar-button">All English Content</a>
+			<a class="button toolbar-button">Scriptures</a>
+			<a class="button toolbar-button">Book of Mormon</a>
 		</div>
-		<a href="https://lds.org" class="toolbar-button toolbar-button-lds-org">lds.org</a>
-		<div class="toolbar-panel toolbar-panel-languages --toolbar-panel-open">
-			<a class="language-item" data-code="eng">English</a>
-			<a class="language-item" data-code="spa">Spanish</a>
+		<a href="https://lds.org" class="button toolbar-button button-lds-org">lds.org</a>
+		<div class="panel toolbar-panel panel-languages">
+			<a class="button" data-code="eng">English</a>
+			<a class="button" data-code="spa">Spanish</a>
 		</div>
-		<a class="toolbar-button toolbar-panel-button toolbar-button-languages" href="#">Languages</a>
-		<div class="toolbar-panel toolbar-panel-options --toolbar-panel-open">
+		<a class="button toolbar-button toolbar-panel-button button-languages">Languages</a>
+		<div class="panel toolbar-panel panel-options">
 			<div class="options-field-group options-field-group-range options-field-group-font-size">
 				<label class="options-field-name">Font Size:</label>
 				<button>-</button>
@@ -64,12 +72,15 @@
 					Hide Annotations
 				</label>
 			</div>
+			<div class="options-buttons">
+				<a class="button">All Options</a>
+			</div>
 		</div>
-		<a href="options.html" class="toolbar-button toolbar-panel-button toolbar-button-options">Options</a>
-		<a class="toolbar-button toolbar-button-next">Next</a>
+		<a href="options.html" class="button toolbar-button toolbar-panel-button button-options">Options</a>
+		<a class="button toolbar-button button-next" disabled>Next</a>
 	</div>
 	<div class="message-container">
-		<div class="message-box">
+		<div class="message-box panel">
 			<span class="message-spinner"></span>
 			<span class="message-text">Loading</span>
 		</div>
@@ -83,7 +94,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="references-container">
+	<div class="references-container panel">
 		<div class="references-bar">
 			<a class="references-close" href>Close</a>
 		</div>
@@ -99,8 +110,8 @@
 	<script type="text/javascript" src="scripts/models/ChromeI18nModel.js"></script>
 	<script type="text/javascript" src="scripts/models/ChromeMessageProvider.js"></script>
 	<script type="text/javascript" src="scripts/models/DatabaseQuery.js"></script>
+	<script type="text/javascript" src="scripts/models/PathParser.js"></script>
 	<script type="text/javascript" src="scripts/views/DomView.js"></script>
-
 	<script type="text/javascript" src="scripts/chrome-index.js"></script>
 </body>
 

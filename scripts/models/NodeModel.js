@@ -39,6 +39,10 @@ function NodeModel(database) {
 	}
 
 	function getPath(languageId, path) {
+		if (!languageId || !path) {
+			throw new Error("You must provide a languageId and a path");
+		}
+
 		return database.server.nodes.query('path')
 			.only([languageId, path]).execute().then(database.helpers.single).then(getDetails);
 	}

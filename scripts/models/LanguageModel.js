@@ -13,15 +13,8 @@ function LanguageModel(database) {
 	function download() {
 		return database.contentProvider.getLanguages().then(
 			function (response) {
-				return addAll(response.languages)
+				return Promise.all(response.languages.map(database.server.languages.update));
 			});
-	}
-
-	function addAll(languages) {
-		var server = database.server;
-		return Promise.all(languages.map(function (language) {
-			return server.languages.update(language);
-		}));
 	}
 
 	function getAll() {

@@ -31,8 +31,8 @@ function OmniBoxSearchController(database) {
 
 	function init(languageId) {
 		model = new SearchModel(database, languageId);
-		chrome.omnibox.onInputChanged.addListener(onInputChanged);
-		chrome.omnibox.onInputEntered.addListener(onInputEntered);
+		//chrome.omnibox.onInputChanged.addListener(onInputChanged);
+		//chrome.omnibox.onInputEntered.addListener(onInputEntered);
 	}
 
 	that.init = init;
