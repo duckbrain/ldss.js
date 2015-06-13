@@ -86,7 +86,7 @@ function LDSInstallerHelpers(db) {
 		}
 	}
 
-	function summary (item) {
+	function summary(item) {
 		return item ? item.id : null;
 	}
 

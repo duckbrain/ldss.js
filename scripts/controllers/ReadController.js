@@ -24,11 +24,12 @@ function ReadController(model, view) {
 		view.init();
 
 		return Promise.all([
-			model.language.getAll().then(view.setLanguages),
-			model.options.getAll().then(function(options) {
+			model.language.getAll().then(view.setLanguages)
+			.then(model.options.getAll)
+			.then(function(options) {
 				setOptions(options);
 				model.theme.get(options.theme).then(setTheme);
-
+				model.language.get(options.language).then(view.setLanguage);
 				setNodeByPath('/');
 			})
 		]);

@@ -11,7 +11,7 @@ function DomView() {
 			message: "loading"
 		},
 		focusedVerses: [1, 2, 4],
-		annotations: [ ]
+		annotations: []
 	}
 
 	that.init = function init() {
@@ -31,7 +31,7 @@ function DomView() {
 		var className = 'toolbar-panel-open';
 		var panel = $('.panel-' + name);
 		var button = $('.button-' + name);
-		button.click(function() {
+		button.click(function () {
 			closePanels('.panel-' + name);
 			panel.toggleClass(className);
 			button.toggleClass('button-pressed', panel.hasClass(className));
@@ -45,7 +45,7 @@ function DomView() {
 
 	function makeClassToggle(element, className, setValue) {
 		element = $(element);
-		return function() {
+		return function () {
 			element.toggleClass(className, setValue);
 		};
 	}
@@ -82,7 +82,7 @@ function DomView() {
 
 		panel.empty();
 
-		languages.forEach(function(language) {
+		languages.forEach(function (language) {
 			var displayName = language.name;
 			if (displayEnglishNames && language.name != language.eng_name && language.name.indexOf('(') == -1) {
 				displayName += ' (' + language.eng_name + ')'
@@ -101,7 +101,9 @@ function DomView() {
 	}
 
 	that.setTheme = function setTheme(theme) {
-		document.getElementById('custom-css').innerHTML = theme.css;
+		if (theme.css) {
+			document.getElementById('custom-css').innerHTML = theme.css;
+		}
 	}
 
 	function scrollToVerse(number) {}
