@@ -146,59 +146,50 @@ video {
 }
 
 
-.children li {
+.content-children {
 	display: block;
-	float: left;
-	h3 {
-		font-size: medium;
-		margin: 0;
-		padding: 0;
-		display: inline;
-	}
-	a[data-type=folder]:before {
-		content: "\f07b";
-	}
-	a[data-type=book]:before {
-		content: "\f02d";
-	}
-	a[data-downloaded=false]:before {
-		content: "\f019";
-	}
-	a:before {
-		.font-awesome();
-	}
-	a {
-		margin: 0.5em;
-		width: 10em;
-		height: 12em;
-		background-color: @accent;
-		color: @color;
-		text-decoration: none;
-		text-align: center;
-		display: block;
-		min-width: 9em;
-		padding: 1em;
-		overflow: hidden;
-
-		&:hover {
-			background-color: lighten(@accent, 10%);
-		}
-		&:active {
-			background-color: darken(@accent, 10%);
-		}
-		&.selected {
-			background-color: mix(@accent, @highlight, 70%);
-		}
-		&[data-downloaded=false] {
-			background-color: mix(@accent, @background, 50%);
-		}
-	}
-
 	img {
 		max-width: 10em;
 		display: block;
   	margin: 1em auto;
 	}
+}
+
+.content-child {
+	display: block;
+	width: 9em;
+	height: 10em;
+	margin: .5em;
+	float: left;
+	overflow: hidden;
+
+	&.selected {
+		background-color: mix(@accent, @highlight, 70%);
+	}
+	&[data-downloaded=false] {
+		background-color: mix(@accent, @background, 50%);
+	}
+}
+
+.icon {
+	.font-awesome();
+}
+
+.icon-folder:before {
+	content: "\f07b";
+}
+.icon-book:before {
+	content: "\f02d";
+}
+*[data-downloaded=false] .icon:before {
+	content: "\f019";
+}
+
+.content-child-name {
+	font-size: medium;
+	margin: 0;
+	padding: 0;
+	display: inline;
 }
 
 .references-container {
@@ -252,6 +243,7 @@ video {
 	background-color: lighten(@accent, 15%);
 	border: 1px darken(@accent, 15%) solid;
 	color: @color;
+	cursor: pointer;
 
 	transition: background-color .1s ease;
 
@@ -262,6 +254,7 @@ video {
 		background-color: darken(@accent, 5%);
 	}
 	&.disabled, &[disabled] {
+		cursor: default;
 		background-color: lighten(@accent, 5%);
 	}
 }
@@ -281,19 +274,25 @@ video {
 }
 
 .button-previous {
-	.button-icon("\f053");
 	border-radius: 0 0 @button-radius 0;
 	border-left: none;
 }
 
-.button-up {
+.icon-previous {
+		.button-icon("\f053");
+}
+
+.icon-up {
 	.button-icon("\f148")
 }
 
 .button-next {
-	.button-icon("\f054");
 	border-radius: 0 0 0 @button-radius;
 	border-right: none;
+}
+
+.icon-next {
+	.button-icon("\f054");
 }
 
 .button-languages {
@@ -405,6 +404,11 @@ video {
 .options-field-name {
 	font-weight: bold;
 	display: block;
+}
+
+.panel-downloads {
+	max-height: 15em;
+	margin-top: -15em - @toolbar-size - 3em;
 }
 
 .tab-bar-container {

@@ -7,5 +7,5 @@
 		return name;
 	}
 	controller = new ReadController(model, view);
-	controller.start();
+	controller.start().then();
 })();

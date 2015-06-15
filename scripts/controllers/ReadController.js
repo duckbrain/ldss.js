@@ -5,9 +5,13 @@ function ReadController(model, view) {
 
 	function start() {
 		view.subscribeNodeChangeWithPath(setNodeByPath);
+		view.subscribeNodeChangeWithId(setNodeById);
 		view.subscribeLanguageChange(setLanguageByLdsCode);
 
-		model.open()
+		model.download.subscribeQueueChanged(setDownloads);
+		model.download.subscribeStatusChanged(setDownloadStatus);
+
+		return model.open()
 			.then(initializeDatabase)
 			.then(populateInitialView);
 	}
@@ -46,6 +50,14 @@ function ReadController(model, view) {
 		renderTheme();
 	}
 
+	function setDownloads() {
+		view.setDownloads(model.download.getQueue());
+	}
+
+	function setDownloadStatus() {
+
+	}
+
 	function renderTheme() {
 		if (theme && options) {
 			less.render(theme.style, {
@@ -67,7 +79,7 @@ function ReadController(model, view) {
 
 	function setNodeById(id) {
 		if (id) {
-			model.node.ge(id).then(setNode);
+			model.node.get(id).then(setNode);
 		} else {
 			setNode(null);
 		}
@@ -75,7 +87,24 @@ function ReadController(model, view) {
 
 	function setNode(n) {
 		node = n;
-		view.setNode(n);
+
+		if (!node) {
+			view.setMessage({
+				message: "Node not found"
+			})
+		} else if (node.type == 'book' && !node.details.downloadedVersion) {
+			model.download.downloadBook(node).then(function() {
+				if (model.download.getQueue().length == 0) {
+					model.node.get(node.id).then(setNode).then(setDownloads);
+					setDownloads();
+				}
+			});
+			setDownloads();
+		} else {
+			view.setNode(n);
+		}
+
+
 	}
 
 	function setLanguageByLdsCode(languageCode) {

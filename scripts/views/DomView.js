@@ -25,6 +25,8 @@ function DomView() {
 	function onDocumentLoad() {
 		addPanelHandler('languages');
 		addPanelHandler('options');
+		addPanelHandler('downloads');
+		$('.button-previous, .button-next, .button-up').click(onNodeWithIdClick);
 	}
 
 	function addPanelHandler(name) {
@@ -48,22 +50,6 @@ function DomView() {
 		return function () {
 			element.toggleClass(className, setValue);
 		};
-	}
-
-	that.getState = function getState() {
-		return state;
-	}
-
-	that.setState = function setState(state) {
-		state.node = state.node || null;
-		state.scrollPosition = state.scrollPosition || 0;
-		state.message = state.message || null;
-		state.focusedVerses = state.focusedVerses || [];
-		state.annotations = state.annotations || [];
-
-		setNode(state.node);
-
-		currentState = state;
 	}
 
 	that.setOptions = function setOptions(o) {
@@ -110,24 +96,81 @@ function DomView() {
 
 	function setNodeLink(element, node) {
 		if (node) {
-			$(element).data('id', node.id).removeClass('disabled');
+			$(element).attr('disabled', false).data('id', node.id);
 		} else {
-			$(element).data('id', '').addClass('disabled');
+			$(element).attr('disabled', true).data('id', '');
 		}
 	}
 
 	that.setNode = function setNode(node) {
-		$('.content-children').empty();
+		window.node = node;
+
+		var childrenElement =  $('.content-children').empty();
+		var heiarchyElement = $('.toolbar-heiarchy').empty();
 
 		if (node) {
 			setNodeLink('.button-previous', node.previous);
 			setNodeLink('.button-next', node.next);
 			setNodeLink('.button-up', node.parent);
-			$('.content-body').html(node.details || node.details.content);
+			$('.content-body').html(node.details && node.details.content || '');
+			childrenElement.empty();
+			node.children.forEach(function(child) {
+				var content = '', downloaded = true;
+				if (child.type == 'node' && child.details.content) {
+					var length = 400;
+					content = child.details.content;
+					content = content.replace(/\<h1.+\<\/h1\>/ig, ''); // Remove h1
+					content = content.replace(/class="titleNumber"\>.*[0-9]+\<\/p\>/ig, '></p>'); // Remove Chapter number
+					content = content.replace(/(<([^>]+)>)/ig, ''); // Remove all HTML tags
+					content = content.length > length ? content.substring(0, length) : content;
+					content = '<p>' + content + '</p>';
+				} else if (child.details && child.details.image) {
+					content = '<img src="'+ child.details.image + '" />';
+				}
+				if (child.type == 'book') {
+					downloaded = !!child.details.downloadedVersion;
+				}
+
+				childrenElement.append('<a class="button content-child '
+						+ (downloaded ? 'downloaded' : 'not-downloaded') + '" '
+					+ 'data-type="' + child.type + '" '
+					+ 'data-id="' + child.id + '" '
+					+ 'data-downloaded="' + downloaded + '">'
+						+ '<i class="icon icon-' + child.type + '"></i>'
+						+ '<h3 class="content-child-name">' + child.name + '</h3>'
+						+ content
+					+ '</a>');
+			});
+			childrenElement.find('.content-child').click(onNodeWithIdClick);
+
+			node.heiarchy.forEach(function(ancestor) {
+				heiarchyElement.append('<a class="button toolbar-button"'
+					+ 'data-id="' + ancestor.id + '">'
+						+ '<i class="icon icon-' + ancestor.type + '"></i>'
+						+ '<span class="label">' + ancestor.name + '</span>'
+					+ '</a>');
+			});
+			heiarchyElement.find('.button').click(onNodeWithIdClick);
 		} else {
 			setNodeLink('.button-previous, .button-next, .button-up', null);
 			$('.content-body').html('');
 		}
+	}
+
+	this.setDownloads = function setDownloads(queue) {
+		var element = $('.panel-downloads').empty();
+		queue.forEach(function(download) {
+			element.append('<div>' + download.title + '</div>')
+		})
+	}
+
+	this.setMessage = function setMessage(message) {
+		console.log(message);
+	}
+
+	function onNodeWithIdClick(e) {
+		var id = parseInt($(e.currentTarget).data('id'));
+		invokeNodeChangedWithId(id);
 	}
 
 	function setScroll(position) {

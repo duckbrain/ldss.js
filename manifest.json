@@ -11,21 +11,23 @@
 		"background": {
 			"scripts": [
 				"scripts/dependencies/db.js",
-				"scripts/models/ChromeMessageProvider.js",
-				"scripts/models/DatabaseQuery.js",
+
 				"scripts/controllers/OmniBoxSearchController.js",
+				
 				"scripts/models/BrowserDownloader.js",
+				"scripts/models/ChromeMessageProvider.js",
 				"scripts/models/DatabaseModel.js",
-				"scripts/models/DownloadModel.js",
+				"scripts/models/DatabaseQuery.js",
+				"scripts/models/LanguageModel.js",
 				"scripts/models/LDSContentProvider.js",
 				"scripts/models/LDSCatalogInstaller.js",
 				"scripts/models/LDSZBookInstaller.js",
 				"scripts/models/LDSInstallerHelpers.js",
-				"scripts/models/SearchModel.js",
-				"scripts/models/OptionsModel.js",
-				"scripts/models/LanguageModel.js",
 				"scripts/models/NodeModel.js",
+				"scripts/models/OptionsModel.js",
+				"scripts/models/SearchModel.js",
 				"scripts/models/ThemeModel.js",
+
 				"scripts/chrome-background.js"
 			]
 		}

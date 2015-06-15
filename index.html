@@ -5,7 +5,9 @@
 	<title id="title">LDS Scriptures</title>
 	<link rel="stylesheet" type="text/css" href="stylesheets/fonts.css">
 	<link rel="stylesheet" type="text/css" href="stylesheets/index.css">
-	<style id="custom-css"></style>
+	<style id="custom-css">
+		body { display: none; }
+	</style>
 	<style id="book-css"></style>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="apple-touch-icon" href="img/icon_128.png">
@@ -16,20 +18,43 @@
 
 <body class="--show-message --show-message-spinner --show-references --show-tab-bar">
 	<div class="tab-bar-container panel">
-		<a class="button button-back" disabled>Back</a>
-		<a class="button button-forward" disabled>Forward</a>
+		<a class="button button-back" disabled>
+			<i class="icon icon-back"></i>
+			<span class="label">Back</span>
+		</a>
+		<a class="button button-forward" disabled>
+			<i class="icon icon-forward"></i>
+			<span class="label">Forward</span>
+		</a>
 		<div class='tab-bar'>
-			<a class="tab-bar-tab">Book of Mormon</a>
+			<a class="tab-bar-tab">
+				<img class="icon" src="img/icon_16.png" />
+				<span class="label">Book of Mormon</span>
+			</a>
 		</div>
-		<a class="button button-new-tab">+</a>
+		<a class="button button-new-tab">
+			<i class="icon icon-new-tab">+</i>
+		</a>
 	</div>
 	<div class="toolbar-container panel">
-		<a class="button toolbar-button button-previous" disabled>Previous</a>
-		<a class="button toolbar-button button-up" disabled>Up</a>
+		<a class="button toolbar-button button-previous" disabled>
+			<i class="icon icon-previous"></i>
+			<span class="label">Previous</span>
+		</a>
+		<a class="button toolbar-button button-up" disabled>
+			<i class="icon icon-up"></i>
+			<span class="label">Up</span>
+		</a>
 		<div class="toolbar-heiarchy">
-			<a class="button toolbar-button">All English Content</a>
-			<a class="button toolbar-button">Scriptures</a>
-			<a class="button toolbar-button">Book of Mormon</a>
+			<a class="button toolbar-button">
+				<span class="label">All English Content</span>
+			</a>
+			<a class="button toolbar-button">
+				<span class="label">Scriptures</span>
+			</a>
+			<a class="button toolbar-button">
+				<span class="label">Book of Mormon</span>
+			</a>
 		</div>
 		<a href="https://lds.org" class="button toolbar-button button-lds-org">lds.org</a>
 		<div class="panel toolbar-panel panel-languages">
@@ -77,6 +102,11 @@
 			</div>
 		</div>
 		<a href="#" class="button toolbar-button toolbar-panel-button button-options">Options</a>
+		<div class="panel toolbar-panel panel-downloads">
+			<div class="download-item">
+			</div>
+		</div>
+		<a href="#" class="button toolbar-button toolbar-panel-button button-downloads">Downloads</a>
 		<a class="button toolbar-button button-next" disabled>Next</a>
 	</div>
 	<div class="message-container">
@@ -86,10 +116,17 @@
 		</div>
 	</div>
 	<div class="content-container">
-		<ul class="content-children">
-		</ul>
+		<div class="content-children">
+			<a class="button content-child" data-type="folder" data-id="1" data-downloaded="false">
+				<h3 class="content-child-name">Folder</h3>
+				<img class="content-child-image" />
+			</a>
+			<a class="button content-child content-folder downloaded">Downloaded Folder</a>
+			<a class="button content-child content-book">Book</a>
+			<a class="button content-child content-book downloaded">Downloaded Book</a>
+		</div>
 		<div class="content-body">
-			
+
 		</div>
 	</div>
 	<div class="references-container panel">
@@ -106,14 +143,15 @@
 	<script type="text/javascript" src="scripts/dependencies/less.min.js"></script>
 	<script type="text/javascript" src="scripts/dependencies/jquery.js"></script>
 
-	<script type="text/javascript" src="scripts/controllers/DownloadModel.js"></script>
-	<script type="text/javascript" src="scripts/controllers/LDSCatalogInstaller.js"></script>
-	<script type="text/javascript" src="scripts/controllers/LDSZBookInstaller.js"></script>
-	<script type="text/javascript" src="scripts/controllers/LDSInstallerHelpers.js"></script>
 	<script type="text/javascript" src="scripts/controllers/ReadController.js"></script>
 
+	<script type="text/javascript" src="scripts/models/DownloadModel.js"></script>
+	<script type="text/javascript" src="scripts/models/LDSCatalogInstaller.js"></script>
+	<script type="text/javascript" src="scripts/models/LDSZBookInstaller.js"></script>
+	<script type="text/javascript" src="scripts/models/LDSInstallerHelpers.js"></script>
 	<script type="text/javascript" src="scripts/models/BookmarkModel.js"></script>
 	<script type="text/javascript" src="scripts/models/BrowserDownloader.js"></script>
+	<script type="text/javascript" src="scripts/models/EventHandler.js"></script>
 	<script type="text/javascript" src="scripts/models/DatabaseModel.js"></script>
 	<script type="text/javascript" src="scripts/models/KeyboardModel.js"></script>
 	<script type="text/javascript" src="scripts/models/LanguageModel.js"></script>
