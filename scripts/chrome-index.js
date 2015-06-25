@@ -1,5 +1,5 @@
 (function () {
-	var model, view, controller;
+	//var model, view, controller;
 	model = new DatabaseQuery(new ChromeMessageProvider());
 	view = new DomView();
 	view.getI18nMessage = new ChromeI18nModel().getMessage;

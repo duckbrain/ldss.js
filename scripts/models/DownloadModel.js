@@ -71,7 +71,7 @@ function DownloadModel(database) {
 	function downloadCatalog(language) {
 		return addToQueue('catalog', 'Catalog of ' + language.name, function() {
 			var installer = new that.CatalogInstaller(database.node, language.id);
-			return database.contentProvider.getCatalog(language.id).then(installer.install)
+			return database.contentProvider.getCatalog(language.id).then(installer.install);
 		});
 	}
 
@@ -80,6 +80,7 @@ function DownloadModel(database) {
 			queue.push(new DownloadItem(type, title, function() {
 				return installer().then(fulfill, reject);
 			}));
+			onQueueChanged.fire();
 			startQueue();
 		});
 	}
@@ -99,6 +100,7 @@ function DownloadModel(database) {
 
 	function downloadFinished() {
 		queue.shift();
+		onQueueChanged.fire(getQueue());
 		if (0 < queue.length) {
 			startNext();
 		} else {

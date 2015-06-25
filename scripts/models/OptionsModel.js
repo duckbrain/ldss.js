@@ -78,13 +78,13 @@ function OptionsModel(database) {
 	}
 
 	function getRaw() {
-		return database.server.options.get(0).then(function (s) {
+		return database.server.options.get(1).then(function (s) {
 			return s || {};
 		});
 	}
 
 	function setRaw(values) {
-		values.id = 0;
+		values.id = 1;
 		return database.server.options.update(values);
 	}
 

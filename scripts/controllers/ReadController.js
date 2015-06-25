@@ -17,9 +17,12 @@ function ReadController(model, view) {
 	}
 
 	function initializeDatabase() {
-		return model.language.getAll().then(function languages() {
+		return model.language.getAll().then(function languages(languages) {
 			if (languages.length == 0) {
-				return model.language.download;
+				return model.language.download()
+					.then(model.language.getAll);
+			} else {
+				return languages;
 			}
 		});
 	}
@@ -34,6 +37,7 @@ function ReadController(model, view) {
 				setOptions(options);
 				model.theme.get(options.theme).then(setTheme);
 				model.language.get(options.language).then(view.setLanguage);
+
 				setNodeByPath('/');
 			})
 		]);
@@ -71,7 +75,21 @@ function ReadController(model, view) {
 
 	function setNodeByPath(path) {
 		if (path) {
-			model.node.getPath(language.id, path).then(setNode);
+			if (path == '/') {
+				model.node.getPath(language.id, '/').then(function (catalog) {
+					if (!catalog) {
+						view.setMessage({
+							spinner: true,
+							message: "Downloading catalog"
+						})
+						model.download.downloadCatalog(language).then(setNodeByPath('/'));
+					} else {
+						setNode(catalog);
+					}
+				});
+			} else {
+				model.node.getPath(language.id, path).then(setNode);
+			}
 		} else {
 			setNode(null);
 		}

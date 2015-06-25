@@ -85,8 +85,12 @@ function DatabaseQuery(messageProvider) {
 			update: action('setting-update', ['values'])
 		},
 		download: {
+			getQueue: action('download-queue'),
 			downloadCatalog: action('download-catalog', ['languageId']),
-			downloadBook: action('download-book', ['bookId'])
+			downloadBook: action('download-book', ['bookId']),
+			downloadFolder: action('download-folder', ['folderId']),
+			subscribeQueueChanged: action('download-subscribe-queue-changed', ['callback']),
+			subscribeStatusChanged: action('download-subscribe-status-changed', ['callback'])
 		},
 		theme: {
 			get: action('theme-get', id)

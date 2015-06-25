@@ -158,6 +158,7 @@ function DomView() {
 	}
 
 	this.setDownloads = function setDownloads(queue) {
+		console.log('download queue', queue);
 		var element = $('.panel-downloads').empty();
 		queue.forEach(function(download) {
 			element.append('<div>' + download.title + '</div>')
