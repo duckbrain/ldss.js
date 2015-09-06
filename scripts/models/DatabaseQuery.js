@@ -2,6 +2,7 @@ function DatabaseQuery(messageProvider) {
 	var that = this;
 	var request = messageProvider.send;
 	var failed = {};
+	var subscriptions = {};
 
 	function action(title, params) {
 		var result = function () {
@@ -13,6 +14,22 @@ function DatabaseQuery(messageProvider) {
 		}
 		result.title = title;
 		result.params = params;
+		return result;
+	}
+
+	function subscription(title)
+	{
+		var handlers = [];
+		subscriptions[title] = handlers;
+		var result = function(callback) {
+			handlers.push(callback);
+		}
+		result.title = title;
+		messageProvider.on(title + '-event', function(params) {
+			for (var i = 0; i < handlers.length; i++) {
+				handlers[i](params);
+			}
+		});
 		return result;
 	}
 
@@ -31,8 +48,13 @@ function DatabaseQuery(messageProvider) {
 	function execute(database, action, params, steps) {
 		var name, base, item, dbBase, result, args;
 
-		steps = steps ? steps : [];
+		steps = steps || [];
 		base = findSteps(that, steps);
+
+		if (subscriptions[action]) {
+			request(action + '-event', params);
+			return;
+		}
 
 		// loop through all actions and find the match, then execute the function on the passed database object.
 		for (name in base) {
@@ -89,8 +111,8 @@ function DatabaseQuery(messageProvider) {
 			downloadCatalog: action('download-catalog', ['languageId']),
 			downloadBook: action('download-book', ['bookId']),
 			downloadFolder: action('download-folder', ['folderId']),
-			subscribeQueueChanged: action('download-subscribe-queue-changed', ['callback']),
-			subscribeStatusChanged: action('download-subscribe-status-changed', ['callback'])
+			subscribeQueueChanged: subscription('download-subscribe-queue-changed'),
+			subscribeStatusChanged: subscription('download-subscribe-status-changed')
 		},
 		theme: {
 			get: action('theme-get', id)
