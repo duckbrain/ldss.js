@@ -104,7 +104,7 @@ function DatabaseQuery(messageProvider) {
 			update: action('setting-update', ['values'])
 		},
 		download: {
-			getQueue: action('download-queue'),
+			getQueue: action('download-queue', []),
 			downloadCatalog: action('download-catalog', ['languageId']),
 			downloadBook: action('download-book', ['bookId']),
 			downloadFolder: action('download-folder', ['folderId']),

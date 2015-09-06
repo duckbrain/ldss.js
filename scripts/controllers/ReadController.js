@@ -55,7 +55,7 @@ function ReadController(model, view) {
 	}
 
 	function setDownloads() {
-		view.setDownloads(model.download.getQueue());
+		model.download.getQueue().then(view.setDownloads);
 	}
 
 	function setDownloadStatus() {
