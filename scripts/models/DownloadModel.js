@@ -3,6 +3,7 @@ function DownloadModel(database) {
 	var queue = [];
 	var queueRunning = false;
 	var libs = {};
+	var queue = [];
 
 	var onQueueChanged = new EventHandler();
 	var onStatusChanged = new EventHandler();
@@ -15,10 +16,9 @@ function DownloadModel(database) {
 	}
 
 	function getLib(name, url) {
-		if (name in libs) {
-			return libs[name];
-		} else {
-			var lib = database.downloader.require(url);
+		if (!(name in window)) {
+			database.downloader.require(url);
+			var lib = window[name];
 			libs[name] = lib;
 			return lib;
 		}
@@ -42,7 +42,7 @@ function DownloadModel(database) {
 		folder.children.forEach(function (child) {
 			if (child.type == 'book') downloadBook(child);
 			if (child.type == 'folder') downloadFolder(child);
-		})
+		});
 	}
 
 	function downloadBook(book) {

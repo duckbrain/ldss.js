@@ -3,8 +3,9 @@
  * objectStore.
  * @param {DatabaseModel} database Database model for inter-class communication.
  */
-function LDSCatalogInstaller(db, languageId) {
+function LDSCatalogInstaller(database, languageId) {
 	var that = this;
+	var db = database.node;
 	var helpers = new LDSInstallerHelpers(db);
 	var baseImageUrl;
 	var paths = {};
@@ -24,6 +25,13 @@ function LDSCatalogInstaller(db, languageId) {
 		"45453": "/topics/pef-self-reliance",
 		"510": "/manual/seminary",
 		"511": "/manual/institute"
+	};
+
+	function init() {
+		//Load the named paths;
+		return database.downloader.download('scripts/presets.json', function(presets) {
+			namedPaths = presets.namedPaths;
+		});
 	}
 
 	function install(root) {

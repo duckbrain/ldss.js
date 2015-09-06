@@ -52,6 +52,15 @@ function DatabaseModel(contentProvider) {
 						unique: false
 					}
 				}
+			},
+			annotations: {
+				key: {
+					keyPath: 'id',
+					autoIncrement: true
+				},
+				indexes: {
+
+				}
 			}
 		}
 	}

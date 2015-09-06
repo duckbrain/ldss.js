@@ -1,5 +1,6 @@
 var messageProvider = new ChromeMessageProvider();
 var database = new DatabaseModel(new LDSContentProvider(new BrowserDownloader()));
+database.download.CatalogInstaller = LDSCatalogInstaller;
 var qDatabase = new DatabaseQuery(messageProvider);
 var options, languageId, omnibox;
 
