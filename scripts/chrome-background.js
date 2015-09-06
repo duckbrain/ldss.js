@@ -32,7 +32,7 @@ messageProvider.on('node-exists', function (e, sender) {
 
 messageProvider.on('node-get', function (e, sender) {
 	e.languageId = e.languageId || languageId;
-	return database.node.get(e.languageId, e.path);
+	return database.node.getPath(e.languageId, e.path);
 });
 
 messageProvider.on('open', function (e, sender) {

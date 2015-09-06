@@ -13,11 +13,13 @@
 				"scripts/dependencies/db.js",
 
 				"scripts/controllers/OmniBoxSearchController.js",
-				
+
 				"scripts/models/BrowserDownloader.js",
 				"scripts/models/ChromeMessageProvider.js",
 				"scripts/models/DatabaseModel.js",
 				"scripts/models/DatabaseQuery.js",
+				"scripts/models/DownloadModel.js",
+				"scripts/models/EventHandler.js",
 				"scripts/models/LanguageModel.js",
 				"scripts/models/LDSContentProvider.js",
 				"scripts/models/LDSCatalogInstaller.js",

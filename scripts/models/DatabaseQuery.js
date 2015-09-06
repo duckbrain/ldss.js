@@ -77,9 +77,6 @@ function DatabaseQuery(messageProvider) {
 		return failed;
 	}
 
-	var id = ['id'];
-	var nodePath = ['languageId', 'path'];
-
 	function nothing() {
 		return Promise.resolve(that);
 	}
@@ -87,17 +84,17 @@ function DatabaseQuery(messageProvider) {
 	var that = {
 		open: nothing,
 		language: {
-			get: action('language-get', id),
-			getAll: action('language-get-all', id),
+			get: action('language-get', ['id']),
+			getAll: action('language-get-all', ['id']),
 			getByCode: action('language-get-by-code', ['code']),
 			getByLdsCode: action('language-get-by-lds-code', ['code']),
 			download: action('language-download', [])
 		},
 		node: {
-			get: action('node-get-id', id),
-			getPath: action('node-get', nodePath),
-			exists: action('node-exists', nodePath),
-			open: action('open', nodePath)
+			get: action('node-get-id', ['id']),
+			getPath: action('node-get', ['languageId', 'path']),
+			exists: action('node-exists', ['languageId', 'path']),
+			open: action('open', ['languageId', 'path'])
 		},
 		options: {
 			get: action('setting-get', ['name']),
@@ -115,7 +112,7 @@ function DatabaseQuery(messageProvider) {
 			subscribeStatusChanged: subscription('download-subscribe-status-changed')
 		},
 		theme: {
-			get: action('theme-get', id)
+			get: action('theme-get', ['id'])
 		},
 		execute: execute,
 		isFailed: isFailed
