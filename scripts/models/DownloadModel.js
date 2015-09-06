@@ -7,6 +7,7 @@ function DownloadModel(database) {
 	function getLib(name, url) {
 		if (!(name in window)) {
 			database.downloader.require(url);
+			var lib = window[name];
 			libs[name] = lib;
 			return lib;
 		}
@@ -74,6 +75,11 @@ function DownloadModel(database) {
 
 	function stepQueue() {
 		var action = queue.shift();
+
+		if (!action) {
+			return;
+		}
+
 		action.method(action.id).then(function(result) {
 			action.fulfill(result);
 			stepQueue();
