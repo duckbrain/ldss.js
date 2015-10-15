@@ -4,6 +4,7 @@ database.download.CatalogInstaller = LDSCatalogInstaller;
 var qDatabase = new DatabaseQuery(messageProvider);
 var options, languageId, omnibox;
 
+
 function log(e) {
 	console.log(e);
 	return e;
@@ -19,10 +20,6 @@ database.open().then(database.options.getAll).then(function (s) {
 messageProvider.on('download-catalog', function (e, sender) {
 	e.languageId = e.languageId || languageId;
 	return database.download.downloadCatalog(e.languageId);
-});
-
-messageProvider.on('download-book', function (e, sender) {
-	return database.download.downloadBook(e.bookId);
 });
 
 messageProvider.on('node-exists', function (e, sender) {
@@ -63,4 +60,18 @@ chrome.app.runtime.onLaunched.addListener(function() {
 			height: 500
 		}
 	});
+});
+
+var myWin = null;
+
+chrome.app.runtime.onLaunched.addListener(function() {
+  chrome.app.window.create('sql.html', {
+    'bounds': {
+      'width': 400,
+      'height': 400
+    }
+  }, function(win) {
+       myWin = win;
+       myWin.contentWindow.postMessage('Just wanted to say hey.', '*');
+     });
 });

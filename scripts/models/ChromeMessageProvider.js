@@ -71,5 +71,9 @@ function ChromeMessageProvider() {
 		});
 	};
 
-	chrome.runtime.onMessage.addListener(messageReceived);
+	if (chrome && chrome.runtime && chrome.runtime.onMessage) {
+		chrome.runtime.onMessage.addListener(messageReceived);
+	} else {
+		window.addEventListener('message', messageReceived);
+	}
 }

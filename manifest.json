@@ -1,11 +1,6 @@
 {
 	"name": "__MSG_app_title__",
 	"description": "__MSG_app_description__",
-	"options_page": "options.html",
-	"options_ui": {
-		"page": "options.html",
-		"chrome_style": true
-	},
 	"version": "4.5.0",
 	"app": {
 		"background": {
@@ -29,7 +24,6 @@
 				"scripts/models/OptionsModel.js",
 				"scripts/models/SearchModel.js",
 				"scripts/models/ThemeModel.js",
-
 				"scripts/chrome-background.js"
 			]
 		}
@@ -50,7 +44,6 @@
 			"scripts/google-chrome/content-script.js"
 		]
 	}],
-	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';",
 	"web_accessible_resources": [
 		"img/icon_16.png",
 		"index.html",
@@ -58,7 +51,7 @@
 	],
 	"permissions": ["storage", "bookmarks", "http://*.lds.org/", "https://*.lds.org/"],
 	"sandbox": {
-		"pages": ["index.html"]
+		"pages": ["index.html", "sql.html"]
 	},
 	"default_locale": "en",
 	"manifest_version": 2
