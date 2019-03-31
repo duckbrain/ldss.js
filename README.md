@@ -1,7 +1,7 @@
-LDS Scriptures
+Lucky Duck Scriptures in JavaScript
 ==============
 
-A Chrome Extension that allows you to download and view scripture content from lds.org. The app does _not_ provide the content visible through the app. All content is property of the Church of Jesus Christ of Latter-day Saints.
+A Chrome Extension that allows you to download and view scripture content from churchofjesuschrist.org. The app does _not_ provide the content visible through the app. All content is property of the Church of Jesus Christ of Latter-day Saints.
 
 >This project is unmaintained. I have a problem with the Chrome extension platform. They were breaking things far too often, mostly in the name of security, and I don't want to try to keep up. It was also very frustrating that I would get it working on my computer, but the Web Store had much more strigent requirements, preventing me from every getting a rewrite that both worked and satisfied the security requirements at the same time. Making it a Chrome extension was a work around for the content security policy anyway. A rewrite may occur occur in the future, but under a project.
 
@@ -22,4 +22,4 @@ I am no longer able to develop the extension much anymore, so I also hope that i
 6. Find the folder to which you unpacked the zipped folder and click OK
 
 #Development
-This extension uses IndexedDB to store the data from JSON files it downloads. The API's are intended for [The Church of Jesus Christ of Latter-Day Saints apps](https://lds.org). Feel free to contact me with questions on how it works, etc.
+This extension uses IndexedDB to store the data from JSON files it downloads. The API's are intended for [The Church of Jesus Christ of Latter-Day Saints apps](https://churchofjesuschrist.org). Feel free to contact me with questions on how it works, etc.
